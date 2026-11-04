@@ -69,7 +69,9 @@ type comment
     define parent: [document]
     define author: [user]
     define can_view: can_view from parent
-    define can_delete: author or owner from parent
+    define deleter: author or owner from parent
+    # Tác giả đã mất quyền xem tài liệu thì cũng mất quyền xóa comment của mình.
+    define can_delete: deleter and can_view
 
 # ABAC trong ReBAC: quyền chia sẻ có thời hạn. current_time do server đưa vào lúc check, không lấy từ client.
 condition not_expired(current_time: timestamp, expires_at: timestamp) {

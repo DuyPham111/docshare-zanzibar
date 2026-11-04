@@ -11,7 +11,8 @@
     "token": "node scripts/token.js",
     "oracle": "node scripts/oracle.js",
     "fga:up": "docker compose up -d openfga",
-    "fga:down": "docker compose down"
+    "fga:down": "docker compose down",
+    "evidence": "node scripts/evidence.js"
   },
   "license": "MIT",
   "type": "commonjs",
