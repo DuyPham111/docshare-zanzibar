@@ -1,8 +1,8 @@
 # Kết quả test: OpenFGA (http://localhost:8080), gồm engine test và parity
 
-Ngày chạy: 2026-11-04T04:44:56.741Z
+Ngày chạy: 2026-11-04T11:41:29.238Z
 
-**243 passed, 0 failed, 0 skipped** / 243 tests
+**245 passed, 0 failed, 0 skipped** / 245 tests
 
 ## test/cel.test.js
 
@@ -54,6 +54,7 @@ Ngày chạy: 2026-11-04T04:44:56.741Z
 - ✅ Xác thực › không có token → 401
 - ✅ Xác thực › token sai chữ ký → 401
 - ✅ Xác thực › token của user không tồn tại → 401
+- ✅ Xác thực › token hết hạn → 401
 - ✅ Đọc và sửa tài liệu › không có quyền xem → 404 giống hệt tài liệu không tồn tại
 - ✅ Đọc và sửa tài liệu › xem được nhưng không được sửa → 403
 - ✅ Đọc và sửa tài liệu › editor qua nhóm sửa được; field ngoài danh sách (orgId, createdBy) bị bỏ qua
@@ -141,6 +142,7 @@ Ngày chạy: 2026-11-04T04:44:56.741Z
 - ✅ Vận hành › [P3] JSON lỗi → 400 invalid_json; body quá 20 KB → 413
 - ✅ Vận hành › [P4] route không tồn tại → 404 JSON
 - ✅ Vận hành › [P5] NODE_ENV=production mà thiếu JWT_SECRET thì app từ chối khởi động
+- ✅ Vận hành › [P6] Zanzibar lỗi hoặc mất kết nối → 500, không trả dữ liệu (fail closed)
 - ✅ Audit log › [L1] AUDIT_LOG=deny: chỉ ghi lần từ chối, dạng JSON Lines; body trả về không có lý do
 - ✅ Audit log › [L2] AUDIT_LOG=all ghi cả lần cho phép; off không ghi gì
 - ✅ Tài liệu API và server demo › [D1] mọi route của API đều có trong docs/openapi.yaml và ngược lại

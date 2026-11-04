@@ -1,0 +1,19 @@
+<section id="untested" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Giới hạn</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Các trường hợp chưa kiểm tra</h2>
+</div>
+<table style="font-size:25px">
+<tr><th style="width:40%">Trường hợp</th><th>Hiện trạng</th></tr>
+<tr><td>Process chết giữa hai bước dual write</td><td>Lập luận: tuple mồ côi không cấp quyền vì db không có object; chưa có fault injection</td></tr>
+<tr><td>Hai request ghi cùng tuple đồng thời</td><td>Map sang 409; chỉ test ghi trùng tuần tự</td></tr>
+<tr><td>OpenFGA lỗi một phần (một lô BatchCheck)</td><td>P6 chỉ kiểm PDP lỗi hoàn toàn</td></tr>
+<tr><td>Owner bị chặn trên tài liệu của mình</td><td>Theo model vẫn bỏ chặn được (can_block: owner); chưa có test riêng</td></tr>
+<tr><td>Nhóm lồng sâu hơn 25 tầng, ListObjects quá 1.000 kết quả</td><td>Seed sâu 3 tầng, ít object; chưa test giới hạn</td></tr>
+<tr><td>Tải, Docker + Postgres, giao diện demo</td><td>Chưa benchmark; compose và UI kiểm thủ công</td></tr>
+<tr><td>Schema response trong OpenAPI</td><td>D1 chỉ khóa path và method</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §10.1</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">32</p>
+<aside>Theo yêu cầu bài nộp của Block 6, nhóm liệt kê các trường hợp chưa có test tự động. Process chết giữa hai bước dual write: nhóm chỉ lập luận rằng tuple mồ côi không cấp quyền, chưa có fault injection. Ghi đồng thời cùng một tuple: lỗi được đổi thành 409 nhưng chỉ test ghi trùng tuần tự. OpenFGA lỗi một phần chưa được giả lập. Owner bị chặn trên chính tài liệu của mình vẫn bỏ chặn được theo model, chưa có test riêng. Giới hạn độ sâu 25 và giới hạn 1000 kết quả của ListObjects chưa bị chạm vì seed nhỏ. Tải, cấu hình Docker với Postgres và giao diện demo mới kiểm thủ công. Schema response trong OpenAPI chưa được kiểm.</aside>
+</section>

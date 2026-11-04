@@ -13,17 +13,20 @@ Gói nộp gồm:
 
 - mã nguồn và dữ liệu [`data/`](data/README.md);
 - README này (hướng dẫn triển khai);
-- [**REPORT.md**](REPORT.md) và [**REPORT.html**](REPORT.html): giải thích các lựa chọn của nhóm;
+- [**REPORT.md**](REPORT.md) và [**REPORT.html**](REPORT.html) (36 slide): giải thích các lựa chọn của nhóm; bảng đối chiếu với yêu cầu nộp ở [REPORT.md §1.1](REPORT.md#11-đối-chiếu-với-yêu-cầu-nộp);
 - evidence chạy thật, trang demo, đặc tả OpenAPI và Swagger UI.
+
+`REPORT.html` là một file HTML tự chứa. Trên GitHub, mở file này chỉ thấy mã nguồn; muốn xem slide thì tải file về (hoặc clone repo) rồi mở bằng trình duyệt. Nút "Đọc tài liệu" hiện lời giải thích dưới từng slide.
 
 | Kết quả | Giá trị |
 | --- | --- |
 | Ma trận oracle viết tay (8 user × 9 tài liệu) | **72/72** ô khớp trên cả hai engine ([oracle-matrix.md](docs/oracle-matrix.md)) |
-| Automated test, engine tự viết | **222/222** (`npm test`; 7 test parity cần OpenFGA nên bỏ qua) |
-| Automated test, OpenFGA v1.22.1 | **243/243** (`npm run test:openfga`, gồm engine test và parity) |
+| Automated test, engine tự viết | **224/224** (`npm test`; 7 test parity cần OpenFGA nên bỏ qua) |
+| Automated test, OpenFGA v1.22.1 | **245/245** (`npm run test:openfga`, gồm engine test và parity) |
 | Parity hai engine | 1.920 câu Check (960 × 2 thời điểm), cùng ListObjects, ListUsers, Expand: **0 khác biệt** |
 | Mutation test model | 6/6 lỗi cố ý bị test bắt ([mutations.md](docs/evidence/mutations.md)) |
-| Coverage `src/` (chạy trên OpenFGA) | 96,5% dòng; `access.js`, `cel.js` 100% |
+| Evidence IDOR đỏ trước, xanh sau | Bỏ `enforce()`: erin đọc được api-spec (200), 69 test đỏ; bản nộp: 404, toàn bộ test xanh ([idor.md](docs/evidence/idor.md)) |
+| Coverage `src/` (chạy trên OpenFGA) | 96,8% dòng; `access.js`, `cel.js` 100% |
 
 ## 1. Yêu cầu môi trường
 
@@ -42,7 +45,7 @@ Mở terminal tại thư mục chứa `package.json`:
 ~~~powershell
 node --version          # >= 22
 npm ci                  # cài đúng phiên bản trong package-lock.json
-npm test                # 222 test trên engine tự viết, khoảng 15 giây
+npm test                # 224 test trên engine tự viết, khoảng 15 giây
 npm run demo            # trang demo http://localhost:3200, Swagger UI http://localhost:3200/docs
 ~~~
 
@@ -63,7 +66,7 @@ Trên PowerShell: `$TOKEN = npm run -s token -- erin`, rồi dùng `curl.exe` th
 
 ~~~bash
 npm run fga:up          # docker compose up -d openfga  (OpenFGA v1.22.1, datastore memory)
-npm run test:openfga    # 243 test: toàn bộ test HTTP chạy lại trên OpenFGA + engine test + parity
+npm run test:openfga    # 245 test: toàn bộ test HTTP chạy lại trên OpenFGA + engine test + parity
 npm run demo:openfga    # trang demo dùng OpenFGA
 npm run fga:down        # tắt
 ~~~
@@ -126,7 +129,7 @@ Swagger UI ở http://localhost:3200/docs đọc [`docs/openapi.yaml`](docs/open
 | `npm run test:coverage` | Coverage |
 | `npm run token -- <user>` | In JWT của một user (alice, bob, carol, dave, erin, frank, gina, hank) |
 | `npm run oracle` | Ghi [`docs/oracle-matrix.md`](docs/oracle-matrix.md): kỳ vọng viết tay so với kết quả engine |
-| `npm run evidence` | Ghi [`docs/evidence/`](docs/evidence): kết quả test của hai engine và mutation test (cần OpenFGA) |
+| `npm run evidence` | Ghi [`docs/evidence/`](docs/evidence): kết quả test của hai engine, evidence IDOR đỏ/xanh và mutation test (cần OpenFGA) |
 | `npm run report` | Dựng lại `REPORT.html` từ `report/slides/*.html` |
 
 ## 8. Cấu trúc thư mục

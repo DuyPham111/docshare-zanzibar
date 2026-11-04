@@ -1,10 +1,11 @@
-// Vận hành: health, lỗi body, secret production, audit log, tài liệu API khớp route, server demo tách khỏi app.
+// Vận hành: health, lỗi body, secret production, fail closed, audit log, tài liệu API khớp route, server demo tách khỏi app.
 const fs = require('node:fs')
 const path = require('node:path')
 const { spawnSync } = require('node:child_process')
 const YAML = require('yaml')
 const request = require('supertest')
 const { MOUNTS } = require('../src/routes')
+const authz = require('../src/authz')
 const { api, as, useSeed } = require('./helpers')
 
 useSeed()
@@ -43,6 +44,28 @@ describe('Vận hành', () => {
     })
     expect(result.status).not.toBe(0)
     expect(result.stderr).toContain('JWT_SECRET is required')
+  })
+
+  test('[P6] Zanzibar lỗi hoặc mất kết nối → 500, không trả dữ liệu (fail closed)', async () => {
+    const down = Object.assign(new Error('connect ECONNREFUSED 127.0.0.1:8080'), { code: 'ECONNREFUSED' })
+    const check = jest.spyOn(authz.engine, 'check').mockRejectedValue(down)
+    const batch = jest.spyOn(authz.engine, 'batchCheck').mockRejectedValue(down)
+    const list = jest.spyOn(authz.engine, 'listObjects').mockRejectedValue(down)
+    const log = jest.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      for (const res of [
+        await api().get('/documents/handbook').set(as('bob')),
+        await api().get('/documents').set(as('bob')),
+        await api().patch('/documents/handbook').set(as('alice')).send({ title: 'x' }),
+      ]) {
+        expect(res.status).toBe(500)
+        expect(res.body).toEqual({ error: 'internal_error' })
+      }
+    } finally {
+      for (const spy of [check, batch, list, log]) spy.mockRestore()
+    }
+    const after = await api().get('/documents/handbook').set(as('bob'))
+    expect(after.body.title).toBe('Employee handbook')
   })
 })
 

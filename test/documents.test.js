@@ -1,3 +1,4 @@
+const { signToken } = require('../src/auth')
 const { api, as, expectDenied, useSeed } = require('./helpers')
 
 useSeed()
@@ -13,6 +14,10 @@ describe('Xác thực', () => {
   })
   test('token của user không tồn tại → 401', async () => {
     const res = await api().get('/documents/handbook').set(as('mallory'))
+    expect(res.status).toBe(401)
+  })
+  test('token hết hạn → 401', async () => {
+    const res = await api().get('/documents/handbook').set('Authorization', `Bearer ${signToken('bob', { expiresIn: -10 })}`)
     expect(res.status).toBe(401)
   })
 })

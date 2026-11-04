@@ -1,0 +1,21 @@
+<section id="checklist" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Gói nộp</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Đối chiếu với yêu cầu nộp</h2>
+</div>
+<table style="font-size:24px">
+<tr><th style="width:40%">Yêu cầu</th><th>Đáp ứng ở đâu</th></tr>
+<tr><td>Áp dụng Zanzibar open-source</td><td>OpenFGA v1.22.1 chạy thật + engine tự viết cùng model</td></tr>
+<tr><td>Mã nguồn, data, README triển khai</td><td>src/, authz/, test/ · data/seed.json, data/README.md · README.md</td></tr>
+<tr><td>REPORT.md: chọn X vì, không chọn Y vì</td><td>§4: 21 lựa chọn, mỗi lựa chọn có Nhóm chọn / Không chọn / Đánh đổi</td></tr>
+<tr><td>REPORT.html: slide có giải thích</td><td>Bộ slide này; chế độ "Đọc tài liệu" hiện lời giải thích</td></tr>
+<tr><td>Bảng chính sách, mỗi ô có test</td><td>REPORT.md §6.1</td></tr>
+<tr><td>Test được phép và bị từ chối, một lệnh</td><td><code>npm test</code>: 224 test; <code>npm run test:openfga</code>: 245</td></tr>
+<tr><td>Evidence IDOR đỏ trước, xanh sau</td><td>docs/evidence/idor.md (§7.1)</td></tr>
+<tr><td>Nơi kiểm quyền; ACL/RBAC/ABAC/ReBAC</td><td>enforce() ở service (§4.11) · ReBAC + condition (§4.2)</td></tr>
+<tr><td>Giới hạn, trường hợp chưa kiểm tra</td><td>REPORT.md §10, §10.1</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §1.1</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">34</p>
+<aside>Slide này đối chiếu gói nộp với yêu cầu của đề bài và các mục bài nộp của Block 6. Hệ thống Zanzibar open-source là OpenFGA chạy thật, kèm engine tự viết đọc cùng model. Mã nguồn, data và README hướng dẫn triển khai nằm ở thư mục gốc. REPORT.md mục 4 có 21 lựa chọn, mỗi lựa chọn ghi nhóm chọn gì, không chọn gì và đánh đổi. Bảng chính sách quyền ở mục 6.1. Test có cả trường hợp được phép và bị từ chối, chạy bằng một lệnh. Evidence IDOR đỏ trước, xanh sau nằm trong docs/evidence/idor.md. Giới hạn và các trường hợp chưa kiểm tra ở mục 10.</aside>
+</section>

@@ -30,16 +30,39 @@ Báo cáo này giải thích **các lựa chọn của nhóm dẫn tới kết q
 | Đại lượng | Kết quả | Minh chứng |
 | --- | --- | --- |
 | Ma trận oracle viết tay: 8 user × 9 tài liệu, mức truy cập + quyền chia sẻ tiếp | **72/72** ô khớp trên cả LocalEngine và OpenFGA | [oracle-matrix.md](docs/oracle-matrix.md) |
-| Automated test trên engine tự viết | **222/222** (7 test parity bỏ qua vì cần OpenFGA) | [tests-local.md](docs/evidence/tests-local.md) |
-| Automated test trên OpenFGA v1.22.1 | **243/243**: toàn bộ test HTTP + engine test + parity | [tests-openfga.md](docs/evidence/tests-openfga.md) |
+| Automated test trên engine tự viết | **224/224** (7 test parity bỏ qua vì cần OpenFGA) | [tests-local.md](docs/evidence/tests-local.md) |
+| Automated test trên OpenFGA v1.22.1 | **245/245**: toàn bộ test HTTP + engine test + parity | [tests-openfga.md](docs/evidence/tests-openfga.md) |
 | Parity hai engine | **1.920** câu Check (960 × 2 thời điểm), ListObjects 3 type × 8 user, ListUsers 9 tài liệu, Expand 36 cây: **0 khác biệt** | [parity.test.js](test/parity.test.js) |
 | Mutation test: cố ý làm sai 6 luật của model | **6/6** bị bắt (1 đến 77 test đỏ mỗi lỗi) | [mutations.md](docs/evidence/mutations.md) |
+| IDOR / leo thang quyền: bỏ `enforce()` ở PEP | Trước khi sửa: **200** và test đỏ; sau khi sửa: **404 / 403**, toàn bộ test xanh | [idor.md](docs/evidence/idor.md) |
+| Zanzibar lỗi hoặc mất kết nối | **500**, không trả dữ liệu (fail closed) | test P6 |
 | Gỡ khỏi nhóm / gỡ chia sẻ → mất quyền sau | **0 giây**: request kế tiếp đã 404 | groups, sharing tests |
 | Chia sẻ có hạn quá `expires_at` | 1 giây sau hạn: **404**, biến mất khỏi danh sách | sharing tests |
 | Danh sách (ListObjects) khớp với check từng object | **8 user × (9 tài liệu + 8 thư mục)** khớp hoàn toàn | [consistency.test.js](test/consistency.test.js) |
 | Đặc tả OpenAPI khớp route Express | **40/40** operation, mỗi operation có `x-relation` | test D1, D2 |
-| Coverage `src/` (chạy trên OpenFGA) | **96,5% dòng**; `access.js`, `cel.js` 100% | `npm run test:coverage` |
+| Coverage `src/` (chạy trên OpenFGA) | **96,8% dòng**; `access.js`, `cel.js` 100% | `npm run test:coverage` |
 | Triển khai | Docker compose (OpenFGA memory hoặc PostgreSQL 17), API healthy | [README §5](README.md#5-triển-khai-bằng-docker) |
+
+### 1.1 Đối chiếu với yêu cầu nộp
+
+Yêu cầu của đề bài và các mục "bài nộp và tự kiểm tra" của Block 6 (slide 26), kèm chỗ đáp ứng trong gói nộp:
+
+| Yêu cầu | Đáp ứng ở đâu |
+| --- | --- |
+| Implement hoặc áp dụng hệ thống phân quyền Zanzibar open-source | OpenFGA v1.22.1 chạy thật ([§4.3](#43-engine-zanzibar-openfga)) và engine Zanzibar tự viết đọc cùng model ([§4.4](#44-engine-zanzibar-tự-viết-chạy-song-song)) |
+| Mã nguồn | `authz/`, `src/`, `test/`, `demo/`, `scripts/` |
+| Data | [`data/seed.json`](data/seed.json) và mô tả ở [`data/README.md`](data/README.md) |
+| README.md hướng dẫn triển khai | [README.md](README.md): môi trường, chạy không Docker, chạy với OpenFGA, cấu hình, Docker/Postgres, demo, sự cố |
+| REPORT.md: chọn X vì..., không chọn Y vì... | [§4](#4-các-lựa-chọn-và-lý-do): 21 lựa chọn, mỗi lựa chọn có **Nhóm chọn / Không chọn / Đánh đổi chấp nhận**; [§5](#5-bảng-tóm-tắt-lựa-chọn) tóm tắt |
+| REPORT.html: slide kèm giải thích | [REPORT.html](REPORT.html): 36 slide, mỗi slide có lời giải thích (chế độ "Đọc tài liệu") |
+| Bảng chính sách quyền, mỗi ô có test | [§6.1](#61-bảng-chính-sách-quyền): vai trò × thao tác, điều kiện, test tương ứng |
+| Automated test cho request được phép và bị từ chối, một lệnh | `npm test` ([§7](#7-kiểm-thử-và-evidence)) |
+| Evidence IDOR: đỏ trước khi sửa, xanh sau khi sửa | [docs/evidence/idor.md](docs/evidence/idor.md): response thật và test đỏ khi bỏ `enforce()`, xanh ở bản nộp ([§7.1](#71-evidence-idor-đỏ-trước-xanh-sau)) |
+| Nơi áp dụng authorization ở server / business layer | [§4.11](#411-policy-enforcement-point-ở-service): `enforce()` trong service; diff trong idor.md |
+| Giải thích chọn ACL, RBAC, ABAC hay ReBAC | [§4.2](#42-mô-hình-phân-quyền-rebac-theo-zanzibar-thay-cho-hàm-decide-viết-tay) |
+| Giới hạn và trường hợp chưa kiểm tra | [§10](#10-giới-hạn-và-hướng-phát-triển), [§10.1](#101-các-trường-hợp-chưa-kiểm-tra) |
+| Deny by default | [§4.21](#421-deny-by-default-và-fail-closed) |
+| Câu hỏi kết thúc của Block 6 | [§11](#11-câu-hỏi-vấn-đáp) |
 
 ## 2. Bài toán và phạm vi
 
@@ -143,7 +166,7 @@ flowchart LR
 > - Slide Block 6 đã nhắc OpenFGA là hướng tìm hiểu thêm.
 >
 > **Không chọn:**
-> - **SpiceDB (AuthZed)**: bám paper Zanzibar rất sát (ZedToken, caveats), mạnh khi chạy phân tán. Nhưng schema language (Zed) khác, không có công cụ JS để parse schema cho engine tự viết, và tài liệu ít ví dụ JavaScript hơn.
+> - **SpiceDB (AuthZed)**: bám paper Zanzibar rất sát (ZedToken tương đương zookie, caveats, LookupResources/LookupSubjects), mạnh khi chạy phân tán. Về chức năng SpiceDB cũng đáp ứng được bài này. Nhóm không chọn vì: model của OpenFGA có dạng JSON được tài liệu hóa và có bộ chuyển DSL → JSON chính thức cho JavaScript, nên engine tự viết đọc thẳng cùng một file model; còn với SpiceDB, nhóm phải tự viết parser cho schema Zed. Ngoài ra DSL của OpenFGA và ví dụ Node.js trong tài liệu quen thuộc với nhóm hơn.
 > - **Permify**: lấy cảm hứng từ Zanzibar, có rule ABAC. Cộng đồng nhỏ hơn, SDK Node ít dùng hơn.
 > - **Ory Keto**: lấy cảm hứng từ Zanzibar, nhưng ngôn ngữ chính sách (OPL) và tập API hẹp hơn; không có condition tương đương.
 > - **OPA (Rego), Casbin, Cerbos**: là policy engine dạng luật, **không phải** hệ thống tuple quan hệ. Kế thừa qua thư mục và nhóm lồng nhau vẫn phải tự nạp dữ liệu đồ thị vào policy.
@@ -454,9 +477,25 @@ flowchart LR
 > - Mỗi commit chạy được và có test đi kèm.
 > - Hai lỗi model mà oracle phát hiện (admin thành member mọi nhóm; tác giả mất quyền xem vẫn xóa được comment) được sửa ngay trong commit có test bắt lỗi đó.
 >
-> **Không chọn:** tag phiên bản "đỏ trước, xanh sau" như Block 6. DocShare không có starter lỗi sẵn để tái hiện; thay vào đó, mutation test chứng minh bộ test bắt được lỗi.
+> **Không chọn:** tag phiên bản "đỏ trước, xanh sau" như Block 6. DocShare không có starter lỗi sẵn để tái hiện. Thay vào đó, `scripts/evidence.js` **tự tái hiện bản lỗi** rồi khôi phục: bỏ `enforce()` ở PEP để có evidence IDOR đỏ/xanh ([§7.1](#71-evidence-idor-đỏ-trước-xanh-sau)), và làm sai từng luật của model (mutation test). Cách này chạy lại được bất cứ lúc nào bằng một lệnh, không phụ thuộc lịch sử git.
 >
-> **Đánh đổi chấp nhận:** không có bảng oracle theo từng tag như Block 6.
+> **Đánh đổi chấp nhận:** không có bảng oracle theo từng tag như Block 6; bản lỗi chỉ tồn tại trong lúc script chạy.
+
+### 4.21 Deny by default và fail closed
+
+> **Nhóm chọn từ chối khi không chứng minh được quyền:**
+> - **Không có đường quan hệ thì không có quyền.** Zanzibar không có luật "cho phép"; Check chỉ trả true khi tìm được một chuỗi tuple dẫn tới relation. Thêm type hay relation mới vào model thì ban đầu không ai có quyền đó.
+> - **Service hỏi `can_*`, không bao giờ hỏi quan hệ lưu trực tiếp.** Mọi thao tác mới phải chọn một relation có sẵn trong model; relation không tồn tại thì engine báo lỗi chứ không trả true.
+> - **Route không có trong đặc tả thì 404** (test P4). Test D1, D2 bắt buộc mọi route có trong OpenAPI và mọi operation ghi rõ relation cần có, nên route mới thiếu policy sẽ làm test đỏ.
+> - **Zanzibar lỗi, chậm hay mất kết nối thì từ chối (fail closed).** Lỗi đi tới error handler, client nhận `500 internal_error`, không có dữ liệu (test P6). Condition thiếu tham số cũng trả false.
+> - Token chỉ mang `sub`, hết hạn hay sai chữ ký thì 401.
+>
+> **Không chọn:**
+> - **Fail open** (cho qua khi PDP không trả lời): một sự cố mạng thành sự cố lộ dữ liệu.
+> - **Dùng lại quyết định cũ trong cache khi PDP lỗi**: người vừa bị gỡ quyền vẫn đi qua được, đúng vấn đề thu hồi quyền ở slide 19–20 Block 6.
+> - **Mặc định cho phép, liệt kê trường hợp cấm** (blocklist): quên một trường hợp là lọt; ngược với deny by default.
+>
+> **Đánh đổi chấp nhận:** OpenFGA ngừng thì API ngừng phục vụ mọi thao tác cần quyền (tính sẵn sàng phụ thuộc PDP). Production chạy nhiều replica OpenFGA trên datastore dùng chung để giảm rủi ro này.
 
 ## 5. Bảng tóm tắt lựa chọn
 
@@ -464,18 +503,19 @@ flowchart LR
 | --- | --- | --- | --- | --- |
 | Domain | DocShare kiểu Google Drive | Jira-like, GitHub-like | Dùng đủ cơ chế Zanzibar; Drive chạy Zanzibar thật | §2 |
 | Mô hình | ReBAC (tuple + userset rewrite) + condition | `decide()` viết tay, RBAC, ACL phẳng | Đệ quy nhóm/thư mục khai báo một lần | model.fga |
-| Engine | OpenFGA v1.22.1 | SpiceDB, Permify, Keto, OPA/Casbin/Cerbos | Đủ API (ListUsers, condition), DSL ngắn, SDK JS, CNCF | 243/243 |
+| Engine | OpenFGA v1.22.1 | SpiceDB, Permify, Keto, OPA/Casbin/Cerbos | Đủ API (ListUsers, condition), DSL ngắn, SDK JS, CNCF | 245/245 |
 | Engine phụ | LocalEngine tự viết, cùng model | Mock, chỉ OpenFGA, chỉ tự viết | Test không cần Docker; oracle thứ hai | parity 1.920 |
 | Thời hạn | Condition trên tuple | Cron xóa, kiểm ở service | Hết hạn là mất quyền ngay; List vẫn đúng | sharing tests |
 | Nguồn sự thật | Chia sẻ chỉ ở Zanzibar; cấu trúc ghi cả hai, tuple trước | Đồng bộ db → Zanzibar, 2PC | Một nguồn sự thật; quyền mất ngay khi xóa | thiet-ke §4 |
 | Consistency | HIGHER_CONSISTENCY | Cache, MINIMIZE_LATENCY | Thu hồi 0 giây, tránh new enemy | groups tests |
 | List | ListObjects / ListUsers / BatchCheck | Tải hết rồi lọc, JOIN tự viết | Không N+1, một luật | consistency |
 | Mã lỗi | 404 không thấy, 403 thấy mà thiếu quyền | Luôn 403/404 | Chống dò ID | expectDenied |
+| Khi không chứng minh được quyền | Deny by default, fail closed (500, không dữ liệu) | Fail open, dùng quyết định cache cũ | Sự cố mạng không thành sự cố lộ dữ liệu | P4, P6 |
 | PEP | Service, `enforce()` dùng chung | Middleware, gateway, frontend | Biết object và ngữ cảnh nghiệp vụ | S2 |
 | Token | JWT `{sub}` 1 giờ | Group trong claim, scope | Quyền đổi liên tục | P5 |
 | Stack | Node 22 + Express 5 | Go, Spring Boot, NestJS | SDK và parser chính thức; so được với Block 6 | — |
 | Lưu trữ | db in-memory; OpenFGA memory / Postgres 17 | MySQL, SQLite | Máy chấm không cần cài; Postgres cho bản bền | compose |
-| Kiểm thử | Oracle viết tay + parity + mutation | `fga model test`, snapshot, Postman | Kỳ vọng độc lập engine; chứng minh test bắt lỗi | mutations.md |
+| Kiểm thử | Oracle viết tay + parity + mutation + IDOR đỏ/xanh | `fga model test`, snapshot, Postman | Kỳ vọng độc lập engine; chứng minh test bắt lỗi | mutations.md, idor.md |
 | Tài liệu API | OpenAPI 3.1 + Swagger UI, `x-relation` | swagger-jsdoc, Postman, Redoc | Chuẩn mở, thử được, khớp route | D1, D2 |
 | Logging | JSON Lines + ReadChanges + log OpenFGA | ELK trong lab, winston | Ba câu hỏi, ba nguồn; gom được về sau | L1, L2 |
 | Demo | HTML/JS thuần, server riêng 127.0.0.1 | Playground, SPA | Ma trận quyền mọi user, không cửa sau | S1 |
@@ -490,6 +530,48 @@ flowchart LR
 | `folder` | `org`, `parent`, `owner`, `editor`, `commenter`, `viewer` (∪ `user:*`), `blocked` | `can_view`, `can_create`, `can_edit`, `can_share`, `can_delete`, `can_block` |
 | `document` | như folder | `can_view`, `can_comment`, `can_edit`, `can_share`, `can_delete`, `can_block` |
 | `comment` | `parent`, `author` | `can_view`, `can_delete` |
+
+### 6.1 Bảng chính sách quyền
+
+**Tài liệu** (thư mục giống hệt, xem bảng dưới). Hàng là quan hệ hiệu lực của người gọi với tài liệu; quan hệ có được trực tiếp, qua nhóm lồng nhau, qua thư mục cha hoặc qua public link. ✅ cho phép, `403` thấy tài liệu nhưng thiếu quyền, `404` không thấy:
+
+| Quan hệ của người gọi | Xem `can_view` | Comment `can_comment` | Sửa, chuyển `can_edit` | Chia sẻ, xem ai có quyền `can_share` | Chặn `can_block` | Xóa `can_delete` | Test (file › tên test) |
+| --- | :---: | :---: | :---: | :---: | :---: | :---: | --- |
+| Không có quan hệ, chia sẻ đã hết hạn, hoặc org khác | 404 | 404 | 404 | 404 | 404 | 404 | documents › "không có quyền xem → 404 giống hệt tài liệu không tồn tại"; sharing › "quyền của gina trên pricing hết khi qua expires_at"; tenant › "admin acme không thấy gì của globex" |
+| `viewer` (kể cả public link) | ✅ | 403 | 403 | 403 | 403 | 403 | documents › "xem được nhưng không được sửa → 403"; comments › "viewer không comment được"; sharing › "viewer và commenter không chia sẻ được", "public link chỉ ở mức viewer" |
+| `commenter` | ✅ | ✅ | 403 | 403 | 403 | 403 | comments › "commenter thì được"; documents › "commenter không sửa được nội dung" |
+| `editor`, là member của org chứa tài liệu | ✅ | ✅ | ✅ | ✅ | 403 | 403 | documents › "editor qua nhóm sửa được", "editor không xóa được"; sharing › "editor là member của org chia sẻ được", "chỉ owner chặn được; editor thì không" |
+| `editor`, khách ngoài org | ✅ | ✅ | ✅ | 403 | 403 | 403 | sharing › "khách ngoài org là editor nhưng không chia sẻ tiếp được" |
+| `owner` (người tạo, owner thư mục cha, admin org) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | documents › "owner xóa được"; sharing › "owner chia sẻ viewer cho user" |
+| Bị chặn (trực tiếp, qua nhóm, hoặc ở thư mục cha), không phải owner | 404 | 404 | 404 | 404 | 404 | 404 | sharing › "chặn thắng cả public link", "chặn một nhóm ở thư mục cha áp xuống mọi tài liệu con" |
+
+Điều kiện áp lên mọi ô (cột "điều kiện" của bảng chính sách):
+
+| Điều kiện | Nằm ở | Test |
+| --- | --- | --- |
+| Chặn thắng mọi quan hệ, kể cả public link, và áp xuống cây con | model: `but not blocked`, `blocked from parent` | sharing › "chặn thắng cả public link" |
+| Chia sẻ có hạn chỉ có hiệu lực khi `current_time < expires_at`; `current_time` do server đặt | model: condition `not_expired` | sharing › "quyền của gina trên pricing hết khi qua expires_at"; engine › "giá trị trong tuple thắng" |
+| Public link chỉ ở mức viewer | service chia sẻ | sharing › "public link chỉ ở mức viewer" |
+| Chia sẻ cho người ngoài org chỉ khi org bật `allowExternalSharing`; chỉ chia sẻ cho nhóm cùng org | service chia sẻ (chính sách org, không phải quan hệ) | sharing › "globex không cho phép…", "không chia sẻ cho nhóm của org khác" |
+| Chuyển tài liệu cần thêm `can_create` ở thư mục đích, và thư mục đích cùng org | service tài liệu | documents › "cần can_create ở thư mục đích", "không chuyển sang thư mục của org khác" |
+| Org của tài liệu suy từ thư mục, không lấy từ request | service tài liệu | tenant › "header X-Org-Id, query orgId, body role không tăng quyền" |
+
+**Thư mục, nhóm, comment, org:**
+
+| Tài nguyên | Thao tác | Relation | Ai có | Test |
+| --- | --- | --- | --- | --- |
+| folder | xem, chia sẻ, chặn | như tài liệu | như bảng trên | folders › "thư mục không thấy → 404", "chia sẻ thư mục cho user → thấy mọi tài liệu bên trong" |
+| folder | tạo tài liệu hoặc thư mục con | `can_create` | editor trở lên, không bị chặn | folders › "chỉ có quyền xem thì không tạo được thư mục con"; documents › "tạo trong thư mục chỉ xem → 403" |
+| folder | đổi tên | `can_edit` | editor trở lên | folders › "đổi tên cần can_edit" |
+| folder | chuyển, xóa cả cây | `can_delete` | owner (người tạo, owner thư mục cha, admin org) | folders › "chỉ owner chuyển được thư mục", "editor không xóa được thư mục" |
+| folder gốc | tạo | `org#member` | member org | folders › "tạo thư mục gốc" |
+| group | xem | `can_view` | member (kể cả qua nhóm con), manager, member org | groups › "mọi member org xem được nhóm của org; org khác → 404" |
+| group | thêm, gỡ member | `can_manage` | manager, admin org | groups › "member thường không quản lý được nhóm", "admin org quản lý mọi nhóm…" |
+| group | tạo | `org#member` | member org; người tạo thành manager | groups › "người tạo là manager" |
+| comment | xóa | `can_delete` | (tác giả hoặc owner tài liệu) **và** còn xem được tài liệu | comments › "tác giả xóa comment của mình…", "tác giả mất quyền xem tài liệu thì cũng không xóa được comment" |
+| org | xem nhật ký thay đổi quyền | `org#admin` | admin org | tenant › "nhật ký thay đổi quyền chỉ cho admin org" |
+
+### 6.2 Kết quả trên seed
 
 Kết quả trên seed, kỳ vọng viết tay. Ký hiệu: O owner, E editor, C commenter, V viewer, · không thấy (404); `+s` nghĩa là chia sẻ tiếp được:
 
@@ -520,23 +602,37 @@ Lý do của từng ô có trong [docs/oracle-matrix.md](docs/oracle-matrix.md).
 | --- | ---: | --- |
 | `oracle.test.js` | 80 | 72 ô user × tài liệu qua HTTP + 8 danh sách `GET /documents` |
 | `sharing.test.js` | 30 | user/nhóm/public, chính sách ra ngoài, khách không chia sẻ tiếp, hết hạn, chặn, ListUsers, Expand, xem trước |
-| `documents.test.js` | 18 | 401, 404 giống không tồn tại, 403, mass assignment, tạo, chuyển thư mục, xóa, tìm kiếm |
+| `documents.test.js` | 19 | 401 (thiếu, sai, hết hạn token), 404 giống không tồn tại, 403, mass assignment, tạo, chuyển thư mục, xóa, tìm kiếm |
 | `consistency.test.js` | 16 | list = check cho 8 user × (tài liệu, thư mục) |
 | `folders.test.js` | 14 | con bị chặn, breadcrumb, root, kế thừa, chuyển thư mục, chu trình cây, xóa cả cây |
 | `engine.test.js` | 14 (× 2 engine) | wildcard, exclusion, intersection, condition, contextual tuple, chu trình, validate tuple, Read/ReadChanges, Expand |
 | `groups.test.js` | 13 | nhóm lồng 3 tầng, manager khác member, thu hồi ngay, chu trình nhóm, org khác |
 | `cel.test.js` | 14 | tập con CEL: kiểu timestamp, toán tử, fail closed, cú pháp ngoài tập con |
-| `ops.test.js` | 11 | health, lỗi body, secret production, audit log, OpenAPI khớp route, server demo tách khỏi app |
+| `ops.test.js` | 12 | health, lỗi body, secret production, fail closed khi Zanzibar lỗi, audit log, OpenAPI khớp route, server demo tách khỏi app |
 | `parity.test.js` | 7 | LocalEngine = OpenFGA trên toàn seed (chỉ chạy khi có OpenFGA) |
 | `tenant.test.js` | 6 | cách ly org, ReadChanges chỉ cho admin, thuộc tính tự khai, relation ngoài danh sách |
 | `comments.test.js` | 6 | đọc, viết, xóa theo tác giả/owner, tác giả mất quyền xem |
-| **Tổng** | **222** local, **243** OpenFGA | Coverage `src/`: 96,5% dòng (OpenFGA) |
+| **Tổng** | **224** local, **245** OpenFGA | Coverage `src/`: 96,8% dòng (OpenFGA) |
 
 Evidence:
 
 - [docs/evidence/tests-local.md](docs/evidence/tests-local.md), [tests-openfga.md](docs/evidence/tests-openfga.md): danh sách từng test và kết quả trên mỗi engine.
+- [docs/evidence/idor.md](docs/evidence/idor.md): bỏ `enforce()` ở PEP, response thật và test đỏ trước khi sửa, xanh sau khi sửa (§7.1).
 - [docs/evidence/mutations.md](docs/evidence/mutations.md): 6 lỗi cố ý trong model, test nào bắt được.
 - [docs/oracle-matrix.md](docs/oracle-matrix.md): kỳ vọng viết tay so với kết quả engine, 0/72 ô lệch.
+
+Mọi file evidence sinh lại bằng một lệnh `npm run evidence` (cần OpenFGA đang chạy cho phần OpenFGA).
+
+### 7.1 Evidence IDOR: đỏ trước, xanh sau
+
+Block 6 yêu cầu evidence IDOR: response trước khi sửa và cùng test đó sau khi sửa. `scripts/evidence.js` tái hiện bản lỗi bằng cách bỏ đúng một dòng `enforce()` trong `documentService.js`, gửi request thật, chạy toàn bộ test, rồi khôi phục code và làm lại:
+
+| Lỗi tái hiện | Request | Trước khi sửa | Sau khi sửa (bản nộp) |
+| --- | --- | --- | --- |
+| IDOR/BOLA: bỏ `enforce(user, 'can_view', …)` ở `get()` | erin `GET /documents/api-spec` (erin không có quan hệ nào với tài liệu) | **200**, trả cả nội dung tài liệu; **69 test đỏ**, gồm documents › "không có quyền xem → 404 giống hệt tài liệu không tồn tại" | **404** `{"error":"not_found"}`; toàn bộ test xanh |
+| Leo thang dọc: bỏ `enforce(user, 'can_edit', …)` ở `update()` | erin `PATCH /documents/handbook` (erin chỉ là viewer qua public link) | **200**, tiêu đề bị đổi; **3 test đỏ**, gồm documents › "xem được nhưng không được sửa → 403" | **403** `{"error":"forbidden"}`; toàn bộ test xanh |
+
+Chi tiết (diff, body, tên test đỏ) ở [docs/evidence/idor.md](docs/evidence/idor.md).
 
 ## 8. Phân tích bảo mật
 
@@ -557,6 +653,9 @@ Evidence:
 | Cửa sau cấp token | `/dev/*` chỉ ở server demo 127.0.0.1, không có trong image | S1 |
 | Secret mặc định lên production | App từ chối khởi động | P5 |
 | Body lớn / JSON lỗi | Giới hạn 20 KB, lỗi 400/413 ổn định | P3 |
+| OpenFGA lỗi hoặc mất kết nối | Fail closed: 500 `internal_error`, không trả dữ liệu, không dùng quyết định cũ | P6 |
+| Token giả, hết hạn, của user không tồn tại | Verify HS256 ghim thuật toán, kiểm `exp`, nạp user theo `sub` → 401 | documents › "Xác thực" |
+| Route mới quên khai báo quyền | D1 bắt route thiếu trong OpenAPI, D2 bắt operation thiếu `x-relation`; route lạ → 404 | D1, D2, P4 |
 
 ## 9. So sánh với Block 6 (task-api)
 
@@ -594,6 +693,24 @@ Những gì giữ nguyên từ Block 6:
 | Chưa có rate limit, correlation id | Dò ID tốc độ cao vẫn được (chỉ nhận 404); khó nối log | Rate limit theo user, request id middleware |
 | Chưa chuyển quyền sở hữu | Owner chỉ là người tạo (và owner thư mục cha) | Action `transfer_ownership` cho owner |
 
+### 10.1 Các trường hợp chưa kiểm tra
+
+Những trường hợp dưới đây **chưa có test tự động**. Nhóm ghi rõ để người chấm biết phạm vi của evidence:
+
+| Trường hợp | Hiện trạng | Vì sao chưa test / cách test |
+| --- | --- | --- |
+| Process chết giữa hai bước dual write (đã ghi tuple, chưa ghi db) | Lập luận an toàn ở §4.7: tuple mồ côi không cấp quyền cho object không tồn tại vì service trả 404 | Cần fault injection giữa hai lệnh ghi; hướng xử lý là outbox |
+| Hai request ghi cùng tuple gần như đồng thời | Error handler đổi `tuple_exists` / `tuple_not_found` thành 409 | Chưa có test đồng thời thật; test hiện tại chỉ kiểm ghi trùng tuần tự (409) |
+| OpenFGA chậm hoặc timeout một phần (vd. BatchCheck lỗi một lô) | P6 chỉ kiểm PDP lỗi hoàn toàn | Cần giả lập lỗi từng lô trong adapter |
+| Owner bị chặn trên chính tài liệu của mình | `can_block: owner` không trừ `blocked`, nên owner vẫn bỏ chặn được để lấy lại quyền | Hành vi theo model, chưa có test riêng; cần quyết định nghiệp vụ có cho chặn owner hay không |
+| Nhóm lồng sâu hơn 25 tầng | Cả hai engine báo lỗi `resolution_too_complex`, API trả 500 (fail closed) | Seed sâu nhất 3 tầng; chưa có test giới hạn độ sâu |
+| ListObjects vượt giới hạn 1.000 kết quả của OpenFGA | Seed nhỏ, không chạm giới hạn | Cần dữ liệu sinh lớn và phân trang |
+| Hiệu năng, tải với hàng triệu tuple | Chưa đo | Benchmark Check / ListObjects (§10) |
+| Cấu hình Docker + PostgreSQL | Đã chạy thử bằng tay (README §5) | Chưa có test tự động hay CI cho compose |
+| Trang demo (giao diện) | Kiểm thủ công trên trình duyệt | Không có test UI; API mà trang gọi đã có test HTTP |
+| Schema response trong OpenAPI | D1 khóa path và method, D2 khóa `x-relation` | Chưa kiểm body response khớp schema |
+| Engine tự viết với biểu thức CEL ngoài tập con | Báo lỗi cú pháp (fail closed) | Parity chỉ chạy trên condition `not_expired` của model |
+
 ## 11. Câu hỏi vấn đáp
 
 1. **Zanzibar khác RBAC ở đâu?** RBAC trả lời câu hỏi role này làm được gì. Zanzibar trả lời câu hỏi user có **quan hệ** gì với **object cụ thể** này, kể cả gián tiếp qua nhóm và thư mục. RBAC là trường hợp riêng: role là một relation.
@@ -608,7 +725,9 @@ Những gì giữ nguyên từ Block 6:
    - danh sách dùng ListObjects (reverse expansion);
    - consistency dùng zookie hoặc HIGHER_CONSISTENCY.
 8. **Ẩn nút trên giao diện có đủ không?** Không. Trang demo có nút "Gửi PATCH trực tiếp" để cho thấy server vẫn trả 403.
-9. **Nếu model sai thì test có bắt được không?** Có: 6/6 lỗi cố ý bị bắt. Với 2 trong 6 lỗi chỉ có đúng 1 test bắt được, nên những luật đó cần thêm test ở các ca biên (hướng phát triển).
+9. **Token có scope đọc có đủ để đọc mọi tài liệu không?** Không. Câu hỏi kết thúc 1 của Block 6 vẫn đúng: scope chỉ giới hạn quyền của token, không cho biết người gọi có quan hệ gì với tài liệu cụ thể. DocShare luôn hỏi Zanzibar `can_view` trên đúng object (§4.12).
+10. **OpenFGA sập thì sao?** Fail closed: mọi thao tác cần quyền trả 500, không trả dữ liệu, không dùng quyết định cũ (§4.21, test P6).
+11. **Nếu model sai thì test có bắt được không?** Có: 6/6 lỗi cố ý bị bắt. Với 2 trong 6 lỗi chỉ có đúng 1 test bắt được, nên những luật đó cần thêm test ở các ca biên (hướng phát triển).
 
 ## 12. Kết luận
 
@@ -639,9 +758,9 @@ Dependency production gồm 4 gói: `express`, `jsonwebtoken`, `@openfga/sdk`, `
 
 ~~~bash
 npm ci
-npm test                    # 222 test, engine tự viết, không cần Docker
+npm test                    # 224 test, engine tự viết, không cần Docker
 npm run fga:up              # OpenFGA v1.22.1
-npm run test:openfga        # 243 test trên OpenFGA, gồm parity
+npm run test:openfga        # 245 test trên OpenFGA, gồm parity
 npm run demo:openfga        # http://localhost:3200 ; Swagger UI http://localhost:3200/docs
 npm run oracle              # docs/oracle-matrix.md, phải 0 ô lệch
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml up --build   # cần JWT_SECRET trong .env

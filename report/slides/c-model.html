@@ -1,6 +1,6 @@
 <section id="c-model" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 5/16 · Thiết kế model</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 5/17 · Thiết kế model</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Tách quan hệ lưu khỏi quyền được hỏi (can_*)</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -20,6 +20,6 @@
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> folder và document lặp khối relation; admin org thấy cả thư mục cá nhân (như admin Workspace).</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.5</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">15</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">17</p>
 <aside>Quyết định thiết kế model quan trọng nhất là tách relation lưu trực tiếp như viewer khỏi quyền được hỏi như can_view. Service chỉ hỏi can_*, nên luật chặn chỉ viết một lần. Blocked cũng kế thừa từ thư mục cha. Có một lỗi nhóm tự phát hiện khi viết oracle: bản đầu cho manager nhóm tự là member, mà manager gồm cả admin org, nên alice thành member của mọi nhóm, kể cả frontend, và bị chặn ở incidents. Nhóm tách hai quan hệ: quản lý nhóm không có nghĩa là thuộc nhóm.</aside>
 </section>

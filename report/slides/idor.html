@@ -1,0 +1,18 @@
+<section id="idor" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Evidence</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">IDOR: đỏ trước khi sửa, xanh sau khi sửa</h2>
+</div>
+<pre style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;background:#1B2430;color:#F3EFE6;border-radius:12px;padding:20px 28px">  async function get(user, id) {
+    const doc = loadDocument(id)
+<span style="color:#F2A39C">-   await enforce(user, 'can_view', `document:${id}`)</span>     <span style="color:#8DB8E8">// bản lỗi: bỏ dòng này</span>
+    return { ...doc, capabilities: … }</pre>
+<table style="font-size:26px">
+<tr><th style="width:30%">Request thật</th><th style="width:35%">Trước khi sửa (bỏ enforce)</th><th>Sau khi sửa (bản nộp)</th></tr>
+<tr><td>erin <code>GET /documents/api-spec</code><br>(không có quan hệ nào)</td><td style="color:#A3413A"><b>200</b>, lộ nội dung tài liệu<br><b>69 test đỏ</b></td><td style="color:#2F7A3E"><b>404</b> not_found<br>toàn bộ test xanh</td></tr>
+<tr><td>erin <code>PATCH /documents/handbook</code><br>(chỉ là viewer)</td><td style="color:#A3413A"><b>200</b>, tiêu đề bị đổi<br><b>3 test đỏ</b></td><td style="color:#2F7A3E"><b>403</b> forbidden<br>toàn bộ test xanh</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/evidence/idor.md · npm run evidence</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">12</p>
+<aside>Block 6 yêu cầu evidence IDOR: response trước khi sửa và cùng test đó sau khi sửa. DocShare không có starter lỗi, nên script evidence tự tái hiện bản lỗi: bỏ đúng một dòng enforce trong documentService, gửi request thật, chạy toàn bộ test, rồi khôi phục code và làm lại. Bỏ kiểm can_view ở get thì erin, người không có quan hệ gì với api-spec, đọc được cả nội dung với mã 200, và 69 test đỏ. Bản nộp trả 404 giống tài liệu không tồn tại. Bỏ kiểm can_edit ở update thì erin, chỉ là viewer qua public link, sửa được tiêu đề handbook, 3 test đỏ; bản nộp trả 403. Diff, body và tên test đỏ nằm trong docs/evidence/idor.md.</aside>
+</section>

@@ -1,0 +1,25 @@
+<section id="c-deny" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 11/17 · Deny by default</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Không chứng minh được quyền thì từ chối, kể cả khi OpenFGA sập</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Zanzibar không có luật "cho phép": không có chuỗi tuple thì Check trả false</p>
+<p style="font-size:30px;line-height:1.35">Route lạ → 404; D1, D2 bắt route mới quên khai báo relation</p>
+<p style="font-size:30px;line-height:1.35">PDP lỗi hay mất kết nối → 500, không trả dữ liệu (test P6)</p>
+<p style="font-size:30px;line-height:1.35">Condition thiếu tham số → false; token hết hạn → 401</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>Fail open</b>: sự cố mạng thành sự cố lộ dữ liệu</p>
+<p style="font-size:30px;line-height:1.35"><b>Dùng quyết định cache cũ khi PDP lỗi</b>: người vừa bị gỡ vẫn qua</p>
+<p style="font-size:30px;line-height:1.35"><b>Mặc định cho phép, liệt kê cấm</b>: quên một trường hợp là lọt</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> OpenFGA ngừng thì API ngừng phục vụ thao tác cần quyền; production chạy nhiều replica OpenFGA trên datastore chung.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.21 · test P4, P6, D1, D2</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">23</p>
+<aside>Deny by default là nguyên tắc nền của Block 6, và Zanzibar có sẵn nguyên tắc này: không có luật cho phép, Check chỉ trả true khi tìm được một chuỗi tuple dẫn tới relation. Ở tầng app, route lạ trả 404; test D1 và D2 bắt route mới mà quên khai báo relation trong OpenAPI. Quan trọng nhất là khi OpenFGA lỗi hoặc mất kết nối: nhóm chọn fail closed, client nhận 500 và không có dữ liệu nào, test P6 khóa điều này. Nhóm không chọn fail open, cũng không dùng lại quyết định cũ trong cache, vì như vậy người vừa bị gỡ quyền vẫn đi qua được. Đánh đổi là tính sẵn sàng của API phụ thuộc OpenFGA.</aside>
+</section>

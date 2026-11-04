@@ -1,5 +1,6 @@
 // Sinh evidence cho bài nộp:
 //   docs/evidence/tests-local.md, tests-openfga.md   danh sách từng test và kết quả trên mỗi engine
+//   docs/evidence/idor.md                             bỏ enforce() ở PEP: request thật và test đỏ trước, xanh sau
 //   docs/evidence/mutations.md                        cố ý làm sai model, bộ test phải bắt được
 // Chạy: node scripts/evidence.js  (cần OpenFGA ở FGA_API_URL hoặc http://localhost:8080 cho phần openfga)
 const fs = require('node:fs')
@@ -64,11 +65,92 @@ function mutations() {
   return lines.join('\n') + '\n'
 }
 
+// Lỗi kiểm quyền ở PEP (code, không phải model): bỏ một lời gọi enforce() để tái hiện bản lỗi.
+const DOC_SERVICE = 'src/services/documentService.js'
+const PEP_BUGS = [
+  {
+    label: 'IDOR/BOLA: erin đọc tài liệu không được chia sẻ cho mình',
+    from: "  await enforce(user, 'can_view', `document:${id}`)\n  return { ...doc, capabilities",
+    to: '  return { ...doc, capabilities',
+    request: { method: 'get', url: '/documents/api-spec', user: 'erin' },
+    highlight: /404/,
+  },
+  {
+    label: 'Leo thang dọc (BFLA): erin chỉ là viewer của handbook nhưng sửa được',
+    from: "  const object = `document:${id}`\n  await enforce(user, 'can_edit', object)\n",
+    to: '  const object = `document:${id}`\n',
+    request: { method: 'patch', url: '/documents/handbook', user: 'erin', body: { title: 'Bị sửa trái phép' } },
+    highlight: /403/,
+  },
+]
+
+// Gửi một request thật vào app (engine local, seed mới) và trả { status, body }.
+const PROBE = `
+const request = require('supertest')
+const app = require('./src/app')
+const { signToken } = require('./src/auth')
+const { resetAll } = require('./src/reset')
+const { method, url, user, body } = JSON.parse(process.env.PROBE)
+resetAll()
+  .then(() => request(app)[method](url).set('Authorization', 'Bearer ' + signToken(user)).send(body))
+  .then(res => console.log(JSON.stringify({ status: res.status, body: res.body })))
+`
+
+function probe(req) {
+  const out = spawnSync(process.execPath, ['-e', PROBE], {
+    cwd: ROOT,
+    env: { ...process.env, AUTHZ_ENGINE: 'local', AUDIT_LOG: 'off', PROBE: JSON.stringify(req) },
+    encoding: 'utf8',
+  })
+  return JSON.parse(out.stdout.trim().split('\n').pop())
+}
+
+const shorten = body => JSON.stringify(body, (k, v) => (typeof v === 'string' && v.length > 60 ? `${v.slice(0, 60)}…` : v))
+
+function pepBugs(baseline) {
+  const file = path.join(ROOT, DOC_SERVICE)
+  const original = fs.readFileSync(file, 'utf8')
+  const lines = [
+    '# Evidence IDOR/BOLA và leo thang quyền: đỏ trước khi sửa, xanh sau khi sửa',
+    '',
+    `Mỗi mục tái hiện bản lỗi bằng cách bỏ đúng một lời gọi \`enforce()\` trong \`${DOC_SERVICE}\` (PEP), gửi request thật, chạy toàn bộ test (engine local), rồi khôi phục code và làm lại. Sinh bằng \`npm run evidence\`.`,
+    '',
+  ]
+  try {
+    for (const bug of PEP_BUGS) {
+      if (!original.includes(bug.from)) throw new Error(`lỗi cố ý không khớp code: ${bug.label}`)
+      const { method, url, user, body } = bug.request
+      const call = `${method.toUpperCase()} ${url}` + (body ? ` ${JSON.stringify(body)}` : '') + `, token của ${user}`
+      const diff = bug.from.split('\n').filter(l => !bug.to.split('\n').includes(l)).map(l => `- ${l}`)
+
+      fs.writeFileSync(file, original.replace(bug.from, bug.to))
+      const before = probe(bug.request)
+      const failed = runJest({ AUTHZ_ENGINE: 'local' }).testResults.flatMap(s =>
+        s.assertionResults.filter(t => t.status === 'failed').map(t => t.fullName),
+      )
+      // Ví dụ: ưu tiên test kiểm đúng mã từ chối của lỗi này.
+      failed.sort((a, b) => bug.highlight.test(b) - bug.highlight.test(a))
+      fs.writeFileSync(file, original)
+      const after = probe(bug.request)
+
+      lines.push(`## ${bug.label}`, '', `Request: \`${call}\``, '', 'Bản lỗi (bỏ kiểm quyền):', '', '```diff', ...diff, '```', '')
+      lines.push('| | Response | Bộ test |', '| --- | --- | --- |')
+      lines.push(`| Trước khi sửa | **${before.status}** \`${shorten(before.body)}\` | **${failed.length} test đỏ**, ví dụ: ${failed.slice(0, 3).join('; ')} |`)
+      lines.push(`| Sau khi sửa (bản nộp) | **${after.status}** \`${shorten(after.body)}\` | **${baseline.numPassedTests} passed, ${baseline.numFailedTests} failed** |`, '')
+    }
+  } finally {
+    fs.writeFileSync(file, original)
+  }
+  return lines.join('\n')
+}
+
 fs.mkdirSync(OUT, { recursive: true })
-fs.writeFileSync(path.join(OUT, 'tests-local.md'), report('Kết quả test: engine tự viết (local)', runJest({ AUTHZ_ENGINE: 'local', FGA_API_URL: '' })))
+const local = runJest({ AUTHZ_ENGINE: 'local', FGA_API_URL: '' })
+fs.writeFileSync(path.join(OUT, 'tests-local.md'), report('Kết quả test: engine tự viết (local)', local))
+fs.writeFileSync(path.join(OUT, 'idor.md'), pepBugs(local))
 fs.writeFileSync(
   path.join(OUT, 'tests-openfga.md'),
   report(`Kết quả test: OpenFGA (${FGA_API_URL}), gồm engine test và parity`, runJest({ AUTHZ_ENGINE: 'openfga', FGA_API_URL })),
 )
 fs.writeFileSync(path.join(OUT, 'mutations.md'), mutations())
-console.log('Đã ghi docs/evidence/tests-local.md, tests-openfga.md, mutations.md')
+console.log('Đã ghi docs/evidence/tests-local.md, idor.md, tests-openfga.md, mutations.md')

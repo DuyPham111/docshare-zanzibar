@@ -82,7 +82,7 @@ body.present .doc-only { display: none }
 <header class="bar">
   <div class="title">REPORT · DocShare · Phân quyền kiểu Zanzibar · Nhóm 07</div>
   <button id="prev" type="button" aria-label="Slide trước" hidden>←</button>
-  <select id="toc" aria-label="Chọn slide" hidden><optgroup label="Vấn đề: bài toán chia sẻ tài liệu cần nhiều hơn một hàm decide()"><option value="1">1. DocShare: phân quyền kiểu Zanzibar</option><option value="2">2. Task API của Block 6 quá nhỏ để thấy giới hạn của decide()</option></optgroup><optgroup label="Giải pháp: Zanzibar, kiến trúc, model và thuật toán Check"><option value="3">3. Zanzibar: quyền là quan hệ, chính sách là luật viết lại</option><option value="4">4. Một cổng PDP, hai engine, một file chính sách</option><option value="5">5. Mỗi tính năng là một dòng DSL</option><option value="6">6. Check đi theo cây rewrite cho tới tuple</option><option value="7">7. Mỗi câu hỏi của sản phẩm dùng đúng một API Zanzibar</option></optgroup><optgroup label="Evidence: oracle viết tay, parity hai engine, mutation test"><option value="8">8. Oracle viết tay: 72/72 ô khớp trên cả hai engine</option><option value="9">9. Ba lớp bảo đảm: oracle, parity, mutation</option><option value="10">10. Mutation test: làm sai model, test phải đỏ</option></optgroup><optgroup label="Các lựa chọn của nhóm: chọn gì, không chọn gì, vì sao, đánh đổi chấp nhận"><option value="11">11. DocShare kiểu Google Drive</option><option value="12">12. ReBAC theo Zanzibar thay cho decide() viết tay</option><option value="13">13. OpenFGA v1.22.1 (open-source, CNCF)</option><option value="14">14. Tự viết LocalEngine, đọc cùng model.fga</option><option value="15">15. Tách quan hệ lưu khỏi quyền được hỏi (can_*)</option><option value="16">16. Condition not_expired gắn trên tuple</option><option value="17">17. Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước</option><option value="18">18. HIGHER_CONSISTENCY cho mọi lần đọc quyền</option><option value="19">19. ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải</option><option value="20">20. enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}</option><option value="21">21. Node.js 22 + Express 5, JavaScript CommonJS</option><option value="22">22. Jest + Supertest: oracle viết tay, parity, mutation</option><option value="23">23. OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation</option><option value="24">24. JSON Lines + ReadChanges + log JSON của OpenFGA</option><option value="25">25. HTML/JS thuần trên server riêng 127.0.0.1</option><option value="26">26. Docker Compose: OpenFGA pin version + API non-root + Postgres</option></optgroup><optgroup label="Tóm tắt lựa chọn, giới hạn và so sánh với Block 6"><option value="27">27. Các lựa chọn chính</option><option value="28">28. Những gì nhóm biết là chưa làm</option><option value="29">29. Block 6 task-api → DocShare</option></optgroup><optgroup label="Hỏi đáp và kết thúc"><option value="30">30. Câu hỏi nhóm đã chuẩn bị</option><option value="31">31. Cảm ơn thầy và các bạn</option></optgroup></select>
+  <select id="toc" aria-label="Chọn slide" hidden><optgroup label="Vấn đề: bài toán chia sẻ tài liệu cần nhiều hơn một hàm decide()"><option value="1">1. DocShare: phân quyền kiểu Zanzibar</option><option value="2">2. Task API của Block 6 quá nhỏ để thấy giới hạn của decide()</option></optgroup><optgroup label="Giải pháp: Zanzibar, kiến trúc, model và thuật toán Check"><option value="3">3. Zanzibar: quyền là quan hệ, chính sách là luật viết lại</option><option value="4">4. Một cổng PDP, hai engine, một file chính sách</option><option value="5">5. Mỗi tính năng là một dòng DSL</option><option value="6">6. Check đi theo cây rewrite cho tới tuple</option><option value="7">7. Mỗi câu hỏi của sản phẩm dùng đúng một API Zanzibar</option><option value="8">8. Bảng chính sách quyền: mỗi ô có test</option></optgroup><optgroup label="Evidence: oracle viết tay, parity hai engine, mutation test"><option value="9">9. Oracle viết tay: 72/72 ô khớp trên cả hai engine</option><option value="10">10. Ba lớp bảo đảm: oracle, parity, mutation</option><option value="11">11. Mutation test: làm sai model, test phải đỏ</option><option value="12">12. IDOR: đỏ trước khi sửa, xanh sau khi sửa</option></optgroup><optgroup label="Các lựa chọn của nhóm: chọn gì, không chọn gì, vì sao, đánh đổi chấp nhận"><option value="13">13. DocShare kiểu Google Drive</option><option value="14">14. ReBAC theo Zanzibar thay cho decide() viết tay</option><option value="15">15. OpenFGA v1.22.1 (open-source, CNCF)</option><option value="16">16. Tự viết LocalEngine, đọc cùng model.fga</option><option value="17">17. Tách quan hệ lưu khỏi quyền được hỏi (can_*)</option><option value="18">18. Condition not_expired gắn trên tuple</option><option value="19">19. Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước</option><option value="20">20. HIGHER_CONSISTENCY cho mọi lần đọc quyền</option><option value="21">21. ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải</option><option value="22">22. enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}</option><option value="23">23. Không chứng minh được quyền thì từ chối, kể cả khi OpenFGA sập</option><option value="24">24. Node.js 22 + Express 5, JavaScript CommonJS</option><option value="25">25. Jest + Supertest: oracle viết tay, parity, mutation</option><option value="26">26. OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation</option><option value="27">27. JSON Lines + ReadChanges + log JSON của OpenFGA</option><option value="28">28. HTML/JS thuần trên server riêng 127.0.0.1</option><option value="29">29. Docker Compose: OpenFGA pin version + API non-root + Postgres</option></optgroup><optgroup label="Tóm tắt lựa chọn, giới hạn và so sánh với Block 6"><option value="30">30. Các lựa chọn chính</option><option value="31">31. Những gì nhóm biết là chưa làm</option><option value="32">32. Các trường hợp chưa kiểm tra</option><option value="33">33. Block 6 task-api → DocShare</option><option value="34">34. Đối chiếu với yêu cầu nộp</option></optgroup><optgroup label="Hỏi đáp và kết thúc"><option value="35">35. Câu hỏi nhóm đã chuẩn bị</option><option value="36">36. Cảm ơn thầy và các bạn</option></optgroup></select>
   <span class="count" id="count" hidden></span>
   <button id="next" type="button" aria-label="Slide sau" hidden>→</button>
   <button id="notesBtn" type="button" title="Phím N" hidden>Ghi chú</button>
@@ -93,9 +93,9 @@ body.present .doc-only { display: none }
 <section class="intro doc-only">
   <h1>REPORT — DocShare: phân quyền kiểu Zanzibar cho hệ thống chia sẻ tài liệu</h1>
   <p><b>Nhóm 07</b> · 23127045 · 23127102 · 23127159 · 23127183 · 23127393</p>
-  <p>Bộ slide báo cáo gồm 31 slide. Mỗi slide có phần <b>giải thích</b> bên dưới; phần "Các lựa chọn của nhóm" trình bày từng quyết định theo khung <i>Nhóm chọn vì / Không chọn / Đánh đổi chấp nhận</i>. Báo cáo chi tiết: <a href="REPORT.md">REPORT.md</a> · Hướng dẫn triển khai: <a href="README.md">README.md</a> · Thiết kế: <a href="docs/thiet-ke.md">docs/thiet-ke.md</a> · Evidence: <a href="docs/evidence/">docs/evidence/</a>.</p>
+  <p>Bộ slide báo cáo gồm 36 slide. Mỗi slide có phần <b>giải thích</b> bên dưới; phần "Các lựa chọn của nhóm" trình bày từng quyết định theo khung <i>Nhóm chọn vì / Không chọn / Đánh đổi chấp nhận</i>. Báo cáo chi tiết: <a href="REPORT.md">REPORT.md</a> · Hướng dẫn triển khai: <a href="README.md">README.md</a> · Thiết kế: <a href="docs/thiet-ke.md">docs/thiet-ke.md</a> · Evidence: <a href="docs/evidence/">docs/evidence/</a>.</p>
   <p>Trình chiếu: bấm <b>Trình chiếu</b> trên thanh trên cùng, dùng phím ← → để chuyển slide, <b>N</b> bật ghi chú, <b>F</b> toàn màn hình, <b>D</b> quay lại chế độ đọc. In ra PDF: Ctrl+P ở chế độ đọc.</p>
-  <ol><li><b>Vấn đề: bài toán chia sẻ tài liệu cần nhiều hơn một hàm decide()</b><ol><li value="1"><a href="#1">DocShare: phân quyền kiểu Zanzibar</a></li><li value="2"><a href="#2">Task API của Block 6 quá nhỏ để thấy giới hạn của decide()</a></li></ol></li><li><b>Giải pháp: Zanzibar, kiến trúc, model và thuật toán Check</b><ol><li value="3"><a href="#3">Zanzibar: quyền là quan hệ, chính sách là luật viết lại</a></li><li value="4"><a href="#4">Một cổng PDP, hai engine, một file chính sách</a></li><li value="5"><a href="#5">Mỗi tính năng là một dòng DSL</a></li><li value="6"><a href="#6">Check đi theo cây rewrite cho tới tuple</a></li><li value="7"><a href="#7">Mỗi câu hỏi của sản phẩm dùng đúng một API Zanzibar</a></li></ol></li><li><b>Evidence: oracle viết tay, parity hai engine, mutation test</b><ol><li value="8"><a href="#8">Oracle viết tay: 72/72 ô khớp trên cả hai engine</a></li><li value="9"><a href="#9">Ba lớp bảo đảm: oracle, parity, mutation</a></li><li value="10"><a href="#10">Mutation test: làm sai model, test phải đỏ</a></li></ol></li><li><b>Các lựa chọn của nhóm: chọn gì, không chọn gì, vì sao, đánh đổi chấp nhận</b><ol><li value="11"><a href="#11">DocShare kiểu Google Drive</a></li><li value="12"><a href="#12">ReBAC theo Zanzibar thay cho decide() viết tay</a></li><li value="13"><a href="#13">OpenFGA v1.22.1 (open-source, CNCF)</a></li><li value="14"><a href="#14">Tự viết LocalEngine, đọc cùng model.fga</a></li><li value="15"><a href="#15">Tách quan hệ lưu khỏi quyền được hỏi (can_*)</a></li><li value="16"><a href="#16">Condition not_expired gắn trên tuple</a></li><li value="17"><a href="#17">Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước</a></li><li value="18"><a href="#18">HIGHER_CONSISTENCY cho mọi lần đọc quyền</a></li><li value="19"><a href="#19">ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải</a></li><li value="20"><a href="#20">enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}</a></li><li value="21"><a href="#21">Node.js 22 + Express 5, JavaScript CommonJS</a></li><li value="22"><a href="#22">Jest + Supertest: oracle viết tay, parity, mutation</a></li><li value="23"><a href="#23">OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation</a></li><li value="24"><a href="#24">JSON Lines + ReadChanges + log JSON của OpenFGA</a></li><li value="25"><a href="#25">HTML/JS thuần trên server riêng 127.0.0.1</a></li><li value="26"><a href="#26">Docker Compose: OpenFGA pin version + API non-root + Postgres</a></li></ol></li><li><b>Tóm tắt lựa chọn, giới hạn và so sánh với Block 6</b><ol><li value="27"><a href="#27">Các lựa chọn chính</a></li><li value="28"><a href="#28">Những gì nhóm biết là chưa làm</a></li><li value="29"><a href="#29">Block 6 task-api → DocShare</a></li></ol></li><li><b>Hỏi đáp và kết thúc</b><ol><li value="30"><a href="#30">Câu hỏi nhóm đã chuẩn bị</a></li><li value="31"><a href="#31">Cảm ơn thầy và các bạn</a></li></ol></li></ol>
+  <ol><li><b>Vấn đề: bài toán chia sẻ tài liệu cần nhiều hơn một hàm decide()</b><ol><li value="1"><a href="#1">DocShare: phân quyền kiểu Zanzibar</a></li><li value="2"><a href="#2">Task API của Block 6 quá nhỏ để thấy giới hạn của decide()</a></li></ol></li><li><b>Giải pháp: Zanzibar, kiến trúc, model và thuật toán Check</b><ol><li value="3"><a href="#3">Zanzibar: quyền là quan hệ, chính sách là luật viết lại</a></li><li value="4"><a href="#4">Một cổng PDP, hai engine, một file chính sách</a></li><li value="5"><a href="#5">Mỗi tính năng là một dòng DSL</a></li><li value="6"><a href="#6">Check đi theo cây rewrite cho tới tuple</a></li><li value="7"><a href="#7">Mỗi câu hỏi của sản phẩm dùng đúng một API Zanzibar</a></li><li value="8"><a href="#8">Bảng chính sách quyền: mỗi ô có test</a></li></ol></li><li><b>Evidence: oracle viết tay, parity hai engine, mutation test</b><ol><li value="9"><a href="#9">Oracle viết tay: 72/72 ô khớp trên cả hai engine</a></li><li value="10"><a href="#10">Ba lớp bảo đảm: oracle, parity, mutation</a></li><li value="11"><a href="#11">Mutation test: làm sai model, test phải đỏ</a></li><li value="12"><a href="#12">IDOR: đỏ trước khi sửa, xanh sau khi sửa</a></li></ol></li><li><b>Các lựa chọn của nhóm: chọn gì, không chọn gì, vì sao, đánh đổi chấp nhận</b><ol><li value="13"><a href="#13">DocShare kiểu Google Drive</a></li><li value="14"><a href="#14">ReBAC theo Zanzibar thay cho decide() viết tay</a></li><li value="15"><a href="#15">OpenFGA v1.22.1 (open-source, CNCF)</a></li><li value="16"><a href="#16">Tự viết LocalEngine, đọc cùng model.fga</a></li><li value="17"><a href="#17">Tách quan hệ lưu khỏi quyền được hỏi (can_*)</a></li><li value="18"><a href="#18">Condition not_expired gắn trên tuple</a></li><li value="19"><a href="#19">Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước</a></li><li value="20"><a href="#20">HIGHER_CONSISTENCY cho mọi lần đọc quyền</a></li><li value="21"><a href="#21">ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải</a></li><li value="22"><a href="#22">enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}</a></li><li value="23"><a href="#23">Không chứng minh được quyền thì từ chối, kể cả khi OpenFGA sập</a></li><li value="24"><a href="#24">Node.js 22 + Express 5, JavaScript CommonJS</a></li><li value="25"><a href="#25">Jest + Supertest: oracle viết tay, parity, mutation</a></li><li value="26"><a href="#26">OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation</a></li><li value="27"><a href="#27">JSON Lines + ReadChanges + log JSON của OpenFGA</a></li><li value="28"><a href="#28">HTML/JS thuần trên server riêng 127.0.0.1</a></li><li value="29"><a href="#29">Docker Compose: OpenFGA pin version + API non-root + Postgres</a></li></ol></li><li><b>Tóm tắt lựa chọn, giới hạn và so sánh với Block 6</b><ol><li value="30"><a href="#30">Các lựa chọn chính</a></li><li value="31"><a href="#31">Những gì nhóm biết là chưa làm</a></li><li value="32"><a href="#32">Các trường hợp chưa kiểm tra</a></li><li value="33"><a href="#33">Block 6 task-api → DocShare</a></li><li value="34"><a href="#34">Đối chiếu với yêu cầu nộp</a></li></ol></li><li><b>Hỏi đáp và kết thúc</b><ol><li value="35"><a href="#35">Câu hỏi nhóm đã chuẩn bị</a></li><li value="36"><a href="#36">Cảm ơn thầy và các bạn</a></li></ol></li></ol>
 </section>
 <h2 class="doc-section">Vấn đề: bài toán chia sẻ tài liệu cần nhiều hơn một hàm decide()</h2>
 <figure class="slide" id="slide-1" data-n="1" data-title="DocShare: phân quyền kiểu Zanzibar">
@@ -109,11 +109,11 @@ body.present .doc-only { display: none }
 </div>
 <div style="display:flex;justify-content:space-between;align-items:end;gap:48px">
 <p style="font-size:30px;color:#F3EFE6">Nhóm 07 · 23127045 · 23127102 · 23127159 · 23127183 · 23127393</p>
-<p style="font-size:30px;color:#8DB8E8;text-align:right">72/72 oracle · 243/243 test · 0 khác biệt giữa 2 engine</p>
+<p style="font-size:30px;color:#8DB8E8;text-align:right">72/72 oracle · 245/245 test · 0 khác biệt giữa 2 engine</p>
 </div>
 </section>
 </div></div>
-<figcaption class="notes"><b>Giải thích:</b> Chào thầy và các bạn. Ở Block 6 nhóm làm Task API, thầy nhận xét bài hơi nhỏ. Nên nhóm làm một bài lớn hơn để dùng đầy đủ một hệ thống phân quyền kiểu Zanzibar: DocShare, một API chia sẻ tài liệu giống Google Drive. Phân quyền chạy trên OpenFGA thật, là hiện thực Zanzibar mã nguồn mở, và nhóm tự viết thêm một engine Zanzibar đọc cùng file chính sách để đối chiếu. Kết quả: 72 trên 72 ô của ma trận kỳ vọng viết tay, 243 trên 243 test trên OpenFGA, và hai engine không khác nhau ở câu trả lời nào. Bài trình bày gồm vấn đề, giải pháp, evidence, 16 lựa chọn của nhóm kèm lý do, rồi tóm tắt và hỏi đáp.</figcaption>
+<figcaption class="notes"><b>Giải thích:</b> Chào thầy và các bạn. Ở Block 6 nhóm làm Task API, thầy nhận xét bài hơi nhỏ. Nên nhóm làm một bài lớn hơn để dùng đầy đủ một hệ thống phân quyền kiểu Zanzibar: DocShare, một API chia sẻ tài liệu giống Google Drive. Phân quyền chạy trên OpenFGA thật, là hiện thực Zanzibar mã nguồn mở, và nhóm tự viết thêm một engine Zanzibar đọc cùng file chính sách để đối chiếu. Kết quả: 72 trên 72 ô của ma trận kỳ vọng viết tay, 245 trên 245 test trên OpenFGA, và hai engine không khác nhau ở câu trả lời nào. Bài trình bày gồm vấn đề, giải pháp, evidence, 16 lựa chọn của nhóm kèm lý do, rồi tóm tắt và hỏi đáp.</figcaption>
 </figure>
 <figure class="slide" id="slide-2" data-n="2" data-title="Task API của Block 6 quá nhỏ để thấy giới hạn của decide()">
 <h3 class="doc-title"><span>2</span> Task API của Block 6 quá nhỏ để thấy giới hạn của decide()</h3>
@@ -323,9 +323,34 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Bảng này cho thấy mỗi câu hỏi của sản phẩm dùng đúng một API của Zanzibar. Check cho mọi thao tác. BatchCheck để bật tắt nút trên giao diện trong một round trip. ListObjects cho danh sách, tìm kiếm và shared with me: Zanzibar trả đúng tập id rồi mới lấy dữ liệu, không tải hết rồi lọc. ListUsers cho màn ai có quyền, kể cả qua nhóm lồng nhau. Expand giải thích quyền đến từ đâu. Contextual tuple cho tính năng xem trước khi chia sẻ: hỏi nếu có tuple này thì sao mà không ghi gì. ReadChanges là Watch API, làm nhật ký thay đổi quyền cho admin. Trong OpenAPI, mỗi operation ghi rõ API Zanzibar nó dùng.</figcaption>
 </figure>
+<figure class="slide" id="slide-8" data-n="8" data-title="Bảng chính sách quyền: mỗi ô có test">
+<h3 class="doc-title"><span>8</span> Bảng chính sách quyền: mỗi ô có test</h3>
+<div class="frame"><div class="canvas">
+<section id="policy" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Giải pháp</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Bảng chính sách quyền: mỗi ô có test</h2>
+</div>
+<table style="font-size:25px">
+<tr><th style="width:34%">Quan hệ với tài liệu</th><th style="text-align:center">Xem</th><th style="text-align:center">Comment</th><th style="text-align:center">Sửa</th><th style="text-align:center">Chia sẻ</th><th style="text-align:center">Chặn</th><th style="text-align:center">Xóa</th></tr>
+<tr><td>Không quan hệ · hết hạn · org khác</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td></tr>
+<tr><td>viewer (kể cả public link)</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td></tr>
+<tr><td>commenter</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td></tr>
+<tr><td>editor, member của org</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td></tr>
+<tr><td>editor, khách ngoài org</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td><td style="text-align:center;color:#9A3F07">403</td></tr>
+<tr><td>owner (người tạo, owner thư mục cha, admin org)</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td><td style="text-align:center;color:#2F7A3E">✅</td></tr>
+<tr><td>bị chặn (trực tiếp, qua nhóm, ở thư mục cha)</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td><td style="text-align:center;color:#A3413A">404</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.4;color:#5B616B"><b>Điều kiện:</b> chặn thắng mọi quan hệ và áp xuống cây con · chia sẻ có hạn chỉ tính khi current_time &lt; expires_at · public link chỉ mức viewer · chia sẻ ra ngoài cần org cho phép · chuyển thư mục cần can_create ở thư mục đích, cùng org.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §6.1 (kèm tên test của từng ô; bảng thư mục, nhóm, comment, org)</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">8</p>
+</section>
+</div></div>
+<figcaption class="notes"><b>Giải thích:</b> Đây là bảng chính sách quyền theo yêu cầu bài nộp của Block 6. Hàng là quan hệ hiệu lực của người gọi với tài liệu, có được trực tiếp, qua nhóm lồng nhau, qua thư mục cha hoặc qua public link. Cột là thao tác, mỗi thao tác ứng với một relation can_ trong model. Không có quan hệ, chia sẻ đã hết hạn hoặc khác org thì mọi thao tác trả 404, giống tài liệu không tồn tại. Viewer chỉ xem; commenter thêm comment; editor sửa, và chia sẻ được nếu là member của org chứa tài liệu; khách ngoài org là editor thì không chia sẻ tiếp được. Owner làm được tất cả. Người bị chặn nhận 404 ở mọi thao tác, kể cả khi tài liệu public. Dòng dưới là cột điều kiện: chặn, thời hạn, public link, chính sách chia sẻ ra ngoài và chuyển thư mục. REPORT.md mục 6.1 ghi tên test của từng ô, cùng bảng cho thư mục, nhóm, comment và org.</figcaption>
+</figure>
 <h2 class="doc-section">Evidence: oracle viết tay, parity hai engine, mutation test</h2>
-<figure class="slide" id="slide-8" data-n="8" data-title="Oracle viết tay: 72/72 ô khớp trên cả hai engine">
-<h3 class="doc-title"><span>8</span> Oracle viết tay: 72/72 ô khớp trên cả hai engine</h3>
+<figure class="slide" id="slide-9" data-n="9" data-title="Oracle viết tay: 72/72 ô khớp trên cả hai engine">
+<h3 class="doc-title"><span>9</span> Oracle viết tay: 72/72 ô khớp trên cả hai engine</h3>
 <div class="frame"><div class="canvas">
 <section id="matrix" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -346,13 +371,13 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </table>
 <p style="font-size:24px;line-height:1.35;color:#5B616B">O owner · E editor · C commenter · V viewer · · không thấy (404) · +s chia sẻ tiếp được. Ô viền cam: chặn thắng editor, chặn thắng public, khách không chia sẻ tiếp, admin không vượt org.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/oracle-matrix.md · test/oracle.js</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">8</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">9</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Evidence thứ nhất là ma trận kỳ vọng viết tay: 8 user nhân 9 tài liệu, mỗi ô là mức truy cập và có chia sẻ tiếp được không, kèm lý do bằng lời trong test/oracle.js. Kỳ vọng không sinh từ engine, nên engine sai thì test đỏ chứ không sai theo. Bốn ô viền cam là các ca khó: carol là editor qua nhóm nhưng bị chặn ở thư mục cha nên không thấy postmortem; frank bị chặn ở handbook dù handbook public; gina là khách ngoài org được sửa pricing nhưng không chia sẻ tiếp; alice là admin acme nhưng không thấy tài liệu của globex. Cả 72 ô khớp trên engine tự viết và trên OpenFGA, qua HTTP thật.</figcaption>
 </figure>
-<figure class="slide" id="slide-9" data-n="9" data-title="Ba lớp bảo đảm: oracle, parity, mutation">
-<h3 class="doc-title"><span>9</span> Ba lớp bảo đảm: oracle, parity, mutation</h3>
+<figure class="slide" id="slide-10" data-n="10" data-title="Ba lớp bảo đảm: oracle, parity, mutation">
+<h3 class="doc-title"><span>10</span> Ba lớp bảo đảm: oracle, parity, mutation</h3>
 <div class="frame"><div class="canvas">
 <section id="evidence" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -361,17 +386,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <div style="display:flex;gap:28px">
 <div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
-<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">222/222</p>
+<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">224/224</p>
 <p style="font-size:30px;font-weight:600;line-height:1.3">test, engine tự viết</p>
 <p style="font-size:24px;line-height:1.35;color:#5B616B"><code>npm test</code>, không cần Docker</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
-<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">243/243</p>
+<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">245/245</p>
 <p style="font-size:30px;font-weight:600;line-height:1.3">test, OpenFGA v1.22.1</p>
 <p style="font-size:24px;line-height:1.35;color:#5B616B">test HTTP + engine test + parity</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
-<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">96,5%</p>
+<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">96,8%</p>
 <p style="font-size:30px;font-weight:600;line-height:1.3">coverage dòng src/</p>
 <p style="font-size:24px;line-height:1.35;color:#5B616B">access.js, cel.js 100%</p>
 </div>
@@ -394,13 +419,13 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/evidence/ · test/parity.test.js</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">9</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">10</p>
 </section>
 </div></div>
-<figcaption class="notes"><b>Giải thích:</b> Tổng hợp evidence. 222 test chạy trên engine tự viết, không cần Docker. 243 test chạy trên OpenFGA thật, gồm toàn bộ test HTTP chạy lại, test mức engine và parity. Coverage 96,5 phần trăm dòng. Parity: cùng dữ liệu, hai engine trả lời 1920 câu Check ở hai thời điểm, trước và sau hạn chia sẻ của gina, cùng ListObjects, ListUsers, Expand, không khác một câu nào. Mutation test: nhóm cố ý làm sai 6 luật trong model, cả 6 đều bị test bắt. Và thu hồi quyền có hiệu lực sau 0 giây.</figcaption>
+<figcaption class="notes"><b>Giải thích:</b> Tổng hợp evidence. 224 test chạy trên engine tự viết, không cần Docker. 245 test chạy trên OpenFGA thật, gồm toàn bộ test HTTP chạy lại, test mức engine và parity. Coverage 96,8 phần trăm dòng. Parity: cùng dữ liệu, hai engine trả lời 1920 câu Check ở hai thời điểm, trước và sau hạn chia sẻ của gina, cùng ListObjects, ListUsers, Expand, không khác một câu nào. Mutation test: nhóm cố ý làm sai 6 luật trong model, cả 6 đều bị test bắt. Và thu hồi quyền có hiệu lực sau 0 giây.</figcaption>
 </figure>
-<figure class="slide" id="slide-10" data-n="10" data-title="Mutation test: làm sai model, test phải đỏ">
-<h3 class="doc-title"><span>10</span> Mutation test: làm sai model, test phải đỏ</h3>
+<figure class="slide" id="slide-11" data-n="11" data-title="Mutation test: làm sai model, test phải đỏ">
+<h3 class="doc-title"><span>11</span> Mutation test: làm sai model, test phải đỏ</h3>
 <div class="frame"><div class="canvas">
 <section id="mutations" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -441,18 +466,41 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:26px;line-height:1.35;color:#5B616B">Số test đỏ khi chạy toàn bộ bộ test với model bị sửa sai. Sinh tự động bằng <code>npm run evidence</code>; model được khôi phục sau mỗi lần.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/evidence/mutations.md · scripts/evidence.js</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">10</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">11</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Ở Block 6, nhóm chứng minh test bắt lỗi bằng cách chạy test mới trên code cũ theo tag. DocShare không có starter lỗi sẵn, nên nhóm dùng mutation test: script evidence.js sửa sai từng luật trong model, chạy lại toàn bộ test, đếm số test đỏ, rồi khôi phục. Bỏ but not blocked thì 9 test đỏ. Bỏ intersection với org thì 2. Condition luôn đúng thì 2. Cho mọi member org làm owner thay vì admin thì 77. Hai lỗi cuối chỉ có đúng 1 test bắt; nhóm ghi đây là chỗ nên bổ sung test ca biên.</figcaption>
 </figure>
+<figure class="slide" id="slide-12" data-n="12" data-title="IDOR: đỏ trước khi sửa, xanh sau khi sửa">
+<h3 class="doc-title"><span>12</span> IDOR: đỏ trước khi sửa, xanh sau khi sửa</h3>
+<div class="frame"><div class="canvas">
+<section id="idor" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Evidence</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">IDOR: đỏ trước khi sửa, xanh sau khi sửa</h2>
+</div>
+<pre style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;background:#1B2430;color:#F3EFE6;border-radius:12px;padding:20px 28px">  async function get(user, id) {
+    const doc = loadDocument(id)
+<span style="color:#F2A39C">-   await enforce(user, 'can_view', `document:${id}`)</span>     <span style="color:#8DB8E8">// bản lỗi: bỏ dòng này</span>
+    return { ...doc, capabilities: … }</pre>
+<table style="font-size:26px">
+<tr><th style="width:30%">Request thật</th><th style="width:35%">Trước khi sửa (bỏ enforce)</th><th>Sau khi sửa (bản nộp)</th></tr>
+<tr><td>erin <code>GET /documents/api-spec</code><br>(không có quan hệ nào)</td><td style="color:#A3413A"><b>200</b>, lộ nội dung tài liệu<br><b>69 test đỏ</b></td><td style="color:#2F7A3E"><b>404</b> not_found<br>toàn bộ test xanh</td></tr>
+<tr><td>erin <code>PATCH /documents/handbook</code><br>(chỉ là viewer)</td><td style="color:#A3413A"><b>200</b>, tiêu đề bị đổi<br><b>3 test đỏ</b></td><td style="color:#2F7A3E"><b>403</b> forbidden<br>toàn bộ test xanh</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/evidence/idor.md · npm run evidence</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">12</p>
+</section>
+</div></div>
+<figcaption class="notes"><b>Giải thích:</b> Block 6 yêu cầu evidence IDOR: response trước khi sửa và cùng test đó sau khi sửa. DocShare không có starter lỗi, nên script evidence tự tái hiện bản lỗi: bỏ đúng một dòng enforce trong documentService, gửi request thật, chạy toàn bộ test, rồi khôi phục code và làm lại. Bỏ kiểm can_view ở get thì erin, người không có quan hệ gì với api-spec, đọc được cả nội dung với mã 200, và 69 test đỏ. Bản nộp trả 404 giống tài liệu không tồn tại. Bỏ kiểm can_edit ở update thì erin, chỉ là viewer qua public link, sửa được tiêu đề handbook, 3 test đỏ; bản nộp trả 403. Diff, body và tên test đỏ nằm trong docs/evidence/idor.md.</figcaption>
+</figure>
 <h2 class="doc-section">Các lựa chọn của nhóm: chọn gì, không chọn gì, vì sao, đánh đổi chấp nhận</h2>
-<figure class="slide" id="slide-11" data-n="11" data-title="DocShare kiểu Google Drive">
-<h3 class="doc-title"><span>11</span> DocShare kiểu Google Drive</h3>
+<figure class="slide" id="slide-13" data-n="13" data-title="DocShare kiểu Google Drive">
+<h3 class="doc-title"><span>13</span> DocShare kiểu Google Drive</h3>
 <div class="frame"><div class="canvas">
 <section id="c-domain" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 1/16 · Domain</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 1/17 · Domain</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">DocShare kiểu Google Drive</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -470,17 +518,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> seed và oracle dài hơn: 72 ô thay vì 17 tình huống, mỗi ô phải có lý do.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.1</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">11</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">13</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Lựa chọn đầu tiên là domain. Nhóm chọn hệ thống chia sẻ tài liệu kiểu Google Drive vì Drive là một trong các hệ thống chạy trên Zanzibar thật, theo paper năm 2019, nên không phải ép công cụ vào bài toán. Domain này cần đủ mọi cơ chế của Zanzibar. Nhóm đã cân nhắc mở rộng task-api thành kiểu Jira, nhưng phần lớn vẫn là RBAC theo project; và kiểu GitHub, là mẫu kinh điển nhưng thiếu public link, chặn và chia sẻ có hạn.</figcaption>
 </figure>
-<figure class="slide" id="slide-12" data-n="12" data-title="ReBAC theo Zanzibar thay cho decide() viết tay">
-<h3 class="doc-title"><span>12</span> ReBAC theo Zanzibar thay cho decide() viết tay</h3>
+<figure class="slide" id="slide-14" data-n="14" data-title="ReBAC theo Zanzibar thay cho decide() viết tay">
+<h3 class="doc-title"><span>14</span> ReBAC theo Zanzibar thay cho decide() viết tay</h3>
 <div class="frame"><div class="canvas">
 <section id="c-rebac" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 2/16 · Mô hình phân quyền</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 2/17 · Mô hình phân quyền</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">ReBAC theo Zanzibar thay cho decide() viết tay</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -500,17 +548,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> phải học DSL; mỗi quyết định là một lần duyệt đồ thị; cấu trúc ghi ở hai nơi.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.2</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">12</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">14</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Lựa chọn thứ hai là mô hình. Ở Block 6, decide() đúng cho 3 role nhân 4 action. Khi có nhóm lồng nhau và thư mục lồng nhau, quyền trở thành đệ quy trên dữ liệu; viết tay thì mỗi API phải gọi đúng truy vấn đệ quy. Zanzibar khai báo một lần bằng DSL. Thêm một người vào nhóm chỉ là ghi một tuple, trong khi ACL phẳng phải ghi một dòng cho mỗi tài liệu, đúng con số trăm triệu mục ở slide 19 của thầy. ABAC không mất đi mà nằm ở condition trên tuple.</figcaption>
 </figure>
-<figure class="slide" id="slide-13" data-n="13" data-title="OpenFGA v1.22.1 (open-source, CNCF)">
-<h3 class="doc-title"><span>13</span> OpenFGA v1.22.1 (open-source, CNCF)</h3>
+<figure class="slide" id="slide-15" data-n="15" data-title="OpenFGA v1.22.1 (open-source, CNCF)">
+<h3 class="doc-title"><span>15</span> OpenFGA v1.22.1 (open-source, CNCF)</h3>
 <div class="frame"><div class="canvas">
 <section id="c-engine" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 3/16 · Engine Zanzibar</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 3/17 · Engine Zanzibar</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">OpenFGA v1.22.1 (open-source, CNCF)</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -523,24 +571,24 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
 <p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
-<p style="font-size:30px;line-height:1.35"><b>SpiceDB</b>: sát paper, nhưng schema Zed không có parser JS cho engine phụ</p>
+<p style="font-size:30px;line-height:1.35"><b>SpiceDB</b>: sát paper, đủ chức năng, nhưng engine phụ phải tự viết parser cho schema Zed</p>
 <p style="font-size:30px;line-height:1.35"><b>Permify, Ory Keto</b>: cộng đồng và tập API hẹp hơn, Keto không có condition</p>
 <p style="font-size:30px;line-height:1.35"><b>OPA, Casbin, Cerbos</b>: engine luật, không phải đồ thị tuple</p>
 </div>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> thêm một service hạ tầng và một hop mạng mỗi quyết định.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.3</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">13</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">15</p>
 </section>
 </div></div>
-<figcaption class="notes"><b>Giải thích:</b> Engine chính là OpenFGA phiên bản 1.22.1, mã nguồn mở, dự án của CNCF, Okta FGA được xây trên nó. OpenFGA có đủ API bài cần, đặc biệt ListUsers và condition viết bằng CEL. DSL ngắn, và có thư viện JavaScript chính thức để parse DSL, nhờ vậy engine tự viết dùng chung file model. SpiceDB bám paper rất sát nhưng schema language khác, không có parser JavaScript. Permify và Ory Keto có tập API hẹp hơn. OPA, Casbin, Cerbos là engine luật chứ không phải đồ thị quan hệ: kế thừa qua thư mục vẫn phải tự nạp dữ liệu.</figcaption>
+<figcaption class="notes"><b>Giải thích:</b> Engine chính là OpenFGA phiên bản 1.22.1, mã nguồn mở, dự án của CNCF, Okta FGA được xây trên nó. OpenFGA có đủ API bài cần, đặc biệt ListUsers và condition viết bằng CEL. DSL ngắn, và có thư viện JavaScript chính thức để parse DSL, nhờ vậy engine tự viết dùng chung file model. SpiceDB bám paper rất sát và về chức năng cũng làm được bài này; nhóm không chọn vì model OpenFGA có bộ chuyển DSL sang JSON chính thức cho JavaScript, nên engine tự viết đọc thẳng cùng file model, còn với schema Zed nhóm phải tự viết parser. Permify và Ory Keto có tập API hẹp hơn. OPA, Casbin, Cerbos là engine luật chứ không phải đồ thị quan hệ: kế thừa qua thư mục vẫn phải tự nạp dữ liệu.</figcaption>
 </figure>
-<figure class="slide" id="slide-14" data-n="14" data-title="Tự viết LocalEngine, đọc cùng model.fga">
-<h3 class="doc-title"><span>14</span> Tự viết LocalEngine, đọc cùng model.fga</h3>
+<figure class="slide" id="slide-16" data-n="16" data-title="Tự viết LocalEngine, đọc cùng model.fga">
+<h3 class="doc-title"><span>16</span> Tự viết LocalEngine, đọc cùng model.fga</h3>
 <div class="frame"><div class="canvas">
 <section id="c-local" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 4/16 · Engine phụ</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 4/17 · Engine phụ</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Tự viết LocalEngine, đọc cùng model.fga</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -559,17 +607,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> hai hiện thực phải giữ cùng ngữ nghĩa; engine phụ chỉ hỗ trợ tập con CEL, ListObjects O(N).</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.4</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">14</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">16</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Nhóm tự viết thêm một engine Zanzibar khoảng 290 dòng, cùng interface với adapter OpenFGA. Có ba lý do. Thứ nhất, npm test chạy không cần Docker. Thứ hai, nhóm hiểu thuật toán Check từ bên trong và chỉ được đúng dòng code khi bị hỏi. Thứ ba, quan trọng nhất, nó là oracle thứ hai: khi so hai engine, nhóm phát hiện ListUsers của OpenFGA không liệt kê người chỉ có quyền nhờ public link, và sửa engine tự viết theo đúng ngữ nghĩa đó. Mock OpenFGA thì không chứng minh được quyết định đúng.</figcaption>
 </figure>
-<figure class="slide" id="slide-15" data-n="15" data-title="Tách quan hệ lưu khỏi quyền được hỏi (can_*)">
-<h3 class="doc-title"><span>15</span> Tách quan hệ lưu khỏi quyền được hỏi (can_*)</h3>
+<figure class="slide" id="slide-17" data-n="17" data-title="Tách quan hệ lưu khỏi quyền được hỏi (can_*)">
+<h3 class="doc-title"><span>17</span> Tách quan hệ lưu khỏi quyền được hỏi (can_*)</h3>
 <div class="frame"><div class="canvas">
 <section id="c-model" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 5/16 · Thiết kế model</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 5/17 · Thiết kế model</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Tách quan hệ lưu khỏi quyền được hỏi (can_*)</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -589,17 +637,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> folder và document lặp khối relation; admin org thấy cả thư mục cá nhân (như admin Workspace).</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.5</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">15</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">17</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Quyết định thiết kế model quan trọng nhất là tách relation lưu trực tiếp như viewer khỏi quyền được hỏi như can_view. Service chỉ hỏi can_*, nên luật chặn chỉ viết một lần. Blocked cũng kế thừa từ thư mục cha. Có một lỗi nhóm tự phát hiện khi viết oracle: bản đầu cho manager nhóm tự là member, mà manager gồm cả admin org, nên alice thành member của mọi nhóm, kể cả frontend, và bị chặn ở incidents. Nhóm tách hai quan hệ: quản lý nhóm không có nghĩa là thuộc nhóm.</figcaption>
 </figure>
-<figure class="slide" id="slide-16" data-n="16" data-title="Condition not_expired gắn trên tuple">
-<h3 class="doc-title"><span>16</span> Condition not_expired gắn trên tuple</h3>
+<figure class="slide" id="slide-18" data-n="18" data-title="Condition not_expired gắn trên tuple">
+<h3 class="doc-title"><span>18</span> Condition not_expired gắn trên tuple</h3>
 <div class="frame"><div class="canvas">
 <section id="c-condition" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 6/16 · Thời hạn chia sẻ</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 6/17 · Thời hạn chia sẻ</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Condition not_expired gắn trên tuple</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -619,17 +667,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> tuple hết hạn vẫn trong store; engine phụ cần bộ CEL riêng (100% coverage).</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.6</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">16</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">18</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Chia sẻ có thời hạn dùng condition not_expired của OpenFGA: tuple lưu expires_at, còn current_time do server tự đặt ở cổng PDP, không bao giờ lấy từ client. Theo ngữ nghĩa OpenFGA, giá trị trong tuple thắng giá trị trong request, nên client không kéo dài được hạn; có test cho việc này. Nhóm không dùng cron xóa tuple vì giữa hai lần chạy quyền vẫn còn. Cũng không kiểm ở service vì khi đó ListObjects sẽ trả cả tài liệu đã hết hạn.</figcaption>
 </figure>
-<figure class="slide" id="slide-17" data-n="17" data-title="Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước">
-<h3 class="doc-title"><span>17</span> Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước</h3>
+<figure class="slide" id="slide-19" data-n="19" data-title="Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước">
+<h3 class="doc-title"><span>19</span> Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước</h3>
 <div class="frame"><div class="canvas">
 <section id="c-data" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 7/16 · Dữ liệu và dual write</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 7/17 · Dữ liệu và dual write</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -649,17 +697,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> process chết giữa hai bước để lại tuple mồ côi (không cấp quyền); production cần outbox.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.7</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">17</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">19</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Dữ liệu nằm ở đâu. Chia sẻ, chặn, thành viên nhóm chỉ nằm trong Zanzibar, giao diện đọc qua Read API, nên không bao giờ có chuyện db nói có còn Zanzibar nói không. Cây thư mục nằm ở cả hai nơi, nên phải dual write. Thứ tự: tạo thì ghi tuple trước, xóa thì xóa tuple trước để quyền mất ngay. Chuyển thư mục là xóa tuple parent cũ và ghi parent mới trong một write nguyên tử của OpenFGA, cả cây con đổi quyền theo. Rủi ro còn lại là tuple mồ côi khi process chết giữa chừng; production nên dùng transactional outbox.</figcaption>
 </figure>
-<figure class="slide" id="slide-18" data-n="18" data-title="HIGHER_CONSISTENCY cho mọi lần đọc quyền">
-<h3 class="doc-title"><span>18</span> HIGHER_CONSISTENCY cho mọi lần đọc quyền</h3>
+<figure class="slide" id="slide-20" data-n="20" data-title="HIGHER_CONSISTENCY cho mọi lần đọc quyền">
+<h3 class="doc-title"><span>20</span> HIGHER_CONSISTENCY cho mọi lần đọc quyền</h3>
 <div class="frame"><div class="canvas">
 <section id="c-consistency" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 8/16 · Consistency</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 8/17 · Consistency</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">HIGHER_CONSISTENCY cho mọi lần đọc quyền</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -678,17 +726,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> bỏ cache của OpenFGA nên mỗi quyết định chậm hơn; ở quy mô lab không đo được khác biệt đáng kể.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.8</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">18</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">20</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Consistency. Paper Zanzibar nêu new enemy problem: Alice gỡ Bob rồi sửa nội dung nhạy cảm, nếu lần Check của Bob đọc snapshot cũ thì Bob đọc được nội dung mới. Zanzibar giải bằng zookie. OpenFGA cung cấp tùy chọn HIGHER_CONSISTENCY, bỏ cache và đọc thẳng datastore; nhóm dùng nó cho mọi lần đọc quyền. Có test gỡ khỏi nhóm và gỡ chia sẻ, request kế tiếp đã 404. Đánh đổi là không hưởng cache của OpenFGA.</figcaption>
 </figure>
-<figure class="slide" id="slide-19" data-n="19" data-title="ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải">
-<h3 class="doc-title"><span>19</span> ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải</h3>
+<figure class="slide" id="slide-21" data-n="21" data-title="ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải">
+<h3 class="doc-title"><span>21</span> ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải</h3>
 <div class="frame"><div class="canvas">
 <section id="c-list" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 9/16 · Check và List</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 9/17 · Check và List</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">ListObjects, ListUsers, BatchCheck thay cho lọc sau khi tải</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -707,17 +755,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> ListObjects của OpenFGA giới hạn mặc định 1.000 kết quả; engine phụ làm O(N).</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.9</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">19</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">21</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Ở Block 6 nhóm phải viết readableProjectIds riêng cho danh sách, và phải có test C1 để khóa nó khớp với decide. Ở DocShare, danh sách dùng ListObjects của Zanzibar: cùng một model, cùng một luật, nên check và list không thể lệch nhau về nguyên tắc; vẫn có test nhất quán cho 8 user nhân 17 object. Cờ quyền trên giao diện dùng BatchCheck, một round trip, adapter tự chia lô 50 theo giới hạn của OpenFGA.</figcaption>
 </figure>
-<figure class="slide" id="slide-20" data-n="20" data-title="enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}">
-<h3 class="doc-title"><span>20</span> enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}</h3>
+<figure class="slide" id="slide-22" data-n="22" data-title="enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}">
+<h3 class="doc-title"><span>22</span> enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}</h3>
 <div class="frame"><div class="canvas">
 <section id="c-pep" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 10/16 · PEP, mã lỗi, token</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 10/17 · PEP, mã lỗi, token</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -738,17 +786,47 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> một lần từ chối tốn hai Check; service ném HttpError; không giới hạn quyền theo client.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.10–4.12</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">20</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">22</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Ba lựa chọn giữ nguyên tinh thần Block 6. PEP đặt ở service qua một hàm enforce dùng chung, vì service biết ngữ cảnh mà middleware hay gateway không biết, ví dụ thư mục đích khi chuyển. Mã lỗi: không có can_view thì 404 với body giống hệt không tồn tại; thấy nhưng thiếu quyền thì 403. Token chỉ chứa sub. Nhóm bỏ scope OAuth2 so với Block 6 để tập trung vào tầng object; Block 6 đã chứng minh scope không thay được kiểm quyền object.</figcaption>
 </figure>
-<figure class="slide" id="slide-21" data-n="21" data-title="Node.js 22 + Express 5, JavaScript CommonJS">
-<h3 class="doc-title"><span>21</span> Node.js 22 + Express 5, JavaScript CommonJS</h3>
+<figure class="slide" id="slide-23" data-n="23" data-title="Không chứng minh được quyền thì từ chối, kể cả khi OpenFGA sập">
+<h3 class="doc-title"><span>23</span> Không chứng minh được quyền thì từ chối, kể cả khi OpenFGA sập</h3>
+<div class="frame"><div class="canvas">
+<section id="c-deny" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 11/17 · Deny by default</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Không chứng minh được quyền thì từ chối, kể cả khi OpenFGA sập</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Zanzibar không có luật "cho phép": không có chuỗi tuple thì Check trả false</p>
+<p style="font-size:30px;line-height:1.35">Route lạ → 404; D1, D2 bắt route mới quên khai báo relation</p>
+<p style="font-size:30px;line-height:1.35">PDP lỗi hay mất kết nối → 500, không trả dữ liệu (test P6)</p>
+<p style="font-size:30px;line-height:1.35">Condition thiếu tham số → false; token hết hạn → 401</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>Fail open</b>: sự cố mạng thành sự cố lộ dữ liệu</p>
+<p style="font-size:30px;line-height:1.35"><b>Dùng quyết định cache cũ khi PDP lỗi</b>: người vừa bị gỡ vẫn qua</p>
+<p style="font-size:30px;line-height:1.35"><b>Mặc định cho phép, liệt kê cấm</b>: quên một trường hợp là lọt</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> OpenFGA ngừng thì API ngừng phục vụ thao tác cần quyền; production chạy nhiều replica OpenFGA trên datastore chung.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.21 · test P4, P6, D1, D2</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">23</p>
+</section>
+</div></div>
+<figcaption class="notes"><b>Giải thích:</b> Deny by default là nguyên tắc nền của Block 6, và Zanzibar có sẵn nguyên tắc này: không có luật cho phép, Check chỉ trả true khi tìm được một chuỗi tuple dẫn tới relation. Ở tầng app, route lạ trả 404; test D1 và D2 bắt route mới mà quên khai báo relation trong OpenAPI. Quan trọng nhất là khi OpenFGA lỗi hoặc mất kết nối: nhóm chọn fail closed, client nhận 500 và không có dữ liệu nào, test P6 khóa điều này. Nhóm không chọn fail open, cũng không dùng lại quyết định cũ trong cache, vì như vậy người vừa bị gỡ quyền vẫn đi qua được. Đánh đổi là tính sẵn sàng của API phụ thuộc OpenFGA.</figcaption>
+</figure>
+<figure class="slide" id="slide-24" data-n="24" data-title="Node.js 22 + Express 5, JavaScript CommonJS">
+<h3 class="doc-title"><span>24</span> Node.js 22 + Express 5, JavaScript CommonJS</h3>
 <div class="frame"><div class="canvas">
 <section id="c-stack" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 11/16 · Ngôn ngữ và framework</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 12/17 · Ngôn ngữ và framework</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Node.js 22 + Express 5, JavaScript CommonJS</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -768,17 +846,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> không có kiểm kiểu tĩnh; lỗi giữa hai engine được bắt bằng parity test.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.13</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">21</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">24</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Stack giữ Node.js 22 và Express 5 như Block 6. Lý do mạnh nhất lần này là OpenFGA có SDK và parser DSL chính thức cho JavaScript, nên engine tự viết dùng chung bộ parse với OpenFGA. Express 5 tự bắt lỗi của handler async, rất hợp vì mọi lần hỏi OpenFGA đều qua HTTP. Lần này nhóm không bật kiểm kiểu checkJs như Block 6 để dành thời gian cho parity và oracle; đây là điểm nhóm ghi vào hướng phát triển.</figcaption>
 </figure>
-<figure class="slide" id="slide-22" data-n="22" data-title="Jest + Supertest: oracle viết tay, parity, mutation">
-<h3 class="doc-title"><span>22</span> Jest + Supertest: oracle viết tay, parity, mutation</h3>
+<figure class="slide" id="slide-25" data-n="25" data-title="Jest + Supertest: oracle viết tay, parity, mutation">
+<h3 class="doc-title"><span>25</span> Jest + Supertest: oracle viết tay, parity, mutation</h3>
 <div class="frame"><div class="canvas">
 <section id="c-test" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 12/16 · Kiểm thử</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 13/17 · Kiểm thử</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Jest + Supertest: oracle viết tay, parity, mutation</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -798,17 +876,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> oracle viết tay tốn công, phải cập nhật khi đổi seed.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.15</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">22</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">25</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Kiểm thử dùng Jest và Supertest gọi HTTP thật, như Block 6. Ba lớp bảo đảm: oracle viết tay, parity hai engine, và mutation test. OpenFGA có công cụ fga model test bằng YAML, nhưng nó chỉ kiểm model trên OpenFGA, không đi qua API, service và quy ước 404, 403 của nhóm. Snapshot kết quả của engine làm kỳ vọng thì vòng lặp: engine sai, snapshot sai theo.</figcaption>
 </figure>
-<figure class="slide" id="slide-23" data-n="23" data-title="OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation">
-<h3 class="doc-title"><span>23</span> OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation</h3>
+<figure class="slide" id="slide-26" data-n="26" data-title="OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation">
+<h3 class="doc-title"><span>26</span> OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation</h3>
 <div class="frame"><div class="canvas">
 <section id="c-docs" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 13/16 · Tài liệu API</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 14/17 · Tài liệu API</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -828,17 +906,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> schema phản hồi viết tay; D1 chỉ khóa path và method.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.16</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">23</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">26</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Tài liệu API là OpenAPI 3.1 viết tay, 40 operation, xem bằng Swagger UI ở /docs của server demo. Điểm riêng của nhóm là hai trường mở rộng x-relation và x-zanzibar: đọc tài liệu là biết endpoint cần relation nào và dùng API Zanzibar nào. Test D1 đọc route từ chính Express router và so với đặc tả, thêm route mà quên tài liệu thì đỏ; D2 bắt buộc mọi operation ghi relation.</figcaption>
 </figure>
-<figure class="slide" id="slide-24" data-n="24" data-title="JSON Lines + ReadChanges + log JSON của OpenFGA">
-<h3 class="doc-title"><span>24</span> JSON Lines + ReadChanges + log JSON của OpenFGA</h3>
+<figure class="slide" id="slide-27" data-n="27" data-title="JSON Lines + ReadChanges + log JSON của OpenFGA">
+<h3 class="doc-title"><span>27</span> JSON Lines + ReadChanges + log JSON của OpenFGA</h3>
 <div class="frame"><div class="canvas">
 <section id="c-log" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 14/16 · Logging và audit</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 15/17 · Logging và audit</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">JSON Lines + ReadChanges + log JSON của OpenFGA</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -858,17 +936,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> chưa có correlation id; ReadChanges đọc theo trang, chưa stream.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.17</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">24</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">27</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Logging có ba nguồn, mỗi nguồn trả lời một câu hỏi. audit.js ghi quyết định phân quyền dạng JSON Lines ra stdout, chỉnh bằng AUDIT_LOG. ReadChanges của OpenFGA là nhật ký thay đổi quyền có sẵn, admin org xem ở endpoint changes. OpenFGA tự ghi log JSON về lỗi và độ trễ. Nhóm không dựng ELK trong lab vì nặng, nhưng log đã đúng định dạng để đẩy vào sau.</figcaption>
 </figure>
-<figure class="slide" id="slide-25" data-n="25" data-title="HTML/JS thuần trên server riêng 127.0.0.1">
-<h3 class="doc-title"><span>25</span> HTML/JS thuần trên server riêng 127.0.0.1</h3>
+<figure class="slide" id="slide-28" data-n="28" data-title="HTML/JS thuần trên server riêng 127.0.0.1">
+<h3 class="doc-title"><span>28</span> HTML/JS thuần trên server riêng 127.0.0.1</h3>
 <div class="frame"><div class="canvas">
 <section id="c-demo" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 15/16 · Trang demo</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 16/17 · Trang demo</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">HTML/JS thuần trên server riêng 127.0.0.1</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -888,17 +966,17 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> máy khác trong mạng không gọi được server demo.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.18</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">25</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">28</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Trang demo là HTML và JavaScript thuần trên server riêng chỉ nghe localhost. Tính năng đắt giá nhất cho buổi trình bày là ma trận quyền của mọi user trên object đang chọn: bỏ chặn frank, gỡ bob khỏi nhóm hay chuyển thư mục, hàng nào đổi quyền thì viền vàng, thấy ngay một tuple ảnh hưởng tới ai. Endpoint cấp token dev không bao giờ nằm trong app chính, có test S1, và không có trong image Docker.</figcaption>
 </figure>
-<figure class="slide" id="slide-26" data-n="26" data-title="Docker Compose: OpenFGA pin version + API non-root + Postgres">
-<h3 class="doc-title"><span>26</span> Docker Compose: OpenFGA pin version + API non-root + Postgres</h3>
+<figure class="slide" id="slide-29" data-n="29" data-title="Docker Compose: OpenFGA pin version + API non-root + Postgres">
+<h3 class="doc-title"><span>29</span> Docker Compose: OpenFGA pin version + API non-root + Postgres</h3>
 <div class="frame"><div class="canvas">
 <section id="c-deploy" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 16/16 · Triển khai</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 17/17 · Triển khai</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Docker Compose: OpenFGA pin version + API non-root + Postgres</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -918,14 +996,14 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> db in-memory nên API một replica; OpenFGA soft-delete store cũ.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.19</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">26</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">29</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Triển khai bằng Docker Compose. OpenFGA pin đúng phiên bản 1.22.1, có healthcheck; API chỉ khởi động khi OpenFGA healthy. Image API dùng node 22 alpine, chạy bằng user node, có healthcheck và dừng gọn. Có file override để OpenFGA lưu vào PostgreSQL 17, nhóm đã chạy thử và phát hiện mỗi lần API khởi động lại tạo thêm store, nên thêm bước dọn store cũ. Nhóm cũng gặp lỗi cú pháp JWT_SECRET bắt buộc của compose làm hỏng cả lệnh chỉ chạy OpenFGA, nên chuyển việc kiểm secret vào app.</figcaption>
 </figure>
 <h2 class="doc-section">Tóm tắt lựa chọn, giới hạn và so sánh với Block 6</h2>
-<figure class="slide" id="slide-27" data-n="27" data-title="Các lựa chọn chính">
-<h3 class="doc-title"><span>27</span> Các lựa chọn chính</h3>
+<figure class="slide" id="slide-30" data-n="30" data-title="Các lựa chọn chính">
+<h3 class="doc-title"><span>30</span> Các lựa chọn chính</h3>
 <div class="frame"><div class="canvas">
 <section id="tradeoffs" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -941,19 +1019,20 @@ define can_view: viewer <b>but not</b> blocked</pre>
 <tr><td style="font-weight:600">Nguồn sự thật</td><td>Chia sẻ chỉ ở Zanzibar, tuple trước</td><td>Đồng bộ db → Zanzibar, 2PC</td></tr>
 <tr><td style="font-weight:600">Consistency</td><td>HIGHER_CONSISTENCY</td><td>Cache, MINIMIZE_LATENCY</td></tr>
 <tr><td style="font-weight:600">List</td><td>ListObjects / ListUsers / BatchCheck</td><td>Tải hết rồi lọc, JOIN tự viết</td></tr>
+<tr><td style="font-weight:600">PDP lỗi</td><td>Deny by default, fail closed</td><td>Fail open, dùng quyết định cache cũ</td></tr>
 <tr><td style="font-weight:600">Kiểm thử</td><td>Oracle viết tay + parity + mutation</td><td>fga model test, snapshot, Postman</td></tr>
 <tr><td style="font-weight:600">Tài liệu API</td><td>OpenAPI 3.1 + Swagger UI, x-relation</td><td>swagger-jsdoc, Postman, Redoc</td></tr>
 <tr><td style="font-weight:600">Logging</td><td>JSON Lines + ReadChanges</td><td>ELK trong lab, winston</td></tr>
 <tr><td style="font-weight:600">Triển khai</td><td>Compose, pin version, Postgres override</td><td>Helm/K8s, image đầy đủ, root</td></tr>
 </table>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §5</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">27</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">30</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Tóm tắt các lựa chọn. Cột giữa là thứ nhóm chọn, cột phải là các phương án đã loại; lý do chi tiết từng dòng nằm ở mục 4 và bảng tóm tắt ở mục 5 của REPORT.md, kèm minh chứng cho mỗi dòng.</figcaption>
 </figure>
-<figure class="slide" id="slide-28" data-n="28" data-title="Những gì nhóm biết là chưa làm">
-<h3 class="doc-title"><span>28</span> Những gì nhóm biết là chưa làm</h3>
+<figure class="slide" id="slide-31" data-n="31" data-title="Những gì nhóm biết là chưa làm">
+<h3 class="doc-title"><span>31</span> Những gì nhóm biết là chưa làm</h3>
 <div class="frame"><div class="canvas">
 <section id="limits" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -970,13 +1049,37 @@ define can_view: viewer <b>but not</b> blocked</pre>
 <tr><td>Chưa có kiểm kiểu tĩnh, rate limit, correlation id</td><td>JSDoc + checkJs, rate limit theo user, request id</td></tr>
 </table>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §10</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">28</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">31</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Những gì nhóm biết là chưa làm. Dual write giữa db và OpenFGA chưa có outbox. Db nghiệp vụ chạy trong RAM nên chỉ một replica. Dùng HIGHER_CONSISTENCY cho mọi request thay vì zookie theo object. Engine tự viết làm ListObjects O(N), chỉ dùng cho test. Chưa đo tải với hàng triệu tuple. Chưa có kiểm kiểu tĩnh, rate limit và correlation id. Mỗi dòng có hướng xử lý cụ thể trong REPORT.md mục 10.</figcaption>
 </figure>
-<figure class="slide" id="slide-29" data-n="29" data-title="Block 6 task-api → DocShare">
-<h3 class="doc-title"><span>29</span> Block 6 task-api → DocShare</h3>
+<figure class="slide" id="slide-32" data-n="32" data-title="Các trường hợp chưa kiểm tra">
+<h3 class="doc-title"><span>32</span> Các trường hợp chưa kiểm tra</h3>
+<div class="frame"><div class="canvas">
+<section id="untested" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Giới hạn</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Các trường hợp chưa kiểm tra</h2>
+</div>
+<table style="font-size:25px">
+<tr><th style="width:40%">Trường hợp</th><th>Hiện trạng</th></tr>
+<tr><td>Process chết giữa hai bước dual write</td><td>Lập luận: tuple mồ côi không cấp quyền vì db không có object; chưa có fault injection</td></tr>
+<tr><td>Hai request ghi cùng tuple đồng thời</td><td>Map sang 409; chỉ test ghi trùng tuần tự</td></tr>
+<tr><td>OpenFGA lỗi một phần (một lô BatchCheck)</td><td>P6 chỉ kiểm PDP lỗi hoàn toàn</td></tr>
+<tr><td>Owner bị chặn trên tài liệu của mình</td><td>Theo model vẫn bỏ chặn được (can_block: owner); chưa có test riêng</td></tr>
+<tr><td>Nhóm lồng sâu hơn 25 tầng, ListObjects quá 1.000 kết quả</td><td>Seed sâu 3 tầng, ít object; chưa test giới hạn</td></tr>
+<tr><td>Tải, Docker + Postgres, giao diện demo</td><td>Chưa benchmark; compose và UI kiểm thủ công</td></tr>
+<tr><td>Schema response trong OpenAPI</td><td>D1 chỉ khóa path và method</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §10.1</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">32</p>
+</section>
+</div></div>
+<figcaption class="notes"><b>Giải thích:</b> Theo yêu cầu bài nộp của Block 6, nhóm liệt kê các trường hợp chưa có test tự động. Process chết giữa hai bước dual write: nhóm chỉ lập luận rằng tuple mồ côi không cấp quyền, chưa có fault injection. Ghi đồng thời cùng một tuple: lỗi được đổi thành 409 nhưng chỉ test ghi trùng tuần tự. OpenFGA lỗi một phần chưa được giả lập. Owner bị chặn trên chính tài liệu của mình vẫn bỏ chặn được theo model, chưa có test riêng. Giới hạn độ sâu 25 và giới hạn 1000 kết quả của ListObjects chưa bị chạm vì seed nhỏ. Tải, cấu hình Docker với Postgres và giao diện demo mới kiểm thủ công. Schema response trong OpenAPI chưa được kiểm.</figcaption>
+</figure>
+<figure class="slide" id="slide-33" data-n="33" data-title="Block 6 task-api → DocShare">
+<h3 class="doc-title"><span>33</span> Block 6 task-api → DocShare</h3>
 <div class="frame"><div class="canvas">
 <section id="compare" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -995,14 +1098,40 @@ define can_view: viewer <b>but not</b> blocked</pre>
 <tr><td style="font-weight:600">Giữ nguyên</td><td>404/403, PEP ở service, không tin client, không cache quyền</td><td>←</td></tr>
 </table>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §9</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">29</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">33</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> So sánh với Block 6. Chính sách đi từ một hàm decide viết tay sang một file model. Dữ liệu quyền đi từ bảng membership sang tuple. Có kế thừa qua thư mục và nhóm, có ListUsers và Expand mà Block 6 không có. Bằng chứng đi từ đỏ trước xanh sau theo tag sang oracle viết tay, parity hai engine và mutation test. Những gì giữ nguyên: quy ước 404, 403, PEP ở service, không tin dữ liệu client, không cache quyền.</figcaption>
 </figure>
+<figure class="slide" id="slide-34" data-n="34" data-title="Đối chiếu với yêu cầu nộp">
+<h3 class="doc-title"><span>34</span> Đối chiếu với yêu cầu nộp</h3>
+<div class="frame"><div class="canvas">
+<section id="checklist" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Gói nộp</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Đối chiếu với yêu cầu nộp</h2>
+</div>
+<table style="font-size:24px">
+<tr><th style="width:40%">Yêu cầu</th><th>Đáp ứng ở đâu</th></tr>
+<tr><td>Áp dụng Zanzibar open-source</td><td>OpenFGA v1.22.1 chạy thật + engine tự viết cùng model</td></tr>
+<tr><td>Mã nguồn, data, README triển khai</td><td>src/, authz/, test/ · data/seed.json, data/README.md · README.md</td></tr>
+<tr><td>REPORT.md: chọn X vì, không chọn Y vì</td><td>§4: 21 lựa chọn, mỗi lựa chọn có Nhóm chọn / Không chọn / Đánh đổi</td></tr>
+<tr><td>REPORT.html: slide có giải thích</td><td>Bộ slide này; chế độ "Đọc tài liệu" hiện lời giải thích</td></tr>
+<tr><td>Bảng chính sách, mỗi ô có test</td><td>REPORT.md §6.1</td></tr>
+<tr><td>Test được phép và bị từ chối, một lệnh</td><td><code>npm test</code>: 224 test; <code>npm run test:openfga</code>: 245</td></tr>
+<tr><td>Evidence IDOR đỏ trước, xanh sau</td><td>docs/evidence/idor.md (§7.1)</td></tr>
+<tr><td>Nơi kiểm quyền; ACL/RBAC/ABAC/ReBAC</td><td>enforce() ở service (§4.11) · ReBAC + condition (§4.2)</td></tr>
+<tr><td>Giới hạn, trường hợp chưa kiểm tra</td><td>REPORT.md §10, §10.1</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §1.1</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">34</p>
+</section>
+</div></div>
+<figcaption class="notes"><b>Giải thích:</b> Slide này đối chiếu gói nộp với yêu cầu của đề bài và các mục bài nộp của Block 6. Hệ thống Zanzibar open-source là OpenFGA chạy thật, kèm engine tự viết đọc cùng model. Mã nguồn, data và README hướng dẫn triển khai nằm ở thư mục gốc. REPORT.md mục 4 có 21 lựa chọn, mỗi lựa chọn ghi nhóm chọn gì, không chọn gì và đánh đổi. Bảng chính sách quyền ở mục 6.1. Test có cả trường hợp được phép và bị từ chối, chạy bằng một lệnh. Evidence IDOR đỏ trước, xanh sau nằm trong docs/evidence/idor.md. Giới hạn và các trường hợp chưa kiểm tra ở mục 10.</figcaption>
+</figure>
 <h2 class="doc-section">Hỏi đáp và kết thúc</h2>
-<figure class="slide" id="slide-30" data-n="30" data-title="Câu hỏi nhóm đã chuẩn bị">
-<h3 class="doc-title"><span>30</span> Câu hỏi nhóm đã chuẩn bị</h3>
+<figure class="slide" id="slide-35" data-n="35" data-title="Câu hỏi nhóm đã chuẩn bị">
+<h3 class="doc-title"><span>35</span> Câu hỏi nhóm đã chuẩn bị</h3>
 <div class="frame"><div class="canvas">
 <section id="qa" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -1032,13 +1161,13 @@ define can_view: viewer <b>but not</b> blocked</pre>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §11</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">30</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">35</p>
 </section>
 </div></div>
 <figcaption class="notes"><b>Giải thích:</b> Một số câu hỏi nhóm đã chuẩn bị. Gỡ khỏi nhóm thì mất quyền sau 0 giây. Chặn thắng public link vì can_view là viewer trừ blocked. Hết hạn chia sẻ không cần ai xóa tuple, condition được đánh giá ở mỗi lần Check. Vì sao vừa OpenFGA vừa tự viết: OpenFGA là engine chạy thật, engine tự viết để test không cần Docker và làm oracle thứ hai. Và câu hỏi kết thúc 4 của Block 6: thêm một người vào nhóm chỉ là ghi một tuple, mọi API dùng chung một model và một PDP.</figcaption>
 </figure>
-<figure class="slide" id="slide-31" data-n="31" data-title="Cảm ơn thầy và các bạn">
-<h3 class="doc-title"><span>31</span> Cảm ơn thầy và các bạn</h3>
+<figure class="slide" id="slide-36" data-n="36" data-title="Cảm ơn thầy và các bạn">
+<h3 class="doc-title"><span>36</span> Cảm ơn thầy và các bạn</h3>
 <div class="frame"><div class="canvas">
 <section id="thanks" data-transition="fade" style="background:#1B2430;color:#F3EFE6;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
 <p style="font-size:30px;font-weight:600;color:#F0A35E;letter-spacing:2px;text-transform:uppercase">Nhóm 07 · DocShare</p>
@@ -1046,12 +1175,12 @@ define can_view: viewer <b>but not</b> blocked</pre>
 <h1 style="font-size:96px;font-weight:700;line-height:1.05;letter-spacing:-2px">Cảm ơn thầy và các bạn</h1>
 <p style="font-size:36px;line-height:1.4;color:#B9C0CC">github.com/DuyPham111/docshare-zanzibar</p>
 </div>
-<pre style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.6;color:#8DB8E8">npm ci && npm test            # 222 test, không cần Docker
-npm run fga:up && npm run test:openfga   # 243 test trên OpenFGA
+<pre style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.6;color:#8DB8E8">npm ci && npm test            # 224 test, không cần Docker
+npm run fga:up && npm run test:openfga   # 245 test trên OpenFGA
 npm run demo:openfga          # http://localhost:3200 · /docs</pre>
 </section>
 </div></div>
-<figcaption class="notes"><b>Giải thích:</b> Cảm ơn thầy và các bạn đã lắng nghe. Mã nguồn ở repository GitHub trên slide. Ba lệnh dưới cùng đủ để chấm: npm test chạy 222 test không cần Docker; bật OpenFGA rồi chạy 243 test trên OpenFGA thật; và mở trang demo để thử trực tiếp. Nhóm xin nhận câu hỏi.</figcaption>
+<figcaption class="notes"><b>Giải thích:</b> Cảm ơn thầy và các bạn đã lắng nghe. Mã nguồn ở repository GitHub trên slide. Ba lệnh dưới cùng đủ để chấm: npm test chạy 224 test không cần Docker; bật OpenFGA rồi chạy 245 test trên OpenFGA thật; và mở trang demo để thử trực tiếp. Nhóm xin nhận câu hỏi.</figcaption>
 </figure>
 </main>
 <div id="notesPanel" aria-live="polite"></div>

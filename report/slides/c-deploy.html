@@ -1,6 +1,6 @@
 <section id="c-deploy" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 16/16 · Triển khai</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 17/17 · Triển khai</p>
 <h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Docker Compose: OpenFGA pin version + API non-root + Postgres</h2>
 </div>
 <div style="display:flex;gap:40px;flex:1">
@@ -20,6 +20,6 @@
 </div>
 <p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> db in-memory nên API một replica; OpenFGA soft-delete store cũ.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.19</p>
-<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">26</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">29</p>
 <aside>Triển khai bằng Docker Compose. OpenFGA pin đúng phiên bản 1.22.1, có healthcheck; API chỉ khởi động khi OpenFGA healthy. Image API dùng node 22 alpine, chạy bằng user node, có healthcheck và dừng gọn. Có file override để OpenFGA lưu vào PostgreSQL 17, nhóm đã chạy thử và phát hiện mỗi lần API khởi động lại tạo thêm store, nên thêm bước dọn store cũ. Nhóm cũng gặp lỗi cú pháp JWT_SECRET bắt buộc của compose làm hỏng cả lệnh chỉ chạy OpenFGA, nên chuyển việc kiểm secret vào app.</aside>
 </section>
