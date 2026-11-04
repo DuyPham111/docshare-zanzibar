@@ -12,7 +12,9 @@
     "oracle": "node scripts/oracle.js",
     "fga:up": "docker compose up -d openfga",
     "fga:down": "docker compose down",
-    "evidence": "node scripts/evidence.js"
+    "evidence": "node scripts/evidence.js",
+    "demo": "node demo/server.js",
+    "demo:openfga": "node scripts/with-openfga.js demo/server.js"
   },
   "license": "MIT",
   "type": "commonjs",

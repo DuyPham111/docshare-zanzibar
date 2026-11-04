@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocShare Zanzibar</title>
+<style>
+:root {
+  --bg: #f6f5f1; --panel: #ffffff; --fg: #24221f; --muted: #6f6a62; --border: #e2ded6; --soft: #efece6;
+  --accent: #2f5d8a; --accent-bg: #e4edf6; --ok: #3d7a45; --ok-bg: #e3f0e3; --bad: #a3413a; --bad-bg: #f7e4e1;
+  --warn: #9a6a14; --warn-bg: #f6ecd6; --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1b1a18; --panel: #24221f; --fg: #ece8e1; --muted: #a39d93; --border: #3a3732; --soft: #2d2b27;
+    --accent: #8db6dd; --accent-bg: #23364a; --ok: #8cc68f; --ok-bg: #233825; --bad: #e59a91; --bad-bg: #42241f;
+    --warn: #e0b75e; --warn-bg: #3d3018;
+  }
+}
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 system-ui, 'Segoe UI', sans-serif }
+header { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 2 }
+header h1 { font-size: 16px; margin: 0 8px 0 0 }
+.badge { font: 12px var(--mono); padding: 2px 8px; border-radius: 99px; background: var(--accent-bg); color: var(--accent) }
+select, input, textarea, button { font: inherit; color: var(--fg); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px }
+button { cursor: pointer; background: var(--soft) }
+button.primary { background: var(--accent); color: var(--panel); border-color: var(--accent) }
+button:disabled { opacity: .45; cursor: default }
+main { display: grid; grid-template-columns: 260px minmax(0, 1fr) 380px; gap: 12px; padding: 12px 16px }
+@media (max-width: 1100px) { main { grid-template-columns: 1fr } }
+section.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 12px; min-width: 0 }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 8px }
+h3 { margin: 0 0 6px; font-size: 18px }
+ul.tree, ul.plain { list-style: none; margin: 0; padding: 0 }
+ul.tree ul { list-style: none; padding-left: 14px; margin: 0 }
+.item { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 3px 6px; border-radius: 5px }
+.item:hover { background: var(--soft) }
+.item.active { background: var(--accent-bg); color: var(--accent) }
+.muted { color: var(--muted) }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 }
+.chip { font: 12px var(--mono); padding: 1px 7px; border-radius: 99px }
+.chip.yes { background: var(--ok-bg); color: var(--ok) }
+.chip.no { background: var(--bad-bg); color: var(--bad); text-decoration: line-through }
+.level { font: 11px var(--mono); padding: 0 6px; border-radius: 4px; background: var(--soft); color: var(--muted) }
+textarea { width: 100%; min-height: 90px; resize: vertical }
+.row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: 6px 0 }
+.row > * { min-width: 0 }
+table { border-collapse: collapse; width: 100%; font-size: 12px }
+th, td { border-bottom: 1px solid var(--border); padding: 3px 4px; text-align: center }
+th:first-child, td:first-child { text-align: left }
+td.y { color: var(--ok) } td.n { color: var(--muted) }
+tr.me td { background: var(--accent-bg) }
+tr.changed td { outline: 2px solid var(--warn); outline-offset: -2px }
+pre { font: 12px/1.4 var(--mono); background: var(--soft); padding: 8px; border-radius: 6px; overflow: auto; max-height: 320px; margin: 6px 0 0 }
+#log { font: 12px var(--mono); max-height: 200px; overflow: auto }
+#log div { padding: 2px 0; border-bottom: 1px dashed var(--border); overflow-wrap: anywhere }
+.s2 { color: var(--ok) } .s4 { color: var(--bad) } .s5 { color: var(--bad); font-weight: 700 }
+.comment { border-left: 3px solid var(--border); padding: 4px 8px; margin: 6px 0 }
+.empty { color: var(--muted); font-style: italic }
+</style>
+</head>
+<body>
+<header>
+  <h1>DocShare · Zanzibar</h1>
+  <span class="badge" id="engine">engine: …</span>
+  <label>Đăng nhập là <select id="user"></select></label>
+  <span id="me" class="muted"></span>
+  <span style="flex:1"></span>
+  <button id="reset" title="Đưa dữ liệu và tuple về seed">Đặt lại seed</button>
+</header>
+
+<main>
+  <div>
+    <section class="panel">
+      <h2>Thư mục</h2>
+      <ul class="tree" id="folders"></ul>
+    </section>
+    <section class="panel">
+      <h2>Tài liệu (ListObjects)</h2>
+      <div class="row">
+        <select id="filter"><option value="">Tất cả</option><option value="shared">Được chia sẻ</option><option value="owned">Của tôi</option></select>
+        <input id="q" placeholder="Tìm…" style="flex:1">
+      </div>
+      <ul class="plain" id="documents"></ul>
+    </section>
+    <section class="panel">
+      <h2>Nhóm</h2>
+      <ul class="plain" id="groups"></ul>
+    </section>
+  </div>
+
+  <div>
+    <section class="panel" id="detail"><p class="empty">Chọn một thư mục, tài liệu hoặc nhóm.</p></section>
+    <section class="panel">
+      <h2>Ma trận quyền của mọi user trên object đang chọn</h2>
+      <div id="matrix" class="empty">Chưa chọn object.</div>
+    </section>
+    <section class="panel">
+      <h2>Nhật ký request</h2>
+      <div id="log"></div>
+    </section>
+  </div>
+
+  <div>
+    <section class="panel" id="sharing"><h2>Chia sẻ</h2><p class="empty">Chọn tài liệu hoặc thư mục.</p></section>
+    <section class="panel" id="access-panel"><h2>Ai có quyền (ListUsers)</h2><p class="empty">Cần quyền can_share.</p></section>
+    <section class="panel" id="expand-panel"><h2>Vì sao (Expand)</h2><p class="empty">Cần quyền can_share.</p></section>
+    <section class="panel" id="changes-panel"><h2>Thay đổi tuple của org (ReadChanges)</h2><p class="empty">Chỉ admin org.</p></section>
+  </div>
+</main>
+
+<script>
+const $ = s => document.querySelector(s)
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+const state = { users: [], subjects: { users: [], groups: [] }, user: null, selected: null, lastMatrix: null }
+
+function log(method, path, status, body) {
+  const div = document.createElement('div')
+  const cls = status >= 500 ? 's5' : status >= 400 ? 's4' : 's2'
+  const err = body && body.error ? ` ${body.error}` : ''
+  div.innerHTML = `<span class="${cls}">${status}</span> ${esc(state.user)} ${method} ${esc(path)}<span class="muted">${esc(err)}</span>`
+  $('#log').prepend(div)
+}
+
+async function api(method, path, body) {
+  const token = state.users.find(u => u.id === state.user)?.token
+  const res = await fetch('/api' + path, {
+    method,
+    headers: { Authorization: `Bearer ${token}`, ...(body && { 'Content-Type': 'application/json' }) },
+    body: body && JSON.stringify(body),
+  })
+  const data = res.status === 204 ? null : await res.json().catch(() => null)
+  log(method, path, res.status, data)
+  return { status: res.status, data }
+}
+const dev = (path, options) => fetch('/dev' + path, options).then(r => r.json())
+
+// ---------- Cột trái ----------
+async function loadFolders() {
+  const { data } = await api('GET', '/folders')
+  const byParent = new Map()
+  const ids = new Set(data.map(f => f.id))
+  for (const f of data) {
+    const key = f.root || !ids.has(f.parentId) ? '__root' : f.parentId
+    byParent.set(key, [...(byParent.get(key) || []), f])
+  }
+  const render = key => (byParent.get(key) || []).map(f => `<li>${itemButton('folder', f.id, '📁 ' + f.name)}<ul>${render(f.id)}</ul></li>`).join('')
+  $('#folders').innerHTML = render('__root') || '<li class="empty">Không thấy thư mục nào</li>'
+}
+
+async function loadDocuments() {
+  const params = new URLSearchParams()
+  if ($('#filter').value) params.set('filter', $('#filter').value)
+  if ($('#q').value) params.set('q', $('#q').value)
+  const { data } = await api('GET', '/documents' + (params.size ? '?' + params : ''))
+  $('#documents').innerHTML = data.length
+    ? data.map(d => `<li>${itemButton('document', d.id, '📄 ' + d.title, d.access)}</li>`).join('')
+    : '<li class="empty">Không có tài liệu</li>'
+}
+
+async function loadGroups() {
+  const { data } = await api('GET', '/groups')
+  $('#groups').innerHTML = data.map(g => `<li>${itemButton('group', g.id, '👥 ' + g.name, g.isMember ? 'member' : '')}</li>`).join('') || '<li class="empty">Không có nhóm</li>'
+}
+
+function itemButton(kind, id, label, level) {
+  const active = state.selected && state.selected.kind === kind && state.selected.id === id ? ' active' : ''
+  return `<button class="item${active}" data-kind="${kind}" data-id="${esc(id)}">${esc(label)} ${level ? `<span class="level">${esc(level)}</span>` : ''}</button>`
+}
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('button.item')
+  if (btn) select(btn.dataset.kind, btn.dataset.id)
+})
+
+// ---------- Chi tiết ----------
+const chips = caps => `<div class="chips">${Object.entries(caps).map(([k, v]) => `<span class="chip ${v ? 'yes' : 'no'}">${k}</span>`).join('')}</div>`
+
+async function select(kind, id) {
+  state.selected = { kind, id }
+  document.querySelectorAll('button.item').forEach(b => b.classList.toggle('active', b.dataset.kind === kind && b.dataset.id === id))
+  await renderDetail()
+  await renderMatrix(true)
+}
+
+async function renderDetail() {
+  const sel = state.selected
+  if (!sel) return
+  const path = `/${sel.kind}s/${sel.id}`
+  const { status, data } = await api('GET', path)
+  if (status !== 200) {
+    $('#detail').innerHTML = `<h2>${sel.kind}:${esc(sel.id)}</h2><p class="s4">${status} ${esc(data?.error)}: ${status === 404 ? 'không thấy (hoặc không tồn tại)' : 'thấy nhưng không có quyền'}</p>`
+    clearSidePanels()
+    return
+  }
+  if (sel.kind === 'document') renderDocument(data)
+  if (sel.kind === 'folder') renderFolder(data)
+  if (sel.kind === 'group') renderGroup(data)
+  if (sel.kind !== 'group') await renderSharing(data.capabilities)
+  else clearSidePanels()
+}
+
+function renderDocument(d) {
+  $('#detail').innerHTML = `
+    <h2>document:${esc(d.id)} · org ${esc(d.orgId)} · thư mục ${esc(d.folderId)}</h2>
+    <h3>${esc(d.title)}</h3>
+    ${chips(d.capabilities)}
+    <textarea id="content" ${d.capabilities.can_edit ? '' : 'readonly'}>${esc(d.content)}</textarea>
+    <div class="row">
+      <button class="primary" id="save" ${d.capabilities.can_edit ? '' : 'disabled'}>Lưu (PATCH)</button>
+      <button id="force-save" title="Gửi PATCH dù nút bị ẩn: server vẫn kiểm">Gửi PATCH trực tiếp</button>
+      <button id="delete">Xóa</button>
+    </div>
+    <h2 style="margin-top:12px">Comment</h2>
+    <div id="comments"></div>
+    <div class="row"><input id="new-comment" placeholder="Viết comment…" style="flex:1"><button id="add-comment">Gửi</button></div>`
+  const save = async () => {
+    await api('PATCH', `/documents/${d.id}`, { content: $('#content').value })
+    await refresh()
+  }
+  $('#save').onclick = save
+  $('#force-save').onclick = save
+  $('#delete').onclick = async () => {
+    const { status } = await api('DELETE', `/documents/${d.id}`)
+    if (status === 204) state.selected = null
+    await refresh()
+  }
+  $('#add-comment').onclick = async () => {
+    await api('POST', `/documents/${d.id}/comments`, { body: $('#new-comment').value })
+    await renderComments(d.id)
+  }
+  renderComments(d.id)
+}
+
+async function renderComments(docId) {
+  const { data } = await api('GET', `/documents/${docId}/comments`)
+  $('#comments').innerHTML = (data || []).map(c => `
+    <div class="comment"><b>${esc(c.authorId)}</b> <span class="muted">${esc(c.createdAt.slice(0, 16))}</span><br>${esc(c.body)}
+    <button class="del-comment" data-id="${esc(c.id)}" ${c.canDelete ? '' : 'disabled'}>xóa</button></div>`).join('') || '<p class="empty">Chưa có comment</p>'
+  document.querySelectorAll('.del-comment').forEach(b => (b.onclick = async () => {
+    await api('DELETE', `/comments/${b.dataset.id}`)
+    await renderComments(docId)
+  }))
+}
+
+function renderFolder(f) {
+  $('#detail').innerHTML = `
+    <h2>folder:${esc(f.id)} · org ${esc(f.orgId)}</h2>
+    <div class="muted">${f.path.map(p => esc(p.name)).join(' / ')}${f.path.length ? ' / ' : ''}</div>
+    <h3>📁 ${esc(f.name)}</h3>
+    ${chips(f.capabilities)}
+    <ul class="plain">
+      ${f.folders.map(c => `<li>${itemButton('folder', c.id, '📁 ' + c.name)}</li>`).join('')}
+      ${f.documents.map(c => `<li>${itemButton('document', c.id, '📄 ' + c.title)}</li>`).join('')}
+    </ul>
+    <div class="row"><input id="new-doc" placeholder="Tiêu đề tài liệu mới" style="flex:1"><button id="create-doc" ${f.capabilities.can_create ? '' : 'disabled'}>Tạo</button></div>
+    <div class="row"><select id="move-target"></select><button id="move">Chuyển thư mục này vào</button></div>`
+  $('#create-doc').onclick = async () => {
+    await api('POST', '/documents', { title: $('#new-doc').value, folderId: f.id })
+    await refresh()
+  }
+  api('GET', '/folders').then(({ data }) => {
+    $('#move-target').innerHTML = data.filter(x => x.id !== f.id).map(x => `<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('')
+  })
+  $('#move').onclick = async () => {
+    await api('PATCH', `/folders/${f.id}`, { parentId: $('#move-target').value })
+    await refresh()
+  }
+}
+
+function renderGroup(g) {
+  const options = [...state.subjects.users.map(u => `user:${u.id}`), ...state.subjects.groups.map(x => `group:${x.id}`)]
+  $('#detail').innerHTML = `
+    <h2>group:${esc(g.id)} · org ${esc(g.orgId)}</h2>
+    <h3>👥 ${esc(g.name)}</h3>
+    ${chips(g.capabilities)}
+    <p><b>Manager:</b> ${g.managers.map(esc).join(', ') || '—'}</p>
+    <p><b>Member trực tiếp:</b> ${g.members.map(m => `${esc(m)} <button class="rm" data-s="${esc(m)}">×</button>`).join(' ') || '—'}</p>
+    <p><b>Member thực tế (ListUsers, gồm nhóm con):</b> ${g.effectiveMembers.map(esc).join(', ') || '—'}</p>
+    <div class="row"><select id="member-subject">${options.map(o => `<option>${esc(o)}</option>`).join('')}</select><button id="add-member">Thêm member</button></div>`
+  $('#add-member').onclick = async () => {
+    await api('POST', `/groups/${g.id}/members`, { subject: $('#member-subject').value })
+    await refresh()
+  }
+  document.querySelectorAll('.rm').forEach(b => (b.onclick = async () => {
+    await api('DELETE', `/groups/${g.id}/members?subject=${encodeURIComponent(b.dataset.s)}`)
+    await refresh()
+  }))
+}
+
+// ---------- Cột phải ----------
+function clearSidePanels() {
+  $('#sharing').innerHTML = '<h2>Chia sẻ</h2><p class="empty">Không áp dụng.</p>'
+  $('#access-panel').innerHTML = '<h2>Ai có quyền (ListUsers)</h2><p class="empty">Không áp dụng.</p>'
+  $('#expand-panel').innerHTML = '<h2>Vì sao (Expand)</h2><p class="empty">Không áp dụng.</p>'
+}
+
+async function renderSharing(caps) {
+  const { kind, id } = state.selected
+  const base = `/${kind}s/${id}`
+  if (!caps.can_share) {
+    $('#sharing').innerHTML = '<h2>Chia sẻ</h2><p class="empty">Bạn không có can_share trên object này.</p>'
+    $('#access-panel').innerHTML = '<h2>Ai có quyền (ListUsers)</h2><p class="empty">Cần can_share.</p>'
+    $('#expand-panel').innerHTML = '<h2>Vì sao (Expand)</h2><p class="empty">Cần can_share.</p>'
+    return
+  }
+  const shares = (await api('GET', base + '/shares')).data || []
+  const subjects = ['public', ...state.subjects.users.map(u => `user:${u.id}`), ...state.subjects.groups.map(g => `group:${g.id}`)]
+  $('#sharing').innerHTML = `
+    <h2>Chia sẻ (tuple trực tiếp)</h2>
+    <ul class="plain">${shares.map(s => `<li><code>${esc(s.relation)}</code> ${esc(s.subject)}${s.expiresAt ? ` <span class="muted">đến ${esc(s.expiresAt.slice(0, 16))}</span>` : ''}
+      ${['viewer', 'commenter', 'editor'].includes(s.relation) ? `<button class="unshare" data-s="${esc(s.subject)}">gỡ</button>` : ''}
+      ${s.relation === 'blocked' ? `<button class="unblock" data-s="${esc(s.subject)}">bỏ chặn</button>` : ''}</li>`).join('')}</ul>
+    <div class="row">
+      <select id="share-subject">${subjects.map(s => `<option>${esc(s)}</option>`).join('')}</select>
+      <select id="share-relation"><option>viewer</option><option>commenter</option><option>editor</option></select>
+    </div>
+    <div class="row"><label>Hết hạn <input id="share-expiry" type="datetime-local"></label></div>
+    <div class="row">
+      <button id="preview">Xem trước (contextual tuple)</button>
+      <button class="primary" id="share">Chia sẻ</button>
+      ${caps.can_block ? '<button id="block">Chặn subject</button>' : ''}
+    </div>
+    <pre id="preview-out" hidden></pre>`
+  const body = () => ({
+    subject: $('#share-subject').value,
+    relation: $('#share-relation').value,
+    ...($('#share-expiry').value && { expiresAt: new Date($('#share-expiry').value).toISOString() }),
+  })
+  $('#preview').onclick = async () => {
+    const { status, data } = await api('POST', base + '/shares/preview', body())
+    const out = $('#preview-out')
+    out.hidden = false
+    out.textContent = status === 200
+      ? Object.keys(data.after).map(k => `${k.padEnd(12)} ${data.before[k] ? '✔' : '·'} → ${data.after[k] ? '✔' : '·'}`).join('\n') + '\n(không có tuple nào được ghi)'
+      : `${status} ${data?.error}`
+  }
+  $('#share').onclick = async () => {
+    await api('POST', base + '/shares', body())
+    await refresh()
+  }
+  if (caps.can_block) $('#block').onclick = async () => {
+    await api('POST', base + '/blocks', { subject: $('#share-subject').value })
+    await refresh()
+  }
+  document.querySelectorAll('.unshare').forEach(b => (b.onclick = async () => {
+    await api('DELETE', `${base}/shares?subject=${encodeURIComponent(b.dataset.s)}`)
+    await refresh()
+  }))
+  document.querySelectorAll('.unblock').forEach(b => (b.onclick = async () => {
+    await api('DELETE', `${base}/blocks?subject=${encodeURIComponent(b.dataset.s)}`)
+    await refresh()
+  }))
+
+  const access = (await api('GET', base + '/access')).data
+  $('#access-panel').innerHTML = `<h2>Ai có quyền (ListUsers)</h2>
+    ${access.public ? '<p>🌐 <b>Mọi người</b> có link (user:*)</p>' : ''}
+    <ul class="plain">${access.users.map(u => `<li>${esc(u.name)} <span class="level">${esc(u.access)}</span></li>`).join('')}</ul>`
+
+  $('#expand-panel').innerHTML = `<h2>Vì sao (Expand)</h2>
+    <div class="row"><select id="expand-rel">${['owner', 'editor', 'commenter', 'viewer', 'blocked', 'can_view', 'can_share'].map(r => `<option>${r}</option>`).join('')}</select><button id="expand">Expand</button></div>
+    <pre id="expand-out"></pre>`
+  $('#expand-rel').value = 'viewer'
+  const doExpand = async () => {
+    const { data } = await api('GET', `${base}/access/expand?relation=${$('#expand-rel').value}`)
+    $('#expand-out').textContent = data?.root ? formatTree(data.root) : JSON.stringify(data)
+  }
+  $('#expand').onclick = doExpand
+  doExpand()
+}
+
+function formatTree(node, depth = 0) {
+  const pad = '  '.repeat(depth)
+  for (const op of ['union', 'intersection']) {
+    if (node[op]) return `${pad}${op === 'union' ? '∪ union' : '∩ intersection'}\n` + node[op].nodes.map(n => formatTree(n, depth + 1)).join('\n')
+  }
+  if (node.difference) return `${pad}∖ but not\n${formatTree(node.difference.base, depth + 1)}\n${formatTree(node.difference.subtract, depth + 1)}`
+  const leaf = node.leaf
+  if (leaf.users) return `${pad}trực tiếp: ${leaf.users.users.join(', ') || '(không có tuple)'}`
+  if (leaf.computed) return `${pad}→ ${leaf.computed.userset}`
+  if (leaf.tupleToUserset) return `${pad}từ ${leaf.tupleToUserset.tupleset}: ${leaf.tupleToUserset.computed.map(c => c.userset).join(', ') || '(không có)'}`
+  return pad + JSON.stringify(node)
+}
+
+async function renderMatrix(fresh) {
+  if (!state.selected) return
+  const object = `${state.selected.kind}:${state.selected.id}`
+  const m = await dev(`/matrix?object=${encodeURIComponent(object)}`)
+  if (m.error) return
+  const prev = !fresh && state.lastMatrix?.object === object ? state.lastMatrix : null
+  const changed = row => prev && JSON.stringify(prev.rows.find(r => r.user === row.user)) !== JSON.stringify(row)
+  $('#matrix').classList.remove('empty')
+  $('#matrix').innerHTML = `<table><tr><th>${esc(object)}</th>${m.relations.map(r => `<th>${r.replace('can_', '')}</th>`).join('')}</tr>
+    ${m.rows.map(r => `<tr class="${r.user === state.user ? 'me' : ''} ${changed(r) ? 'changed' : ''}"><td>${esc(r.user)} <span class="muted">${esc(r.org)}</span></td>
+      ${m.relations.map(rel => `<td class="${r[rel] ? 'y' : 'n'}">${r[rel] ? '✔' : '·'}</td>`).join('')}</tr>`).join('')}</table>
+    <p class="muted">Viền vàng: hàng vừa đổi sau thao tác cuối. Hàng xanh: user đang đăng nhập.</p>`
+  state.lastMatrix = m
+}
+
+async function loadChanges() {
+  const { status, data } = await api('GET', `/orgs/${state.users.find(u => u.id === state.user).orgId}/changes`)
+  $('#changes-panel').innerHTML = '<h2>Thay đổi tuple của org (ReadChanges)</h2>' + (status === 200
+    ? `<pre>${esc(data.slice(0, 15).map(c => `${c.operation === 'write' ? '+' : '−'} ${c.tuple}${c.condition ? ` [${c.condition}]` : ''}`).join('\n'))}</pre>`
+    : `<p class="empty">${status}: chỉ admin của org xem được.</p>`)
+}
+
+async function refresh() {
+  const me = (await api('GET', '/me')).data
+  $('#me').textContent = `${me.org.name}${me.isAdmin ? ' · admin' : ''} · nhóm: ${me.groups.join(', ') || '—'}`
+  await Promise.all([loadFolders(), loadDocuments(), loadGroups(), loadChanges()])
+  if (state.selected) {
+    await renderDetail()
+    await renderMatrix(false)
+  }
+}
+
+async function init() {
+  state.users = await dev('/users')
+  state.subjects = await dev('/subjects')
+  $('#engine').textContent = 'engine: ' + (await dev('/engine')).engine
+  $('#user').innerHTML = state.users.map(u => `<option value="${u.id}">${u.name} (${u.orgId})</option>`).join('')
+  state.user = new URLSearchParams(location.search).get('as') || 'bob'
+  $('#user').value = state.user
+  $('#user').onchange = async () => {
+    state.user = $('#user').value
+    await refresh()
+  }
+  $('#filter').onchange = loadDocuments
+  $('#q').oninput = () => loadDocuments()
+  $('#reset').onclick = async () => {
+    await dev('/reset', { method: 'POST' })
+    state.selected = null
+    $('#detail').innerHTML = '<p class="empty">Đã đặt lại seed.</p>'
+    clearSidePanels()
+    await refresh()
+  }
+  await refresh()
+}
+init()
+</script>
+</body>
+</html>
