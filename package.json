@@ -1,8 +1,12 @@
 {
   "name": "docshare",
   "version": "1.0.0",
+  "private": true,
   "description": "DocShare: chia sẻ tài liệu kiểu Google Drive, phân quyền theo Zanzibar (OpenFGA + engine tự viết)",
   "main": "src/server.js",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "node src/server.js",
     "test": "jest --runInBand",
@@ -14,7 +18,9 @@
     "fga:down": "docker compose down",
     "evidence": "node scripts/evidence.js",
     "demo": "node demo/server.js",
-    "demo:openfga": "node scripts/with-openfga.js demo/server.js"
+    "demo:openfga": "node scripts/with-openfga.js demo/server.js",
+    "test:coverage": "jest --runInBand --coverage",
+    "report": "node scripts/build-report.js"
   },
   "license": "MIT",
   "type": "commonjs",
@@ -26,15 +32,18 @@
   },
   "devDependencies": {
     "jest": "^30.5.2",
-    "supertest": "^7.3.1"
-  },
-  "engines": {
-    "node": ">=22"
+    "supertest": "^7.3.1",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.9.1"
   },
   "jest": {
     "testEnvironment": "node",
     "verbose": true,
-    "testTimeout": 20000
-  },
-  "private": true
+    "testTimeout": 20000,
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/server.js",
+      "!src/load-env.js"
+    ]
+  }
 }

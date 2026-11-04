@@ -67,4 +67,6 @@ module.exports = {
   write: body => engine.write(body),
   readChanges: filter => engine.readChanges(filter),
   reset: tuples => engine.reset(tuples),
+  /** Xóa store cũ của các lần chạy trước (chỉ có nghĩa với OpenFGA). */
+  pruneStores: async () => (engine.pruneStores ? engine.pruneStores() : 0),
 }

@@ -1,14 +1,17 @@
 # OpenFGA (Zanzibar open-source) + DocShare API.
-#   docker compose up -d openfga                   chỉ chạy OpenFGA, app chạy bằng npm (AUTHZ_ENGINE=openfga)
-#   docker compose up --build                      chạy cả hai
+#   docker compose up -d openfga          chỉ OpenFGA; app chạy bằng npm (AUTHZ_ENGINE=openfga)
+#   docker compose up --build             OpenFGA + API (cần JWT_SECRET trong .env)
+#   docker compose -f docker-compose.yml -f docker-compose.postgres.yml up --build
+#                                         như trên nhưng OpenFGA lưu tuple vào PostgreSQL
 services:
   openfga:
     image: openfga/openfga:v1.22.1
     command: run
     environment:
-      # Datastore memory: đủ cho lab, mất dữ liệu khi tắt. Production dùng postgres/mysql.
+      # Datastore memory: đủ cho lab, mất tuple khi tắt. Bản lưu bền: docker-compose.postgres.yml.
       OPENFGA_DATASTORE_ENGINE: memory
       OPENFGA_LOG_FORMAT: json
+      OPENFGA_PLAYGROUND_ENABLED: "false"
     ports:
       - "8080:8080" # HTTP API
       - "8081:8081" # gRPC
@@ -17,12 +20,17 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    restart: unless-stopped
 
   api:
     build: .
+    image: docshare-api:latest
     environment:
-      NODE_ENV: production
-      JWT_SECRET: change-me-in-production
+      # Bắt buộc: đặt trong .env cạnh file này. Để trống thì container API thoát ngay với lỗi
+      # "JWT_SECRET is required" (image chạy NODE_ENV=production). Không dùng ${JWT_SECRET:?} vì cú pháp đó
+      # làm cả `docker compose up -d openfga` / `down` thất bại khi chỉ muốn chạy OpenFGA.
+      JWT_SECRET: ${JWT_SECRET:-}
+      AUDIT_LOG: ${AUDIT_LOG:-deny}
       AUTHZ_ENGINE: openfga
       FGA_API_URL: http://openfga:8080
     ports:
@@ -30,3 +38,4 @@ services:
     depends_on:
       openfga:
         condition: service_healthy
+    restart: unless-stopped

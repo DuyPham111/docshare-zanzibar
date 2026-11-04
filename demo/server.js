@@ -1,8 +1,11 @@
-// Server demo cho buổi thuyết trình: API thật ở /api, giao diện ở /, vài endpoint /dev chỉ dùng khi demo.
-// Không dùng cho production: /dev cấp token cho bất kỳ user nào.
+// Server demo cho buổi thuyết trình: API thật ở /api, giao diện ở /, Swagger UI ở /docs, vài endpoint /dev.
+// /dev cấp token cho bất kỳ user nào, nên server này chỉ nghe trên 127.0.0.1 và KHÔNG BAO GIỜ được mount
+// vào app production. src/app.js không import file này; image Docker không chứa thư mục demo/.
+if (require.main === module) require('../src/load-env')
 const path = require('node:path')
 const fs = require('node:fs')
 const express = require('express')
+const swaggerUi = require('swagger-ui-express')
 const app = require('../src/app')
 const authz = require('../src/authz')
 const db = require('../src/db')
@@ -12,7 +15,20 @@ const { resetAll } = require('../src/reset')
 if (process.env.NODE_ENV === 'production') throw new Error('demo server không chạy ở production')
 
 const demo = express()
+demo.disable('x-powered-by')
 demo.use(express.json())
+
+// Tài liệu API: đặc tả OpenAPI là file tĩnh trong docs/, Swagger UI đọc trực tiếp file đó.
+// "Try it out" gọi /api/... của chính server demo; lấy token ở /dev/users hoặc npm run token.
+demo.get('/openapi.yaml', (req, res) => res.sendFile(path.join(__dirname, '..', 'docs', 'openapi.yaml')))
+demo.use(
+  '/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    customSiteTitle: 'DocShare · OpenAPI',
+    swaggerOptions: { url: '/openapi.yaml', persistAuthorization: true },
+  }),
+)
 
 const RELATIONS = {
   document: ['can_view', 'can_comment', 'can_edit', 'can_share', 'can_delete', 'can_block'],
@@ -65,10 +81,19 @@ demo.get('/dev/engine', (req, res) => res.json({ engine: authz.engine.name }))
 demo.use(express.static(path.join(__dirname, 'public')))
 demo.use('/api', app)
 
-const port = Number(process.env.DEMO_PORT) || 3200
-resetAll()
-  .then(() => demo.listen(port, () => console.log(`DocShare demo: http://localhost:${port} (engine: ${authz.engine.name})`)))
-  .catch(err => {
-    console.error(err)
-    process.exit(1)
-  })
+if (require.main === module) {
+  const port = Number(process.env.DEMO_PORT) || 3200
+  resetAll()
+    .then(() =>
+      demo.listen(port, '127.0.0.1', () => {
+        console.log(`DocShare demo: http://localhost:${port} (engine: ${authz.engine.name})`)
+        console.log(`Swagger UI:    http://localhost:${port}/docs`)
+      }),
+    )
+    .catch(err => {
+      console.error(err)
+      process.exit(1)
+    })
+}
+
+module.exports = demo

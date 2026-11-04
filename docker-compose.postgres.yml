@@ -1,0 +1,39 @@
+# Override: OpenFGA lưu tuple vào PostgreSQL thay cho memory (cách chạy production của OpenFGA).
+#   docker compose -f docker-compose.yml -f docker-compose.postgres.yml up --build
+# openfga-migrate tạo/nâng cấp schema rồi thoát; openfga chỉ khởi động sau khi migrate xong.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: openfga
+      POSTGRES_PASSWORD: ${OPENFGA_DB_PASSWORD:-openfga-dev-password}
+      POSTGRES_DB: openfga
+    volumes:
+      - openfga-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openfga"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  openfga-migrate:
+    image: openfga/openfga:v1.22.1
+    command: migrate
+    environment:
+      OPENFGA_DATASTORE_ENGINE: postgres
+      OPENFGA_DATASTORE_URI: postgres://openfga:${OPENFGA_DB_PASSWORD:-openfga-dev-password}@postgres:5432/openfga?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  openfga:
+    environment:
+      OPENFGA_DATASTORE_ENGINE: postgres
+      OPENFGA_DATASTORE_URI: postgres://openfga:${OPENFGA_DB_PASSWORD:-openfga-dev-password}@postgres:5432/openfga?sslmode=disable
+    depends_on:
+      openfga-migrate:
+        condition: service_completed_successfully
+
+volumes:
+  openfga-data:

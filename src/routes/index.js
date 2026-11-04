@@ -83,4 +83,8 @@ api.use('/groups', groupRouter)
 api.use('/comments', commentRouter)
 api.use('/orgs', orgRouter)
 
+// Tiền tố → router con, để test/ops.test.js đối chiếu mọi route với docs/openapi.yaml.
+const MOUNTS = { '': api, '/documents': documentRouter, '/folders': folderRouter, '/groups': groupRouter, '/comments': commentRouter, '/orgs': orgRouter }
+
 module.exports = api
+module.exports.MOUNTS = MOUNTS

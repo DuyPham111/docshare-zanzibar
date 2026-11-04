@@ -58,6 +58,20 @@ class OpenFgaEngine {
     if (previous) await this.client.deleteStore({ storeId: previous }).catch(() => {})
   }
 
+  // db của app in-memory nên mỗi lần khởi động là một store mới. Với datastore lưu bền (Postgres),
+  // store của các lần chạy trước còn lại: xóa mọi store cùng tên trừ store đang dùng.
+  async pruneStores() {
+    const stale = []
+    let continuationToken
+    do {
+      const res = await call(() => this.client.listStores({ pageSize: 100, continuationToken }))
+      stale.push(...res.stores.filter(s => s.name === 'docshare' && s.id !== this.client.storeId))
+      continuationToken = res.continuation_token
+    } while (continuationToken)
+    for (const store of stale) await this.client.deleteStore({ storeId: store.id })
+    return stale.length
+  }
+
   async write({ writes = [], deletes = [] }) {
     if (!writes.length && !deletes.length) return
     await call(() =>

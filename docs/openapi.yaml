@@ -1,0 +1,632 @@
+openapi: 3.1.0
+info:
+  title: DocShare API – phân quyền Zanzibar
+  version: 1.0.0
+  description: |
+    API chia sẻ tài liệu kiểu Google Drive. Mọi quyết định phân quyền do **Zanzibar** trả lời
+    (OpenFGA hoặc engine tự viết, cùng model `authz/model.fga`).
+
+    - **Xác thực**: JWT HS256 chỉ chứa `sub`. Thiếu, sai hoặc hết hạn token → `401`.
+    - **Phân quyền**: mỗi operation ghi relation cần có (`x-relation`) và API Zanzibar được dùng (`x-zanzibar`).
+      Không có `can_view` trên object → `404` (body giống hệt object không tồn tại); thấy nhưng thiếu quyền → `403`.
+    - Quyền, org, nhóm **không** đọc từ request: `orgId`, `role`, `owner`, header `X-Org-Id` trong request đều bị bỏ qua.
+    - `subject` dùng chung cho chia sẻ, chặn, thành viên nhóm: `user:<id>`, `group:<id>` hoặc `public` (mọi user, chỉ ở mức viewer).
+
+    Thử ngay: mở trang demo `http://localhost:3200`, hoặc chạy `npm run token -- bob`, bấm **Authorize** và dán token.
+servers:
+  - url: /api
+    description: Server demo (npm run demo), cổng 3200
+  - url: http://localhost:3000
+    description: API chạy trực tiếp (npm start)
+security:
+  - bearerAuth: []
+tags:
+  - name: Tài liệu
+  - name: Thư mục
+  - name: Chia sẻ
+    description: Dùng chung cho `/documents/{id}` và `/folders/{id}`
+  - name: Nhóm
+  - name: Comment
+  - name: Org
+  - name: Vận hành
+
+paths:
+  /health:
+    get:
+      tags: [Vận hành]
+      summary: Health check, kèm tên engine Zanzibar đang dùng
+      security: []
+      responses:
+        '200':
+          description: Server đang chạy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, const: ok }
+                  authzEngine: { type: string, enum: [local, openfga] }
+
+  /me:
+    get:
+      tags: [Org]
+      summary: Thông tin người gọi, org, có phải admin, các nhóm (kể cả gián tiếp)
+      x-zanzibar: [ListObjects group#member, Check org#admin]
+      responses:
+        '200':
+          description: OK
+          content: { application/json: { schema: { $ref: '#/components/schemas/Me' } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+
+  /documents:
+    get:
+      tags: [Tài liệu]
+      summary: Tài liệu người gọi xem được (shared with me, tìm kiếm có phân quyền)
+      x-relation: can_view
+      x-zanzibar: [ListObjects document#can_view, BatchCheck mức truy cập]
+      parameters:
+        - { name: q, in: query, schema: { type: string }, description: Tìm theo tiêu đề và nội dung }
+        - { name: filter, in: query, schema: { type: string, enum: [shared, owned] }, description: 'shared: người khác tạo; owned: mình tạo' }
+      responses:
+        '200':
+          description: Danh sách, mỗi phần tử có `access` (owner, editor, commenter, viewer)
+          content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/DocumentSummary' } } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+    post:
+      tags: [Tài liệu]
+      summary: Tạo tài liệu trong một thư mục; người tạo là owner, org lấy từ thư mục
+      x-relation: folder#can_create
+      x-zanzibar: [Write org, parent, owner]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, folderId]
+              properties:
+                title: { type: string, maxLength: 200 }
+                content: { type: string }
+                folderId: { type: string }
+            example: { title: Index tuning, content: '...', folderId: specs }
+      responses:
+        '201': { description: Đã tạo, content: { application/json: { schema: { $ref: '#/components/schemas/Document' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /documents/{id}:
+    parameters: [{ $ref: '#/components/parameters/id' }]
+    get:
+      tags: [Tài liệu]
+      summary: Đọc tài liệu kèm cờ quyền (capabilities) cho UI
+      x-relation: can_view
+      x-zanzibar: [Check can_view, BatchCheck capabilities]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/DocumentDetail' } } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Tài liệu]
+      summary: Sửa title/content (can_edit); đổi folderId để chuyển thư mục (thêm can_create ở thư mục đích)
+      x-relation: can_edit
+      x-zanzibar: [Write đổi tuple parent]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                content: { type: string }
+                folderId: { type: string }
+      responses:
+        '200': { description: Đã sửa, content: { application/json: { schema: { $ref: '#/components/schemas/Document' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      tags: [Tài liệu]
+      summary: Xóa tài liệu và comment; xóa tuple trước để quyền mất ngay
+      x-relation: can_delete
+      x-zanzibar: [Read, Write delete]
+      responses:
+        '204': { description: Đã xóa }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /documents/{id}/comments:
+    parameters: [{ $ref: '#/components/parameters/id' }]
+    get:
+      tags: [Comment]
+      summary: Comment của tài liệu, kèm canDelete
+      x-relation: can_view
+      x-zanzibar: [BatchCheck comment#can_delete]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Comment' } } } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [Comment]
+      summary: Thêm comment
+      x-relation: can_comment
+      x-zanzibar: [Write comment#parent, comment#author]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [body], properties: { body: { type: string, maxLength: 2000 } } } } }
+      responses:
+        '201': { description: Đã tạo, content: { application/json: { schema: { $ref: '#/components/schemas/Comment' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /documents/{id}/shares: { $ref: '#/components/pathItems/Shares' }
+  /documents/{id}/shares/preview: { $ref: '#/components/pathItems/SharePreview' }
+  /documents/{id}/blocks: { $ref: '#/components/pathItems/Blocks' }
+  /documents/{id}/access: { $ref: '#/components/pathItems/Access' }
+  /documents/{id}/access/expand: { $ref: '#/components/pathItems/Expand' }
+
+  /folders:
+    get:
+      tags: [Thư mục]
+      summary: Thư mục xem được; root = thư mục đầu tiên người gọi thấy trên mỗi nhánh
+      x-relation: can_view
+      x-zanzibar: [ListObjects folder#can_view]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Folder' } } } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+    post:
+      tags: [Thư mục]
+      summary: Tạo thư mục con (can_create ở cha) hoặc thư mục gốc trong org của người gọi
+      x-relation: folder#can_create | org#member
+      x-zanzibar: [Write org, owner, parent]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, maxLength: 100 }
+                parentId: { type: [string, 'null'] }
+      responses:
+        '201': { description: Đã tạo, content: { application/json: { schema: { $ref: '#/components/schemas/Folder' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /folders/{id}:
+    parameters: [{ $ref: '#/components/parameters/id' }]
+    get:
+      tags: [Thư mục]
+      summary: Thư mục, breadcrumb và con xem được (con bị chặn được lọc bằng BatchCheck)
+      x-relation: can_view
+      x-zanzibar: [Check, BatchCheck con và breadcrumb]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/FolderDetail' } } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Thư mục]
+      summary: Đổi tên (can_edit) hoặc chuyển chỗ (can_delete + can_create ở đích, không tạo chu trình)
+      x-relation: can_edit | can_delete
+      x-zanzibar: [Write đổi tuple parent]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                parentId: { type: [string, 'null'] }
+      responses:
+        '200': { description: Đã sửa, content: { application/json: { schema: { $ref: '#/components/schemas/Folder' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      tags: [Thư mục]
+      summary: Xóa thư mục và cả cây con (tài liệu, comment, tuple)
+      x-relation: can_delete
+      x-zanzibar: [Read, Write delete]
+      responses:
+        '204': { description: Đã xóa }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /folders/{id}/shares: { $ref: '#/components/pathItems/Shares' }
+  /folders/{id}/shares/preview: { $ref: '#/components/pathItems/SharePreview' }
+  /folders/{id}/blocks: { $ref: '#/components/pathItems/Blocks' }
+  /folders/{id}/access: { $ref: '#/components/pathItems/Access' }
+  /folders/{id}/access/expand: { $ref: '#/components/pathItems/Expand' }
+
+  /groups:
+    get:
+      tags: [Nhóm]
+      summary: Nhóm xem được (mọi nhóm trong org của mình), kèm isMember
+      x-relation: can_view
+      x-zanzibar: [ListObjects group#can_view, BatchCheck member]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Group' } } } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+    post:
+      tags: [Nhóm]
+      summary: Tạo nhóm trong org của người gọi; người tạo là manager
+      x-relation: org#member
+      x-zanzibar: [Write group#org, group#manager]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [name], properties: { name: { type: string, maxLength: 100 } } } } }
+      responses:
+        '201': { description: Đã tạo, content: { application/json: { schema: { $ref: '#/components/schemas/Group' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+
+  /groups/{id}:
+    parameters: [{ $ref: '#/components/parameters/id' }]
+    get:
+      tags: [Nhóm]
+      summary: Manager, member trực tiếp và member thực tế (gồm nhóm con nhiều tầng)
+      x-relation: can_view
+      x-zanzibar: [Read, ListUsers group#member]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/GroupDetail' } } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /groups/{id}/members:
+    parameters: [{ $ref: '#/components/parameters/id' }]
+    post:
+      tags: [Nhóm]
+      summary: Thêm user hoặc nhóm con (cùng org, không tạo chu trình)
+      x-relation: can_manage
+      x-zanzibar: [Check userset group:X#member để chặn chu trình, Write]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [subject], properties: { subject: { $ref: '#/components/schemas/Subject' } } }, example: { subject: 'user:erin' } } }
+      responses:
+        '201': { description: Đã thêm }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+    delete:
+      tags: [Nhóm]
+      summary: Gỡ member; mọi quyền có qua nhóm mất ngay ở request kế tiếp
+      x-relation: can_manage
+      x-zanzibar: [Write delete]
+      parameters: [{ $ref: '#/components/parameters/subject' }]
+      responses:
+        '204': { description: Đã gỡ }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /comments/{id}:
+    parameters: [{ $ref: '#/components/parameters/id' }]
+    delete:
+      tags: [Comment]
+      summary: Xóa comment (tác giả hoặc owner tài liệu, và vẫn còn xem được tài liệu)
+      x-relation: comment#can_delete
+      x-zanzibar: [Check, Write delete]
+      responses:
+        '204': { description: Đã xóa }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /orgs/{id}:
+    parameters: [{ $ref: '#/components/parameters/id' }]
+    get:
+      tags: [Org]
+      summary: Thông tin org và danh sách member
+      x-relation: org#member
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /orgs/{id}/changes:
+    parameters: [{ $ref: '#/components/parameters/id' }]
+    get:
+      tags: [Org]
+      summary: Nhật ký thay đổi tuple thuộc org, mới nhất trước (Watch API của Zanzibar)
+      x-relation: org#admin
+      x-zanzibar: [ReadChanges]
+      responses:
+        '200':
+          description: Tối đa 100 thay đổi
+          content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Change' } } } }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+
+  parameters:
+    id: { name: id, in: path, required: true, schema: { type: string }, example: api-spec }
+    subject: { name: subject, in: query, required: true, schema: { $ref: '#/components/schemas/Subject' }, example: 'user:erin' }
+
+  responses:
+    Unauthenticated:
+      description: Thiếu, sai hoặc hết hạn token
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' }, example: { error: unauthenticated } } }
+    Forbidden:
+      description: Thấy object nhưng thiếu relation cần thiết (hoặc chính sách org chặn chia sẻ ra ngoài)
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' }, examples: { forbidden: { value: { error: forbidden } }, external: { value: { error: external_sharing_disabled } } } } }
+    NotFound:
+      description: Không tồn tại hoặc không có can_view (body giống hệt nhau)
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' }, example: { error: not_found } } }
+    BadRequest:
+      description: Dữ liệu không hợp lệ (invalid_subject, invalid_relation, invalid_expiry, cycle, cross_org_move...)
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' }, example: { error: invalid_subject } } }
+    Conflict:
+      description: Trùng (already_member, already_blocked) hoặc tạo chu trình nhóm (cycle)
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' }, example: { error: cycle } } }
+
+  pathItems:
+    Shares:
+      parameters: [{ $ref: '#/components/parameters/id' }]
+      get:
+        tags: [Chia sẻ]
+        summary: Tuple trực tiếp trên object (owner, viewer, commenter, editor, blocked)
+        x-relation: can_share
+        x-zanzibar: [Read]
+        responses:
+          '200': { description: OK, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Share' } } } } }
+          '401': { $ref: '#/components/responses/Unauthenticated' }
+          '403': { $ref: '#/components/responses/Forbidden' }
+          '404': { $ref: '#/components/responses/NotFound' }
+      post:
+        tags: [Chia sẻ]
+        summary: Chia sẻ (hoặc đổi mức chia sẻ) cho user, nhóm hoặc public; expiresAt tạo tuple có condition not_expired
+        x-relation: can_share
+        x-zanzibar: [Write tuple có condition]
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ShareRequest' }
+              examples:
+                user: { value: { subject: 'user:erin', relation: viewer } }
+                group: { value: { subject: 'group:eng', relation: commenter } }
+                public: { value: { subject: public, relation: viewer } }
+                expiring: { value: { subject: 'user:hank', relation: editor, expiresAt: '2026-12-01T00:00:00Z' } }
+        responses:
+          '201': { description: Đã chia sẻ, content: { application/json: { schema: { $ref: '#/components/schemas/Share' } } } }
+          '400': { $ref: '#/components/responses/BadRequest' }
+          '401': { $ref: '#/components/responses/Unauthenticated' }
+          '403': { $ref: '#/components/responses/Forbidden' }
+          '404': { $ref: '#/components/responses/NotFound' }
+      delete:
+        tags: [Chia sẻ]
+        summary: Gỡ mọi chia sẻ trực tiếp của subject
+        x-relation: can_share
+        x-zanzibar: [Write delete]
+        parameters: [{ $ref: '#/components/parameters/subject' }]
+        responses:
+          '204': { description: Đã gỡ }
+          '400': { $ref: '#/components/responses/BadRequest' }
+          '401': { $ref: '#/components/responses/Unauthenticated' }
+          '403': { $ref: '#/components/responses/Forbidden' }
+          '404': { $ref: '#/components/responses/NotFound' }
+    SharePreview:
+      parameters: [{ $ref: '#/components/parameters/id' }]
+      post:
+        tags: [Chia sẻ]
+        summary: Xem trước quyền của một user nếu chia sẻ, không ghi tuple nào
+        x-relation: can_share
+        x-zanzibar: [Check với contextual tuples]
+        requestBody:
+          required: true
+          content: { application/json: { schema: { $ref: '#/components/schemas/ShareRequest' }, example: { subject: 'user:erin', relation: commenter } } }
+        responses:
+          '200':
+            description: Quyền trước và sau
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    subject: { type: string }
+                    relation: { type: string }
+                    before: { type: object, additionalProperties: { type: boolean } }
+                    after: { type: object, additionalProperties: { type: boolean } }
+          '400': { $ref: '#/components/responses/BadRequest' }
+          '401': { $ref: '#/components/responses/Unauthenticated' }
+          '403': { $ref: '#/components/responses/Forbidden' }
+          '404': { $ref: '#/components/responses/NotFound' }
+    Blocks:
+      parameters: [{ $ref: '#/components/parameters/id' }]
+      post:
+        tags: [Chia sẻ]
+        summary: Chặn user hoặc nhóm; chặn thắng mọi quyền khác, kể cả public, và áp xuống cây con
+        x-relation: can_block
+        x-zanzibar: [Write blocked]
+        requestBody:
+          required: true
+          content: { application/json: { schema: { type: object, required: [subject], properties: { subject: { $ref: '#/components/schemas/Subject' } } }, example: { subject: 'user:frank' } } }
+        responses:
+          '201': { description: Đã chặn, content: { application/json: { schema: { $ref: '#/components/schemas/Share' } } } }
+          '400': { $ref: '#/components/responses/BadRequest' }
+          '401': { $ref: '#/components/responses/Unauthenticated' }
+          '403': { $ref: '#/components/responses/Forbidden' }
+          '404': { $ref: '#/components/responses/NotFound' }
+          '409': { $ref: '#/components/responses/Conflict' }
+      delete:
+        tags: [Chia sẻ]
+        summary: Bỏ chặn
+        x-relation: can_block
+        x-zanzibar: [Write delete]
+        parameters: [{ $ref: '#/components/parameters/subject' }]
+        responses:
+          '204': { description: Đã bỏ chặn }
+          '400': { $ref: '#/components/responses/BadRequest' }
+          '401': { $ref: '#/components/responses/Unauthenticated' }
+          '403': { $ref: '#/components/responses/Forbidden' }
+          '404': { $ref: '#/components/responses/NotFound' }
+    Access:
+      parameters: [{ $ref: '#/components/parameters/id' }]
+      get:
+        tags: [Chia sẻ]
+        summary: Ai có quyền và ở mức nào, kể cả qua nhóm lồng nhau và thư mục cha
+        x-relation: can_share
+        x-zanzibar: [ListUsers can_delete, can_edit, can_comment, can_view]
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    public: { type: boolean, description: Có public link (user:*) }
+                    users:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id: { type: string }
+                          name: { type: string }
+                          access: { type: string, enum: [owner, editor, commenter, viewer] }
+          '401': { $ref: '#/components/responses/Unauthenticated' }
+          '403': { $ref: '#/components/responses/Forbidden' }
+          '404': { $ref: '#/components/responses/NotFound' }
+    Expand:
+      parameters: [{ $ref: '#/components/parameters/id' }]
+      get:
+        tags: [Chia sẻ]
+        summary: Cây userset một tầng giải thích relation đến từ đâu (cùng dạng với API Expand của OpenFGA)
+        x-relation: can_share
+        x-zanzibar: [Expand]
+        parameters:
+          - { name: relation, in: query, schema: { type: string, default: can_view }, example: viewer }
+        responses:
+          '200': { description: '{ root: { name, union | intersection | difference | leaf } }' }
+          '400': { $ref: '#/components/responses/BadRequest' }
+          '401': { $ref: '#/components/responses/Unauthenticated' }
+          '403': { $ref: '#/components/responses/Forbidden' }
+          '404': { $ref: '#/components/responses/NotFound' }
+
+  schemas:
+    Error:
+      type: object
+      properties: { error: { type: string } }
+    Subject:
+      type: string
+      pattern: '^(public|(user|group):[\w-]+)$'
+      examples: ['user:bob', 'group:eng', 'public']
+    ShareRequest:
+      type: object
+      required: [subject, relation]
+      properties:
+        subject: { $ref: '#/components/schemas/Subject' }
+        relation: { type: string, enum: [viewer, commenter, editor] }
+        expiresAt: { type: string, format: date-time, description: Thời điểm hết hạn (phải ở tương lai; không dùng với public) }
+    Share:
+      type: object
+      properties:
+        relation: { type: string, enum: [owner, viewer, commenter, editor, blocked] }
+        subject: { $ref: '#/components/schemas/Subject' }
+        expiresAt: { type: [string, 'null'], format: date-time }
+    Document:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        content: { type: string }
+        orgId: { type: string }
+        folderId: { type: string }
+        createdBy: { type: string }
+    DocumentSummary:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        folderId: { type: string }
+        orgId: { type: string }
+        createdBy: { type: string }
+        access: { type: string, enum: [owner, editor, commenter, viewer] }
+    DocumentDetail:
+      allOf:
+        - $ref: '#/components/schemas/Document'
+        - type: object
+          properties:
+            capabilities:
+              type: object
+              properties:
+                can_comment: { type: boolean }
+                can_edit: { type: boolean }
+                can_share: { type: boolean }
+                can_delete: { type: boolean }
+                can_block: { type: boolean }
+    Folder:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        orgId: { type: string }
+        parentId: { type: [string, 'null'] }
+        createdBy: { type: string }
+        root: { type: boolean }
+    FolderDetail:
+      allOf:
+        - $ref: '#/components/schemas/Folder'
+        - type: object
+          properties:
+            capabilities: { type: object, additionalProperties: { type: boolean } }
+            path: { type: array, items: { type: object, properties: { id: { type: string }, name: { type: string } } } }
+            folders: { type: array, items: { type: object, properties: { id: { type: string }, name: { type: string } } } }
+            documents: { type: array, items: { type: object, properties: { id: { type: string }, title: { type: string } } } }
+    Group:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        orgId: { type: string }
+        isMember: { type: boolean }
+    GroupDetail:
+      allOf:
+        - $ref: '#/components/schemas/Group'
+        - type: object
+          properties:
+            managers: { type: array, items: { type: string } }
+            members: { type: array, items: { type: string } }
+            effectiveMembers: { type: array, items: { type: string } }
+            capabilities: { type: object, properties: { can_manage: { type: boolean } } }
+    Comment:
+      type: object
+      properties:
+        id: { type: string }
+        documentId: { type: string }
+        authorId: { type: string }
+        body: { type: string }
+        createdAt: { type: string, format: date-time }
+        canDelete: { type: boolean }
+    Me:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        orgId: { type: string }
+        isAdmin: { type: boolean }
+        groups: { type: array, items: { type: string } }
+    Change:
+      type: object
+      properties:
+        operation: { type: string, enum: [write, delete] }
+        tuple: { type: string, example: 'document:api-spec#viewer@user:erin' }
+        condition: { type: [string, 'null'] }
+        timestamp: { type: string, format: date-time }
