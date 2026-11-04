@@ -14,12 +14,14 @@ type org
     define member: [user] or admin
 
 # Nhóm lồng nhau: member có thể là user hoặc cả một nhóm khác (group:x#member).
+# manager quản lý danh sách nhưng không tự là member: nếu không, admin org (manager mọi nhóm) sẽ
+# thành member mọi nhóm và dính cả các luật "blocked" áp cho nhóm.
 type group
   relations
     define org: [org]
     define manager: [user] or admin from org
-    define member: [user, group#member] or manager
-    define can_view: member or member from org
+    define member: [user, group#member]
+    define can_view: member or manager or member from org
     define can_manage: manager
 
 # Thư mục lồng nhau. Quyền chảy từ thư mục cha xuống con qua `... from parent` (tuple-to-userset).

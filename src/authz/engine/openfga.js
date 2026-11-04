@@ -8,6 +8,7 @@ const { AuthzError } = require('../errors')
 // gỡ quyền xong là request kế tiếp thấy ngay (tránh "new enemy problem").
 const CONSISTENT = { consistency: ConsistencyPreference.HigherConsistency }
 const CHUNK = 100 // giới hạn số tuple trong một write transaction của OpenFGA
+const BATCH_LIMIT = 50
 
 /** Lỗi validate từ OpenFGA → AuthzError cùng mã với LocalEngine. */
 function mapError(err) {
@@ -106,8 +107,12 @@ class OpenFgaEngine {
   async batchCheck(checks) {
     if (!checks.length) return []
     const items = checks.map((c, i) => ({ ...c, contextualTuples: undefined, correlationId: `c${i}` }))
-    const res = await call(() => this.client.batchCheck({ checks: items }, CONSISTENT))
-    const byId = new Map(res.result.map(r => [r.correlationId, r]))
+    const byId = new Map()
+    // Server giới hạn số check trong một BatchCheck (OPENFGA_MAX_CHECKS_PER_BATCH_CHECK, mặc định 50).
+    for (let i = 0; i < items.length; i += BATCH_LIMIT) {
+      const res = await call(() => this.client.batchCheck({ checks: items.slice(i, i + BATCH_LIMIT) }, CONSISTENT))
+      for (const r of res.result) byId.set(r.correlationId, r)
+    }
     return items.map(({ correlationId }) => {
       const r = byId.get(correlationId)
       if (r?.error) throw new AuthzError('check_failed', JSON.stringify(r.error))

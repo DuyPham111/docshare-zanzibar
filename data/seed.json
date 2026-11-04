@@ -59,6 +59,7 @@
     "group:dba#member@user:frank",
     "group:frontend#member@user:carol",
     "group:sales#manager@user:dave",
+    "group:sales#member@user:dave",
     "group:ops#member@user:hank",
 
     "folder:engineering#editor@group:eng#member",
