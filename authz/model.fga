@@ -1,0 +1,75 @@
+model
+  schema 1.1
+
+# DocShare: hệ thống chia sẻ tài liệu kiểu Google Drive, mô hình hóa theo Zanzibar (OpenFGA DSL).
+# File này là nguồn chính sách duy nhất: OpenFGA server và engine tự viết (src/authz/engine/local.js) đọc cùng file.
+# Quyền = quan hệ (tuple object#relation@user) + luật viết lại userset (or, and, but not, from).
+
+type user
+
+# Tenant. Mỗi user thuộc đúng một org (home org); admin của org quản lý mọi tài nguyên của org đó, không hơn.
+type org
+  relations
+    define admin: [user]
+    define member: [user] or admin
+
+# Nhóm lồng nhau: member có thể là user hoặc cả một nhóm khác (group:x#member).
+type group
+  relations
+    define org: [org]
+    define manager: [user] or admin from org
+    define member: [user, group#member] or manager
+    define can_view: member or member from org
+    define can_manage: manager
+
+# Thư mục lồng nhau. Quyền chảy từ thư mục cha xuống con qua `... from parent` (tuple-to-userset).
+type folder
+  relations
+    define org: [org]
+    define parent: [folder]
+    define owner: [user] or owner from parent or admin from org
+    define editor: [user, group#member, user with not_expired, group#member with not_expired] or owner or editor from parent
+    define commenter: [user, group#member, user with not_expired, group#member with not_expired] or editor or commenter from parent
+    define viewer: [user, user:*, group#member, user with not_expired, group#member with not_expired] or commenter or viewer from parent
+    define blocked: [user, group#member] or blocked from parent
+    define org_member: member from org
+    define org_editor: editor and org_member
+    define sharer: owner or org_editor
+    define can_view: viewer but not blocked
+    define can_create: editor but not blocked
+    define can_edit: editor but not blocked
+    define can_share: sharer but not blocked
+    define can_delete: owner but not blocked
+    define can_block: owner
+
+type document
+  relations
+    define org: [org]
+    define parent: [folder]
+    define owner: [user] or owner from parent
+    define editor: [user, group#member, user with not_expired, group#member with not_expired] or owner or editor from parent
+    define commenter: [user, group#member, user with not_expired, group#member with not_expired] or editor or commenter from parent
+    define viewer: [user, user:*, group#member, user with not_expired, group#member with not_expired] or commenter or viewer from parent
+    define blocked: [user, group#member] or blocked from parent
+    # Khách ngoài org được làm editor nhưng không được chia sẻ tiếp (intersection với org member).
+    define org_member: member from org
+    define org_editor: editor and org_member
+    define sharer: owner or org_editor
+    define can_view: viewer but not blocked
+    define can_comment: commenter but not blocked
+    define can_edit: editor but not blocked
+    define can_share: sharer but not blocked
+    define can_delete: owner but not blocked
+    define can_block: owner
+
+type comment
+  relations
+    define parent: [document]
+    define author: [user]
+    define can_view: can_view from parent
+    define can_delete: author or owner from parent
+
+# ABAC trong ReBAC: quyền chia sẻ có thời hạn. current_time do server đưa vào lúc check, không lấy từ client.
+condition not_expired(current_time: timestamp, expires_at: timestamp) {
+  current_time < expires_at
+}

@@ -1,0 +1,32 @@
+# OpenFGA (Zanzibar open-source) + DocShare API.
+#   docker compose up -d openfga                   chỉ chạy OpenFGA, app chạy bằng npm (AUTHZ_ENGINE=openfga)
+#   docker compose up --build                      chạy cả hai
+services:
+  openfga:
+    image: openfga/openfga:v1.22.1
+    command: run
+    environment:
+      # Datastore memory: đủ cho lab, mất dữ liệu khi tắt. Production dùng postgres/mysql.
+      OPENFGA_DATASTORE_ENGINE: memory
+      OPENFGA_LOG_FORMAT: json
+    ports:
+      - "8080:8080" # HTTP API
+      - "8081:8081" # gRPC
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/grpc_health_probe", "-addr=openfga:8081"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    environment:
+      NODE_ENV: production
+      JWT_SECRET: change-me-in-production
+      AUTHZ_ENGINE: openfga
+      FGA_API_URL: http://openfga:8080
+    ports:
+      - "3000:3000"
+    depends_on:
+      openfga:
+        condition: service_healthy

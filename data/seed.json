@@ -1,0 +1,80 @@
+{
+  "orgs": [
+    { "id": "acme", "name": "Acme Corp", "allowExternalSharing": true },
+    { "id": "globex", "name": "Globex", "allowExternalSharing": false }
+  ],
+  "users": [
+    { "id": "alice", "name": "Alice", "orgId": "acme" },
+    { "id": "bob", "name": "Bob", "orgId": "acme" },
+    { "id": "carol", "name": "Carol", "orgId": "acme" },
+    { "id": "dave", "name": "Dave", "orgId": "acme" },
+    { "id": "erin", "name": "Erin", "orgId": "acme" },
+    { "id": "frank", "name": "Frank", "orgId": "acme" },
+    { "id": "gina", "name": "Gina", "orgId": "globex" },
+    { "id": "hank", "name": "Hank", "orgId": "globex" }
+  ],
+  "groups": [
+    { "id": "eng", "name": "Engineering", "orgId": "acme" },
+    { "id": "backend", "name": "Backend", "orgId": "acme" },
+    { "id": "frontend", "name": "Frontend", "orgId": "acme" },
+    { "id": "dba", "name": "Database admins", "orgId": "acme" },
+    { "id": "sales", "name": "Sales", "orgId": "acme" },
+    { "id": "ops", "name": "Operations", "orgId": "globex" }
+  ],
+  "folders": [
+    { "id": "acme-drive", "name": "Acme Drive", "orgId": "acme", "parentId": null, "createdBy": "alice" },
+    { "id": "engineering", "name": "Engineering", "orgId": "acme", "parentId": "acme-drive", "createdBy": "alice" },
+    { "id": "specs", "name": "Specs", "orgId": "acme", "parentId": "engineering", "createdBy": "bob" },
+    { "id": "incidents", "name": "Incidents", "orgId": "acme", "parentId": "engineering", "createdBy": "bob" },
+    { "id": "sales-docs", "name": "Sales", "orgId": "acme", "parentId": "acme-drive", "createdBy": "dave" },
+    { "id": "public", "name": "Public", "orgId": "acme", "parentId": "acme-drive", "createdBy": "alice" },
+    { "id": "home-bob", "name": "Bob's Drive", "orgId": "acme", "parentId": null, "createdBy": "bob" },
+    { "id": "globex-drive", "name": "Globex Drive", "orgId": "globex", "parentId": null, "createdBy": "gina" }
+  ],
+  "documents": [
+    { "id": "api-spec", "title": "API specification", "content": "REST API v2 cho DocShare.", "orgId": "acme", "folderId": "specs", "createdBy": "bob" },
+    { "id": "db-schema", "title": "Database schema", "content": "Bảng documents, folders, comments.", "orgId": "acme", "folderId": "specs", "createdBy": "frank" },
+    { "id": "postmortem", "title": "Postmortem 2026-10", "content": "Sự cố mất kết nối DB lúc 02:00.", "orgId": "acme", "folderId": "incidents", "createdBy": "bob" },
+    { "id": "pricing", "title": "Pricing 2027", "content": "Bảng giá đề xuất cho năm 2027.", "orgId": "acme", "folderId": "sales-docs", "createdBy": "dave" },
+    { "id": "forecast", "title": "Q4 forecast", "content": "Dự báo doanh thu quý 4.", "orgId": "acme", "folderId": "sales-docs", "createdBy": "dave" },
+    { "id": "handbook", "title": "Employee handbook", "content": "Sổ tay nhân viên, công khai.", "orgId": "acme", "folderId": "public", "createdBy": "alice" },
+    { "id": "bob-notes", "title": "Bob's notes", "content": "Ghi chú riêng của Bob.", "orgId": "acme", "folderId": "home-bob", "createdBy": "bob" },
+    { "id": "draft", "title": "Blog draft", "content": "Bản nháp bài blog về Zanzibar.", "orgId": "acme", "folderId": "home-bob", "createdBy": "bob" },
+    { "id": "globex-plan", "title": "Globex plan", "content": "Kế hoạch nội bộ của Globex.", "orgId": "globex", "folderId": "globex-drive", "createdBy": "gina" }
+  ],
+  "comments": [
+    { "id": "c1", "documentId": "api-spec", "authorId": "carol", "body": "Nên thêm ví dụ cho mã 403.", "createdAt": "2026-11-01T09:00:00.000Z" },
+    { "id": "c2", "documentId": "api-spec", "authorId": "bob", "body": "Đã thêm, nhờ xem lại.", "createdAt": "2026-11-01T10:00:00.000Z" },
+    { "id": "c3", "documentId": "draft", "authorId": "carol", "body": "Đoạn mở đầu hơi dài.", "createdAt": "2026-11-02T08:30:00.000Z" }
+  ],
+  "tuples": [
+    "org:acme#admin@user:alice",
+    "org:globex#admin@user:gina",
+
+    "group:eng#manager@user:carol",
+    "group:eng#member@group:backend#member",
+    "group:eng#member@group:frontend#member",
+    "group:backend#member@user:bob",
+    "group:backend#member@group:dba#member",
+    "group:dba#member@user:frank",
+    "group:frontend#member@user:carol",
+    "group:sales#manager@user:dave",
+    "group:ops#member@user:hank",
+
+    "folder:engineering#editor@group:eng#member",
+    "folder:incidents#blocked@group:frontend#member",
+    "folder:sales-docs#editor@group:sales#member",
+    "folder:public#viewer@user:*",
+
+    "document:forecast#viewer@user:erin",
+    "document:handbook#blocked@user:frank",
+    "document:draft#commenter@user:carol",
+    "document:globex-plan#editor@user:hank",
+    {
+      "object": "document:pricing",
+      "relation": "editor",
+      "user": "user:gina",
+      "condition": { "name": "not_expired", "context": { "expires_at": "2026-12-31T00:00:00.000Z" } }
+    }
+  ]
+}
