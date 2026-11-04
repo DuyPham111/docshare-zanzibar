@@ -1,0 +1,25 @@
+<section id="c-docs" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 13/16 · Tài liệu API</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">OpenAPI 3.1 viết tay + Swagger UI, mỗi operation ghi x-relation</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">40 operation; <b>x-relation</b> và <b>x-zanzibar</b> cho biết quyền nào bảo vệ endpoint nào</p>
+<p style="font-size:30px;line-height:1.35">Route chia sẻ dùng chung qua <b>components/pathItems</b> (OpenAPI 3.1)</p>
+<p style="font-size:30px;line-height:1.35">Test D1 so route Express với đặc tả; D2 bắt buộc có x-relation</p>
+<p style="font-size:30px;line-height:1.35">Swagger UI ở /docs: Authorize bằng token, Try it out</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>swagger-jsdoc</b>: YAML rải trong comment route</p>
+<p style="font-size:30px;line-height:1.35"><b>Postman collection</b>: không phải chuẩn mở</p>
+<p style="font-size:30px;line-height:1.35"><b>Redoc</b>: không có Try it out; <b>chỉ README</b>: không thử được</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> schema phản hồi viết tay; D1 chỉ khóa path và method.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.16</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">23</p>
+<aside>Tài liệu API là OpenAPI 3.1 viết tay, 40 operation, xem bằng Swagger UI ở /docs của server demo. Điểm riêng của nhóm là hai trường mở rộng x-relation và x-zanzibar: đọc tài liệu là biết endpoint cần relation nào và dùng API Zanzibar nào. Test D1 đọc route từ chính Express router và so với đặc tả, thêm route mà quên tài liệu thì đỏ; D2 bắt buộc mọi operation ghi relation.</aside>
+</section>

@@ -1,0 +1,23 @@
+<section id="tradeoffs" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Tóm tắt</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Các lựa chọn chính</h2>
+</div>
+<table style="font-size:24px">
+<tr><th>Hạng mục</th><th>Chọn</th><th>Đã loại</th></tr>
+<tr><td style="font-weight:600">Domain</td><td>DocShare kiểu Google Drive</td><td>Jira-like, GitHub-like</td></tr>
+<tr><td style="font-weight:600">Mô hình</td><td>ReBAC Zanzibar + condition</td><td>decide() viết tay, RBAC, ACL phẳng</td></tr>
+<tr><td style="font-weight:600">Engine</td><td>OpenFGA v1.22.1 + LocalEngine</td><td>SpiceDB, Permify, Keto, OPA, Casbin</td></tr>
+<tr><td style="font-weight:600">Thời hạn</td><td>Condition not_expired</td><td>Cron xóa tuple, kiểm ở service</td></tr>
+<tr><td style="font-weight:600">Nguồn sự thật</td><td>Chia sẻ chỉ ở Zanzibar, tuple trước</td><td>Đồng bộ db → Zanzibar, 2PC</td></tr>
+<tr><td style="font-weight:600">Consistency</td><td>HIGHER_CONSISTENCY</td><td>Cache, MINIMIZE_LATENCY</td></tr>
+<tr><td style="font-weight:600">List</td><td>ListObjects / ListUsers / BatchCheck</td><td>Tải hết rồi lọc, JOIN tự viết</td></tr>
+<tr><td style="font-weight:600">Kiểm thử</td><td>Oracle viết tay + parity + mutation</td><td>fga model test, snapshot, Postman</td></tr>
+<tr><td style="font-weight:600">Tài liệu API</td><td>OpenAPI 3.1 + Swagger UI, x-relation</td><td>swagger-jsdoc, Postman, Redoc</td></tr>
+<tr><td style="font-weight:600">Logging</td><td>JSON Lines + ReadChanges</td><td>ELK trong lab, winston</td></tr>
+<tr><td style="font-weight:600">Triển khai</td><td>Compose, pin version, Postgres override</td><td>Helm/K8s, image đầy đủ, root</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §5</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">27</p>
+<aside>Tóm tắt các lựa chọn. Cột giữa là thứ nhóm chọn, cột phải là các phương án đã loại; lý do chi tiết từng dòng nằm ở mục 4 và bảng tóm tắt ở mục 5 của REPORT.md, kèm minh chứng cho mỗi dòng.</aside>
+</section>

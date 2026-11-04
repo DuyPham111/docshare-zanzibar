@@ -1,0 +1,37 @@
+<section id="model" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Model</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Mỗi tính năng là một dòng DSL</h2>
+</div>
+<div style="display:flex;gap:36px;flex:1">
+<div style="flex:1.05">
+<pre style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.45;background:#FFFFFF;border:1px solid #D9D2C3;border-radius:16px;padding:28px 32px;white-space:pre;overflow:hidden"><b>type document</b>
+  define parent: [folder]
+  define owner: [user] or owner from parent
+  define editor: [user, group#member,
+      user with not_expired] or owner
+      or editor from parent
+  define blocked: [user, group#member]
+      or blocked from parent
+  define org_editor: editor and org_member
+  define sharer: owner or org_editor
+  define can_view: viewer but not blocked
+  define can_share: sharer but not blocked</pre>
+</div>
+<div style="flex:0.95;display:flex;flex-direction:column;gap:12px">
+<table style="font-size:26px">
+<tr><th>Tính năng</th><th>Cơ chế</th></tr>
+<tr><td>Kế thừa thư mục</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">from parent</td></tr>
+<tr><td>Nhóm lồng nhau</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">group#member</td></tr>
+<tr><td>Public link</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">user:*</td></tr>
+<tr><td>Chặn thắng mọi quyền</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">but not</td></tr>
+<tr><td>Khách không chia sẻ tiếp</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">and org_member</td></tr>
+<tr><td>Chia sẻ có hạn</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">with not_expired</td></tr>
+<tr><td>Admin org</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">admin from org</td></tr>
+</table>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · authz/model.fga · REPORT.md §4.5, §6</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">5</p>
+<aside>Đây là phần chính của model cho type document. Mỗi tính năng của Drive là một dòng DSL. Kế thừa từ thư mục là from parent. Nhóm lồng nhau là userset group thăng member. Public link là wildcard user sao. Chặn thắng mọi quyền là but not blocked, và blocked cũng kế thừa từ thư mục cha nên chặn ở thư mục là chặn cả cây. Khách ngoài org không chia sẻ tiếp được nhờ intersection: sharer là owner, hoặc vừa là editor vừa là member của org. Chia sẻ có hạn là tuple gắn condition not_expired. Admin org có quyền owner qua admin from org ở thư mục, nên tenant boundary nằm ngay trong đồ thị: không có tuple nào nối sang org khác thì không có đường quyền.</aside>
+</section>

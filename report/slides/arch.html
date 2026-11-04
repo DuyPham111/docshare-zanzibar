@@ -1,0 +1,32 @@
+<section id="arch" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Kiến trúc</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Một cổng PDP, hai engine, một file chính sách</h2>
+</div>
+<div style="display:flex;align-items:center;gap:20px;margin-top:12px">
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D2C3;border-radius:16px;padding:26px 20px;text-align:center"><p style="font-size:30px;font-weight:600;line-height:1.3">Client<br><span style="font-size:22px;color:#5B616B">JWT chỉ có sub</span></p></div><x-shape kind="arrow-right" style="width:44px;height:36px;background:#1F5FA8"></x-shape>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D2C3;border-radius:16px;padding:26px 20px;text-align:center"><p style="font-size:30px;font-weight:600;line-height:1.3">Route<br><span style="font-size:22px;color:#5B616B">không kiểm quyền</span></p></div><x-shape kind="arrow-right" style="width:44px;height:36px;background:#1F5FA8"></x-shape>
+<div style="flex:1;background:#DCE6F2;border:2px solid #D9D2C3;border-radius:16px;padding:26px 20px;text-align:center"><p style="font-size:30px;font-weight:600;line-height:1.3">Service = PEP<br><span style="font-size:22px;color:#5B616B">enforce() 404/403</span></p></div><x-shape kind="arrow-right" style="width:44px;height:36px;background:#1F5FA8"></x-shape>
+<div style="flex:1;background:#FFFFFF;border:2px solid #1F5FA8;border-radius:16px;padding:26px 20px;text-align:center"><p style="font-size:30px;font-weight:600;line-height:1.3">src/authz<br><span style="font-size:22px;color:#5B616B">cổng PDP duy nhất</span></p></div>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFF;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">AUTHZ_ENGINE=openfga</p>
+<p style="font-size:30px;line-height:1.35"><b>OpenFGA v1.22.1</b> qua @openfga/sdk, HIGHER_CONSISTENCY</p>
+<p style="font-size:30px;line-height:1.35">Datastore memory (lab) hoặc PostgreSQL 17</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFF;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">AUTHZ_ENGINE=local</p>
+<p style="font-size:30px;line-height:1.35"><b>LocalEngine</b> tự viết, khoảng 290 dòng + 106 dòng CEL</p>
+<p style="font-size:30px;line-height:1.35">Test không cần Docker; oracle thứ hai</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#F6E0C8;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Dữ liệu</p>
+<p style="font-size:30px;line-height:1.35">Chia sẻ, nhóm, chặn: <b>chỉ</b> trong Zanzibar</p>
+<p style="font-size:30px;line-height:1.35">Tên, nội dung: db. Cây thư mục: cả hai</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §3</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">4</p>
+<aside>Kiến trúc. Client gửi JWT chỉ chứa sub, không có role hay nhóm. Route chỉ chuyển request vào service. Service là PEP: nạp object từ db, gọi enforce, không có can_view thì 404, thấy nhưng thiếu quyền thì 403. Service chỉ nói chuyện với một cổng src/authz, cổng này chọn engine theo biến AUTHZ_ENGINE: OpenFGA thật qua SDK chính thức, hoặc engine nhóm tự viết. Cả hai đọc cùng một file model.fga. Về dữ liệu: chia sẻ, thành viên nhóm, chặn chỉ nằm trong Zanzibar; tên và nội dung tài liệu nằm trong db; cây thư mục nằm ở cả hai vì cần cho giao diện và cho kế thừa quyền.</aside>
+</section>

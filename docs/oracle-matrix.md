@@ -1,6 +1,6 @@
 # Ma trận quyền: user × tài liệu
 
-Engine: `local`. Ký hiệu: O owner, E editor, C commenter, V viewer, · không thấy (404); `+s` = chia sẻ tiếp được.
+Engine: `openfga`. Ký hiệu: O owner, E editor, C commenter, V viewer, · không thấy (404); `+s` = chia sẻ tiếp được.
 Mỗi ô là **kỳ vọng viết tay**; nếu engine trả khác, ô ghi `kỳ vọng ≠ thực tế` và in đậm.
 
 | Tài liệu | alice | bob | carol | dave | erin | frank | gina | hank |

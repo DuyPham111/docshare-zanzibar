@@ -1,0 +1,32 @@
+<section id="check" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Thuật toán</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Check đi theo cây rewrite cho tới tuple</h2>
+</div>
+<div style="display:flex;gap:36px;flex:1">
+<div style="flex:1.25">
+<pre style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.45;background:#FFFFFF;border:1px solid #D9D2C3;border-radius:16px;padding:28px 32px;white-space:pre;overflow:hidden">Check(user:frank, can_edit, document:api-spec)
+ editor but not blocked
+ ├ editor from parent → folder:specs
+ │  └ editor from parent → folder:engineering
+ │     └ editor @ group:eng#member
+ │        └ member @ group:backend#member
+ │           └ member @ group:dba#member
+ │              └ member @ user:frank      <span style="color:#2F7A3E">✔</span>
+ └ blocked from parent → (không có tuple)  <span style="color:#2F7A3E">✘</span>
+ ⇒ <b style="color:#2F7A3E">ALLOW</b></pre>
+</div>
+<div style="flex:0.75;display:flex;flex-direction:column;gap:20px">
+<div style="background:#F6E0C8;border-radius:16px;padding:28px">
+<p style="font-size:28px;line-height:1.35"><b>carol × postmortem</b>: editor đúng (frontend ⊂ eng), nhưng <span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px">incidents#blocked@group:frontend#member</span> ⇒ <b style="color:#A3413A">DENY 404</b></p>
+</div>
+<div style="background:#FFFFFF;border-radius:16px;padding:28px">
+<p style="font-size:28px;line-height:1.35">6 loại nút: <b>this</b>, computed, tuple-to-userset, union, intersection, difference</p>
+<p style="font-size:28px;line-height:1.35;color:#5B616B">Chu trình → false; độ sâu tối đa 25</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · src/authz/engine/local.js · docs/thiet-ke.md §2</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">6</p>
+<aside>Check chạy thế nào, lấy ví dụ frank sửa api-spec. can_edit là editor trừ blocked. Editor của api-spec có nhánh editor from parent, đi lên thư mục specs, rồi engineering. Engineering có tuple editor là group eng thăng member. Eng chứa backend, backend chứa dba, dba chứa frank. Tìm thấy, nhánh editor đúng. Nhánh blocked không có tuple nào, sai. Đúng trừ sai là ALLOW. Với carol trên postmortem: editor đúng vì frontend nằm trong eng, nhưng thư mục incidents chặn nhóm frontend, blocked from parent đúng, nên DENY và trả 404. Engine tự viết xử lý 6 loại nút rewrite, phát hiện chu trình nhóm và giới hạn độ sâu 25 như OpenFGA.</aside>
+</section>

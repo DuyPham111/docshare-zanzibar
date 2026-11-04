@@ -1,172 +1,167 @@
-# DocShare: phân quyền kiểu Zanzibar cho hệ thống chia sẻ tài liệu
+# Nhóm 07: DocShare, phân quyền kiểu Zanzibar cho hệ thống chia sẻ tài liệu
 
-DocShare là một API chia sẻ tài liệu giống Google Drive. Ứng dụng gồm org (tenant), nhóm lồng nhau, thư mục lồng nhau, tài liệu, comment, chia sẻ cho user, nhóm hoặc public link, chia sẻ có thời hạn, và chặn người dùng. Toàn bộ phân quyền dựa trên **Zanzibar**, hệ thống phân quyền Google dùng cho Drive, Calendar, YouTube.
+**Thành viên:** 23127045 · 23127102 · 23127159 · 23127183 · 23127393.
 
-- **Engine chính: [OpenFGA](https://openfga.dev) v1.22.1.** Đây là hiện thực Zanzibar mã nguồn mở (dự án CNCF), chạy bằng Docker.
-- **Engine tự viết: [`src/authz/engine/local.js`](src/authz/engine/local.js), khoảng 300 dòng.** Engine này đọc cùng file model, dùng để test không cần Docker và để trình bày thuật toán `Check`.
-- Cả hai engine dùng chung một file chính sách: [`authz/model.fga`](authz/model.fga). Bài [`test/parity.test.js`](test/parity.test.js) chứng minh hai engine trả cùng kết quả trên hơn 500 câu `Check` và trên mọi lệnh `ListObjects`, `ListUsers`, `Expand`.
+DocShare là một API chia sẻ tài liệu giống Google Drive, gồm:
 
-> Dự án tiếp nối Block 6 ([task-api](../task-api)). Trong task-api, quyền là hàm `decide()` viết tay. Ở DocShare, quyền là **dữ liệu quan hệ (tuple) + luật viết lại userset**, và một engine riêng (PDP) trả lời mọi câu hỏi phân quyền.
+- org (tenant), nhóm lồng nhau, thư mục lồng nhau, tài liệu, comment;
+- chia sẻ cho user, cho nhóm hoặc qua public link; chia sẻ có thời hạn; chặn người dùng.
 
-## Vì sao cần Zanzibar ở đây
+Mọi quyết định phân quyền do **Zanzibar** trả lời, cụ thể là [OpenFGA](https://openfga.dev) v1.22.1. Kèm theo là một engine Zanzibar nhóm tự viết, đọc cùng file chính sách [`authz/model.fga`](authz/model.fga).
 
-| Yêu cầu | Viết tay như task-api | Zanzibar |
+Gói nộp gồm:
+
+- mã nguồn và dữ liệu [`data/`](data/README.md);
+- README này (hướng dẫn triển khai);
+- [**REPORT.md**](REPORT.md) và [**REPORT.html**](REPORT.html): giải thích các lựa chọn của nhóm;
+- evidence chạy thật, trang demo, đặc tả OpenAPI và Swagger UI.
+
+| Kết quả | Giá trị |
+| --- | --- |
+| Ma trận oracle viết tay (8 user × 9 tài liệu) | **72/72** ô khớp trên cả hai engine ([oracle-matrix.md](docs/oracle-matrix.md)) |
+| Automated test, engine tự viết | **222/222** (`npm test`; 7 test parity cần OpenFGA nên bỏ qua) |
+| Automated test, OpenFGA v1.22.1 | **243/243** (`npm run test:openfga`, gồm engine test và parity) |
+| Parity hai engine | 1.920 câu Check (960 × 2 thời điểm), cùng ListObjects, ListUsers, Expand: **0 khác biệt** |
+| Mutation test model | 6/6 lỗi cố ý bị test bắt ([mutations.md](docs/evidence/mutations.md)) |
+| Coverage `src/` (chạy trên OpenFGA) | 96,5% dòng; `access.js`, `cel.js` 100% |
+
+## 1. Yêu cầu môi trường
+
+- **Node.js ≥ 22**. Ứng dụng dùng `process.loadEnvFile` có sẵn để đọc `.env`. Gói đã kiểm tra trên Node **22.16.0**, npm 11.7.
+- Cần Internet khi cài dependency lần đầu và khi kéo image OpenFGA.
+- Chạy được trên Windows PowerShell, macOS và Linux.
+- **Docker Desktop / Docker Engine**:
+  - **cần** nếu muốn chạy OpenFGA thật (mục 3, 5);
+  - **không cần** nếu chỉ chạy test và demo bằng engine tự viết (mục 2).
+- Các cổng phải trống: **3000** (API), **3200** (server demo), **8080/8081** (OpenFGA).
+
+## 2. Chạy nhanh, không cần Docker
+
+Mở terminal tại thư mục chứa `package.json`:
+
+~~~powershell
+node --version          # >= 22
+npm ci                  # cài đúng phiên bản trong package-lock.json
+npm test                # 222 test trên engine tự viết, khoảng 15 giây
+npm run demo            # trang demo http://localhost:3200, Swagger UI http://localhost:3200/docs
+~~~
+
+`npm start` chạy API thuần tại http://localhost:3000. Kiểm tra nhanh ở terminal thứ hai:
+
+~~~bash
+curl http://localhost:3000/health                                     # {"status":"ok","authzEngine":"local"}
+TOKEN=$(npm run -s token -- erin)
+curl -i http://localhost:3000/documents -H "Authorization: Bearer $TOKEN"            # forecast, handbook
+curl -i http://localhost:3000/documents/api-spec -H "Authorization: Bearer $TOKEN"   # 404 (che sự tồn tại)
+curl -i -X PATCH http://localhost:3000/documents/handbook -H "Authorization: Bearer $TOKEN" \
+     -H "Content-Type: application/json" -d '{"title":"x"}'                        # 403 (xem được, không sửa được)
+~~~
+
+Trên PowerShell: `$TOKEN = npm run -s token -- erin`, rồi dùng `curl.exe` thay cho `curl`.
+
+## 3. Chạy với OpenFGA thật
+
+~~~bash
+npm run fga:up          # docker compose up -d openfga  (OpenFGA v1.22.1, datastore memory)
+npm run test:openfga    # 243 test: toàn bộ test HTTP chạy lại trên OpenFGA + engine test + parity
+npm run demo:openfga    # trang demo dùng OpenFGA
+npm run fga:down        # tắt
+~~~
+
+Muốn API dùng OpenFGA khi chạy `npm start`, đặt `AUTHZ_ENGINE=openfga` trong `.env`. Lần khởi động nào API cũng tạo một store mới, ghi model và seed tuple vào đó, rồi xóa store cũ cùng tên.
+
+## 4. Cấu hình
+
+Môi trường dev không bắt buộc có `.env`: thiếu file thì app dùng giá trị mặc định cho lab. Muốn đổi thì sao chép [`.env.example`](.env.example) thành `.env`:
+
+| Biến | Mặc định | Ý nghĩa |
 | --- | --- | --- |
-| Thư mục lồng nhau kế thừa quyền | Đệ quy ở mỗi API, dễ quên ở API mới | `viewer from parent`, khai báo một lần |
-| Nhóm chứa nhóm (dba ⊂ backend ⊂ eng) | JOIN đệ quy | userset `group:eng#member` |
-| Chặn thắng cả public link | if/else theo thứ tự, dễ sai | `viewer but not blocked` |
-| Khách ngoài org được sửa nhưng không được chia sẻ tiếp | Điều kiện riêng | `editor and member from org` |
-| Chia sẻ có thời hạn | Cron xóa quyền | condition `not_expired` trên tuple |
-| "Shared with me", tìm kiếm có phân quyền | Lọc sau khi tải (N+1) | `ListObjects` |
-| "Who has access" | Tự duyệt cây | `ListUsers` |
-| Giải thích vì sao có quyền | Không có | `Expand` |
-| Xem trước khi chia sẻ | Phải ghi thử rồi xóa | contextual tuple |
-| Nhật ký thay đổi quyền | Tự viết audit | `ReadChanges` (Watch) |
-| Gỡ quyền có hiệu lực ngay | Cache, role trong JWT | tuple là nguồn sự thật, `HIGHER_CONSISTENCY` |
+| `JWT_SECRET` | `docshare-dev-secret` (chỉ dev) | Khóa ký JWT HS256. **Bắt buộc** khi `NODE_ENV=production`; thiếu thì app từ chối khởi động |
+| `AUTHZ_ENGINE` | `local` | `local`: engine tự viết. `openfga`: OpenFGA server |
+| `FGA_API_URL` | `http://localhost:8080` | HTTP API của OpenFGA |
+| `AUDIT_LOG` | `deny` (`off` khi chạy test) | Ghi quyết định phân quyền ra stdout dạng JSON Lines: `off`, `deny`, `all` |
+| `PORT` | `3000` | Cổng API |
+| `DEMO_PORT` | `3200` | Cổng server demo |
 
-## Chạy nhanh
+`npm start`, `npm run demo` và `npm run token` đều tự đọc `.env`, nên token sinh ra khớp với server đang chạy.
 
-```bash
-npm install
-```
+## 5. Triển khai bằng Docker
 
-```bash
-npm test
-```
+~~~bash
+cp .env.example .env    # rồi đặt JWT_SECRET ngẫu nhiên
+docker compose up --build
+~~~
 
-`npm test` chạy toàn bộ test trên engine tự viết, không cần Docker.
+Lệnh trên chạy OpenFGA (datastore memory) và API tại http://localhost:3000.
 
-```bash
-npm run fga:up
-```
+~~~bash
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml up --build
+~~~
 
-```bash
-npm run test:openfga
-```
+Lệnh trên chạy bản lưu bền: OpenFGA lưu tuple vào **PostgreSQL 17**. Container `openfga-migrate` tạo schema trước, rồi mới khởi động OpenFGA.
 
-`npm run fga:up` bật OpenFGA bằng Docker. `npm run test:openfga` chạy lại toàn bộ test trên OpenFGA thật, cộng thêm engine test và parity.
+- Image API dùng `node:22-alpine`, `npm ci --omit=dev`, chạy bằng user `node`, có `HEALTHCHECK` gọi `/health`, và dừng gọn khi nhận `SIGTERM`.
+- Image **không** chứa `demo/`, `test/`, `scripts/`, nên trên production không có endpoint cấp token `/dev/*`.
+- Thiếu `JWT_SECRET` thì container API thoát ngay với lỗi `JWT_SECRET is required`.
+- Đã chạy thử cả hai cấu hình. Với Postgres: API healthy, Gina thấy đúng 3 tài liệu, khởi động lại API vẫn chỉ còn 1 store hoạt động.
 
-```bash
-npm run demo:openfga
-```
+## 6. Trang demo và tài liệu API
 
-Lệnh trên mở trang demo ở http://localhost:3200 (`npm run demo` để dùng engine tự viết). Trang demo cho phép:
+`npm run demo` (hoặc `npm run demo:openfga`) mở http://localhost:3200. Server demo chỉ nghe trên 127.0.0.1. Trang demo cho phép:
 
 - đăng nhập thành bất kỳ user nào trong seed;
-- duyệt thư mục và tài liệu, chia sẻ, chặn, xem trước khi chia sẻ;
-- xem "ai có quyền", cây Expand, ma trận quyền của mọi user, nhật ký ReadChanges.
+- duyệt thư mục, tài liệu và nhóm, kèm các cờ quyền (`can_*`) của mỗi object;
+- chia sẻ, chặn, xem trước khi chia sẻ (contextual tuple);
+- xem "ai có quyền" (ListUsers), cây giải thích (Expand), nhật ký thay đổi tuple của org (ReadChanges);
+- xem **ma trận quyền của mọi user** trên object đang chọn; hàng nào vừa đổi quyền sau thao tác cuối được viền vàng;
+- dùng nút "Gửi PATCH trực tiếp" để chứng minh ẩn nút trên giao diện không chặn được request: server vẫn trả 403.
 
-Gọi API bằng curl:
+Swagger UI ở http://localhost:3200/docs đọc [`docs/openapi.yaml`](docs/openapi.yaml) (OpenAPI 3.1, 40 operation). Mỗi operation ghi relation cần có (`x-relation`) và API Zanzibar được dùng (`x-zanzibar`). Lấy token bằng `npm run token -- bob`, bấm **Authorize**, rồi dùng "Try it out".
 
-```bash
-curl -H "Authorization: Bearer $(npm run -s token -- bob)" localhost:3000/documents
-```
+## 7. Lệnh thường dùng
 
 | Lệnh | Việc |
 | --- | --- |
-| `npm start` | API ở cổng 3000 (`AUTHZ_ENGINE=local` hoặc `openfga`) |
+| `npm test` / `npm run test:openfga` / `npm run test:all` | Test trên engine tự viết / trên OpenFGA / cả hai |
+| `npm run test:coverage` | Coverage |
+| `npm run token -- <user>` | In JWT của một user (alice, bob, carol, dave, erin, frank, gina, hank) |
 | `npm run oracle` | Ghi [`docs/oracle-matrix.md`](docs/oracle-matrix.md): kỳ vọng viết tay so với kết quả engine |
-| `npm run evidence` | Ghi [`docs/evidence/`](docs/evidence): kết quả test hai engine và kết quả mutation test |
-| `docker compose up --build` | Chạy OpenFGA và API trong container |
+| `npm run evidence` | Ghi [`docs/evidence/`](docs/evidence): kết quả test của hai engine và mutation test (cần OpenFGA) |
+| `npm run report` | Dựng lại `REPORT.html` từ `report/slides/*.html` |
 
-## Kiến trúc
+## 8. Cấu trúc thư mục
 
 ```
-client ──JWT(sub)──▶ Express route ──▶ Service (PEP) ──▶ src/authz (cổng PDP) ──▶ LocalEngine | OpenFGA
-                                         │                                           ▲
-                                         ▼                                           │ tuple
-                                     db (in-memory): tên, nội dung, cây thư mục ─────┘ cấu trúc (org, parent)
+authz/model.fga                 Chính sách Zanzibar (OpenFGA DSL), nguồn duy nhất cho cả hai engine
+data/seed.json                  Dataset lab: org, user, nhóm, thư mục, tài liệu, comment, tuple chia sẻ
+src/
+  app.js, server.js, auth.js    Express app, khởi động, xác thực JWT (chỉ sub)
+  authz/index.js                Cổng PDP duy nhất của app: check, batchCheck, listObjects, listUsers, expand...
+  authz/engine/local.js         Engine Zanzibar tự viết (Check theo userset rewrite, ListObjects, ...)
+  authz/engine/openfga.js       Adapter OpenFGA (@openfga/sdk, HIGHER_CONSISTENCY)
+  authz/cel.js                  Tập con CEL cho condition
+  services/*.js                 PEP: document, folder, share, group, comment, org; access.js = enforce()
+  routes/index.js               Route mỏng, chỉ gọi service
+demo/                           Server demo (127.0.0.1) + trang demo + Swagger UI
+test/                           Jest + Supertest; oracle.js = kỳ vọng viết tay
+docs/                           openapi.yaml, thiet-ke.md, oracle-matrix.md, evidence/
+report/                         Slide nguồn của REPORT.html
 ```
 
-- **Token chỉ chứa `sub`.** Role, org, nhóm và mọi chia sẻ nằm trong Zanzibar, nên gỡ quyền có hiệu lực ngay ở request kế tiếp.
-- **Chỉ service mới hỏi quyền (PEP), qua `enforce()`** trong [`src/services/access.js`](src/services/access.js). Route không tự kiểm quyền. Quy ước mã lỗi: không có `can_view` thì trả **404** (không lộ việc object tồn tại); thấy object nhưng thiếu quyền thì trả **403**.
-- **Chọn engine bằng biến môi trường `AUTHZ_ENGINE`.** Service không biết đang chạy engine nào.
+## 9. Sự cố thường gặp
 
-Chi tiết thiết kế, thuật toán Check, dual write, consistency và các đánh đổi: [`docs/thiet-ke.md`](docs/thiet-ke.md).
-
-## Model ([authz/model.fga](authz/model.fga))
-
-| Type | Relation chính | Tính năng Zanzibar |
-| --- | --- | --- |
-| `org` | `admin`, `member` | tenant; `member: [user] or admin` |
-| `group` | `member: [user, group#member]`, `manager` | userset lồng nhau, `admin from org` |
-| `folder` | `owner`, `editor`, `commenter`, `viewer`, `blocked`, `parent`, `org` | kế thừa `... from parent`, wildcard `user:*`, condition |
-| `document` | như folder, thêm `can_comment` | `but not blocked`, `editor and org_member` |
-| `comment` | `author`, `parent` | `can_delete: (author or owner from parent) and can_view` |
-| condition `not_expired` | `current_time < expires_at` | ABAC gắn trên tuple, `current_time` do server đặt |
-
-## API
-
-| Endpoint | Quyền (relation) | API Zanzibar dùng |
-| --- | --- | --- |
-| `GET /me` | | ListObjects (nhóm của tôi), Check |
-| `GET /documents?q=&filter=shared\|owned` | | **ListObjects** + **BatchCheck** (mức truy cập) |
-| `POST /documents` | `folder#can_create` | Write (org, parent, owner) |
-| `GET /documents/:id` | `can_view` | Check + BatchCheck (capabilities) |
-| `PATCH /documents/:id` | `can_edit`; chuyển thư mục thêm `folder#can_create` ở đích | Write (đổi tuple parent) |
-| `DELETE /documents/:id` | `can_delete` | Read + Write (xóa tuple) |
-| `GET/POST /documents/:id/comments` | `can_view` / `can_comment` | |
-| `DELETE /comments/:id` | `comment#can_delete` | |
-| `GET/POST/PATCH/DELETE /folders[/:id]` | `can_view`, `can_create`, `can_edit`, `can_delete` | ListObjects, BatchCheck (lọc con bị chặn) |
-| `GET /{documents,folders}/:id/shares` | `can_share` | **Read** |
-| `POST /{documents,folders}/:id/shares` `{subject, relation, expiresAt?}` | `can_share` | Write (tuple có condition) |
-| `POST /{documents,folders}/:id/shares/preview` | `can_share` | Check + **contextual tuples** |
-| `DELETE /{documents,folders}/:id/shares?subject=` | `can_share` | Write (delete) |
-| `POST/DELETE /{documents,folders}/:id/blocks` | `can_block` | Write |
-| `GET /{documents,folders}/:id/access` | `can_share` | **ListUsers** |
-| `GET /{documents,folders}/:id/access/expand?relation=` | `can_share` | **Expand** |
-| `GET/POST /groups`, `GET /groups/:id` | `org#member`, `group#can_view` | ListObjects, ListUsers (member thực tế) |
-| `POST/DELETE /groups/:id/members` | `group#can_manage` | Check userset để chặn chu trình |
-| `GET /orgs/:id`, `GET /orgs/:id/changes` | `org#member`, `org#admin` | **ReadChanges** |
-
-`subject` có dạng `user:bob`, `group:eng` hoặc `public`.
-
-## Dữ liệu mẫu ([data/seed.json](data/seed.json))
-
-- **Org `acme`** (cho phép chia sẻ ra ngoài): alice (admin), bob, carol, dave, erin, frank.
-- **Org `globex`** (không cho phép chia sẻ ra ngoài): gina (admin), hank.
-- **Nhóm:**
-  - `eng` gồm `backend` và `frontend`;
-  - `backend` gồm bob và `dba`;
-  - `dba` gồm frank;
-  - `frontend` gồm carol; `sales` gồm dave; `ops` gồm hank.
-- **Thư mục:**
-  - `acme-drive`, bên trong có:
-    - `engineering` (editor: eng), bên trong có `specs` và `incidents` (chặn frontend);
-    - `sales-docs` (editor: sales);
-    - `public` (viewer: `user:*`).
-  - Thư mục cá nhân `home-bob`.
-  - Thư mục `globex-drive` của org globex.
-- **Chia sẻ đặc biệt:**
-  - gina là editor của `pricing` đến 2026-12-31 (khách ngoài org, có thời hạn);
-  - frank bị chặn ở `handbook` (chặn thắng public link);
-  - erin là viewer của `forecast`, carol là commenter của `draft`.
-
-Ma trận đầy đủ user × tài liệu có lý do cho từng ô: [`docs/oracle-matrix.md`](docs/oracle-matrix.md).
-
-## Test và evidence
-
-| Bộ test | Nội dung |
+| Hiện tượng | Cách xử lý |
 | --- | --- |
-| [oracle.test.js](test/oracle.test.js) | 72 ô user × tài liệu từ [oracle viết tay](test/oracle.js), cộng 8 danh sách `GET /documents` |
-| [sharing.test.js](test/sharing.test.js) | chia sẻ user/nhóm/public, chính sách ra ngoài, khách không chia sẻ tiếp, hết hạn, chặn, ListUsers, Expand, xem trước |
-| [folders.test.js](test/folders.test.js) | kế thừa, con bị chặn, breadcrumb, chuyển thư mục đổi quyền cả cây, chặn chu trình cây, xóa cả cây |
-| [groups.test.js](test/groups.test.js) | nhóm lồng 3 tầng, manager khác member, thu hồi ngay, chặn chu trình nhóm |
-| [documents.test.js](test/documents.test.js), [comments.test.js](test/comments.test.js), [tenant.test.js](test/tenant.test.js) | 401/403/404, mass assignment, tìm kiếm, cách ly org, thuộc tính tự khai, ReadChanges |
-| [consistency.test.js](test/consistency.test.js) | đường list (ListObjects) và đường check cho cùng tập với mọi user |
-| [engine.test.js](test/engine.test.js) | cùng kỳ vọng cho LocalEngine và OpenFGA ở các ca biên |
-| [parity.test.js](test/parity.test.js) | hai engine khớp nhau trên toàn bộ seed, ở hai thời điểm |
+| `OpenFGA không phản hồi ở http://localhost:8080` | Chạy `npm run fga:up`; kiểm tra `curl localhost:8080/healthz` trả `SERVING` |
+| Cổng 8080 đang bị chiếm | Đổi cổng trong `docker-compose.yml` (ví dụ `"18080:8080"`) và đặt `FGA_API_URL=http://localhost:18080` |
+| `401 invalid_token` khi gọi container | Token phải ký bằng đúng `JWT_SECRET` của container: đặt cùng giá trị trong `.env` rồi chạy `npm run token` |
+| Container API thoát ngay | Chưa đặt `JWT_SECRET` (xem `docker compose logs api`) |
+| Test chia sẻ có hạn "đúng hôm nay, sai ngày mai" | Không xảy ra: test dùng đồng hồ giả (`src/clock.js`). Riêng seed của gina hết hạn thật sau 2026-12-31 khi chạy demo |
 
-Kết quả (xem [`docs/evidence/`](docs/evidence)):
+## 10. Giới hạn đã biết
 
-- **Engine tự viết:** 197/197 test xanh (7 test parity bỏ qua vì cần OpenFGA).
-- **OpenFGA v1.22.1:** 218/218 test xanh.
-- **Mutation test:** làm sai 6 luật trong model thì cả 6 đều bị test bắt ([mutations.md](docs/evidence/mutations.md)).
+Chi tiết ở [REPORT.md §10](REPORT.md#10-giới-hạn-và-hướng-phát-triển).
 
-## Giới hạn
-
-- **DB in-memory và OpenFGA datastore memory:** khởi động lại là mất dữ liệu. Production cần Postgres cho cả hai.
-- **Dual write không có transaction chung:** ghi tuple trước rồi mới ghi DB. Hướng xử lý (outbox) có trong [thiết kế](docs/thiet-ke.md#dual-write).
-- **ListObjects của engine tự viết quét mọi object rồi gọi Check:** độ phức tạp O(N). OpenFGA dùng reverse expansion.
-- **Chưa có zookie theo từng object:** dùng `HIGHER_CONSISTENCY` cho mọi request, đổi lại độ trễ.
-- **Bộ đánh giá CEL của engine tự viết chỉ hỗ trợ phép so sánh, `&&`, `||`, `!`.**
+- Dữ liệu nghiệp vụ nằm trong RAM. API nạp lại seed mỗi lần khởi động; OpenFGA có thể chạy memory hoặc Postgres.
+- Dual write giữa db và OpenFGA chưa có outbox.
+- ListObjects của engine tự viết là O(N).

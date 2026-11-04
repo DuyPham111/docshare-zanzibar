@@ -1,0 +1,30 @@
+<section id="zanzibar" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Giải pháp</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Zanzibar: quyền là quan hệ, chính sách là luật viết lại</h2>
+</div>
+<div style="display:flex;gap:36px;flex:1">
+<div style="flex:1.15;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Tuple · object#relation@user</p>
+<pre style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.45;background:#FFFFFF;border:1px solid #D9D2C3;border-radius:16px;padding:28px 32px;white-space:pre;overflow:hidden">document:forecast#viewer@user:erin
+folder:public#viewer@<b>user:*</b>
+folder:engineering#editor@<b>group:eng#member</b>
+document:api-spec#parent@<b>folder:specs</b></pre>
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Model · authz/model.fga</p>
+<pre style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.45;background:#FFFFFF;border:1px solid #D9D2C3;border-radius:16px;padding:28px 32px;white-space:pre;overflow:hidden">define viewer: [user, user:*, group#member]
+    or commenter or <b>viewer from parent</b>
+define can_view: viewer <b>but not</b> blocked</pre>
+</div>
+<div style="flex:0.85;display:flex;flex-direction:column;gap:14px;background:#FFFFFF;border-radius:16px;padding:32px 36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">API dùng trong DocShare</p>
+<p style="font-size:30px;line-height:1.35"><b>Check</b> · BatchCheck</p>
+<p style="font-size:30px;line-height:1.35"><b>ListObjects</b> · ListUsers</p>
+<p style="font-size:30px;line-height:1.35"><b>Expand</b> · Read · Write</p>
+<p style="font-size:30px;line-height:1.35"><b>ReadChanges</b> (Watch)</p>
+<p style="font-size:30px;line-height:1.35">Contextual tuple · Condition</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/thiet-ke.md §1</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">3</p>
+<aside>Zanzibar là hệ thống phân quyền Google dùng cho Drive, YouTube, Calendar, công bố năm 2019. Ý tưởng cốt lõi: quyền là dữ liệu quan hệ, lưu dạng tuple object thăng relation a còng user. User có thể là một người cụ thể, một wildcard nghĩa là mọi người, một userset như mọi member của nhóm eng, hoặc một object khác như thư mục cha. Chính sách là luật viết lại userset: viewer gồm người được gán trực tiếp, hoặc commenter, hoặc viewer của thư mục cha. Quyền thực tế can_view là viewer trừ đi blocked. Trên đó Zanzibar có các API: Check, ListObjects, ListUsers, Expand, Read, Write, ReadChanges. DocShare dùng tất cả.</aside>
+</section>

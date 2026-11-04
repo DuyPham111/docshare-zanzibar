@@ -1,0 +1,25 @@
+<section id="c-rebac" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 2/16 · Mô hình phân quyền</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">ReBAC theo Zanzibar thay cho decide() viết tay</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Nhóm lồng nhau, thư mục lồng nhau là đệ quy: khai báo một lần bằng DSL</p>
+<p style="font-size:30px;line-height:1.35">Thêm người vào nhóm = ghi <b>1 tuple</b>, không phải hàng nghìn dòng ACL</p>
+<p style="font-size:30px;line-height:1.35">Chính sách tách khỏi dữ liệu: API mới chỉ cần gọi Check</p>
+<p style="font-size:30px;line-height:1.35">ABAC vẫn có, dưới dạng condition trên tuple</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>decide() như Block 6</b>: thành truy vấn đệ quy rải ở mọi API</p>
+<p style="font-size:30px;line-height:1.35"><b>RBAC thuần</b>: không chia sẻ riêng một tài liệu, không kế thừa</p>
+<p style="font-size:30px;line-height:1.35"><b>ACL phẳng</b>: 1.000.000 tài liệu × 100 người = 10⁸ mục</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> phải học DSL; mỗi quyết định là một lần duyệt đồ thị; cấu trúc ghi ở hai nơi.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.2</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">12</p>
+<aside>Lựa chọn thứ hai là mô hình. Ở Block 6, decide() đúng cho 3 role nhân 4 action. Khi có nhóm lồng nhau và thư mục lồng nhau, quyền trở thành đệ quy trên dữ liệu; viết tay thì mỗi API phải gọi đúng truy vấn đệ quy. Zanzibar khai báo một lần bằng DSL. Thêm một người vào nhóm chỉ là ghi một tuple, trong khi ACL phẳng phải ghi một dòng cho mỗi tài liệu, đúng con số trăm triệu mục ở slide 19 của thầy. ABAC không mất đi mà nằm ở condition trên tuple.</aside>
+</section>

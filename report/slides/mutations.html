@@ -1,0 +1,42 @@
+<section id="mutations" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Evidence</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Mutation test: làm sai model, test phải đỏ</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:22px;flex:1;justify-content:center">
+<div style="display:flex;align-items:center;gap:28px">
+<p style="width:720px;font-size:30px">Bỏ "but not blocked" ở document</p>
+<div style="width:139px;height:48px;background:#A3413A;border-radius:8px"></div>
+<p style="font-size:34px;font-weight:700;color:#A3413A">9</p>
+</div>
+<div style="display:flex;align-items:center;gap:28px">
+<p style="width:720px;font-size:30px">sharer bỏ "and org_member"</p>
+<div style="width:62px;height:48px;background:#A3413A;border-radius:8px"></div>
+<p style="font-size:34px;font-weight:700;color:#A3413A">2</p>
+</div>
+<div style="display:flex;align-items:center;gap:28px">
+<p style="width:720px;font-size:30px">not_expired luôn đúng</p>
+<div style="width:62px;height:48px;background:#A3413A;border-radius:8px"></div>
+<p style="font-size:34px;font-weight:700;color:#A3413A">2</p>
+</div>
+<div style="display:flex;align-items:center;gap:28px">
+<p style="width:720px;font-size:30px">folder owner: member org thay admin</p>
+<div style="width:887px;height:48px;background:#A3413A;border-radius:8px"></div>
+<p style="font-size:34px;font-weight:700;color:#A3413A">77</p>
+</div>
+<div style="display:flex;align-items:center;gap:28px">
+<p style="width:720px;font-size:30px">comment bỏ "and can_view"</p>
+<div style="width:51px;height:48px;background:#A3413A;border-radius:8px"></div>
+<p style="font-size:34px;font-weight:700;color:#A3413A">1</p>
+</div>
+<div style="display:flex;align-items:center;gap:28px">
+<p style="width:720px;font-size:30px">group bỏ "member from org"</p>
+<div style="width:51px;height:48px;background:#A3413A;border-radius:8px"></div>
+<p style="font-size:34px;font-weight:700;color:#A3413A">1</p>
+</div>
+</div>
+<p style="font-size:26px;line-height:1.35;color:#5B616B">Số test đỏ khi chạy toàn bộ bộ test với model bị sửa sai. Sinh tự động bằng <code>npm run evidence</code>; model được khôi phục sau mỗi lần.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/evidence/mutations.md · scripts/evidence.js</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">10</p>
+<aside>Ở Block 6, nhóm chứng minh test bắt lỗi bằng cách chạy test mới trên code cũ theo tag. DocShare không có starter lỗi sẵn, nên nhóm dùng mutation test: script evidence.js sửa sai từng luật trong model, chạy lại toàn bộ test, đếm số test đỏ, rồi khôi phục. Bỏ but not blocked thì 9 test đỏ. Bỏ intersection với org thì 2. Condition luôn đúng thì 2. Cho mọi member org làm owner thay vì admin thì 77. Hai lỗi cuối chỉ có đúng 1 test bắt; nhóm ghi đây là chỗ nên bổ sung test ca biên.</aside>
+</section>

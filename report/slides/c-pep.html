@@ -1,0 +1,26 @@
+<section id="c-pep" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 10/16 · PEP, mã lỗi, token</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">enforce() ở service · 404 không thấy, 403 thiếu quyền · JWT {sub}</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Mọi entry point đi qua một hàm, kể cả server demo</p>
+<p style="font-size:30px;line-height:1.35">Service biết ngữ cảnh: thư mục đích, org của subject, chu trình cây</p>
+<p style="font-size:30px;line-height:1.35">404 cùng body với "không tồn tại": chống dò ID</p>
+<p style="font-size:30px;line-height:1.35">Quyền không nằm trong token: thu hồi ngay</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>Middleware chung</b>: chạy trước khi nạp object</p>
+<p style="font-size:30px;line-height:1.35"><b>Gateway gọi OpenFGA</b>: không biết quan hệ nghiệp vụ</p>
+<p style="font-size:30px;line-height:1.35"><b>Ẩn nút ở frontend</b>: nút "Gửi PATCH trực tiếp" vẫn nhận 403</p>
+<p style="font-size:30px;line-height:1.35"><b>Scope OAuth2</b>: Block 6 đã chứng minh không thay được kiểm mức object</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> một lần từ chối tốn hai Check; service ném HttpError; không giới hạn quyền theo client.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.10–4.12</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">20</p>
+<aside>Ba lựa chọn giữ nguyên tinh thần Block 6. PEP đặt ở service qua một hàm enforce dùng chung, vì service biết ngữ cảnh mà middleware hay gateway không biết, ví dụ thư mục đích khi chuyển. Mã lỗi: không có can_view thì 404 với body giống hệt không tồn tại; thấy nhưng thiếu quyền thì 403. Token chỉ chứa sub. Nhóm bỏ scope OAuth2 so với Block 6 để tập trung vào tầng object; Block 6 đã chứng minh scope không thay được kiểm quyền object.</aside>
+</section>

@@ -1,8 +1,25 @@
 # Kết quả test: engine tự viết (local)
 
-Ngày chạy: 2026-11-04T03:46:21.412Z
+Ngày chạy: 2026-11-04T04:44:26.726Z
 
-**197 passed, 0 failed, 7 skipped** / 204 tests
+**222 passed, 0 failed, 7 skipped** / 229 tests
+
+## test/cel.test.js
+
+- ✅ CEL subset › timestamp so sánh theo thời điểm, không theo chuỗi
+- ✅ CEL subset › a == b với {"a":2,"b":2} → true
+- ✅ CEL subset › a != b với {"a":2,"b":3} → true
+- ✅ CEL subset › a <= b với {"a":3,"b":3} → true
+- ✅ CEL subset › a > b với {"a":3,"b":3} → false
+- ✅ CEL subset › a >= b && a < 10 với {"a":5,"b":5} → true
+- ✅ CEL subset › a > 100 || b == 3 với {"a":1,"b":3} → true
+- ✅ CEL subset › !(a == b) với {"a":1,"b":2} → true
+- ✅ CEL subset › (a < b) && !(b < a) với {"a":1,"b":2} → true
+- ✅ CEL subset › literal chuỗi, số, boolean
+- ✅ CEL subset › thiếu tham số → MissingParameter (engine chuyển thành từ chối)
+- ✅ CEL subset › identifier không khai báo hoặc timestamp sai định dạng → lỗi
+- ✅ CEL subset › cú pháp ngoài tập con bị từ chối ngay khi nạp model
+- ✅ CEL subset › kiểu tham số chưa hỗ trợ (duration) → lỗi rõ ràng
 
 ## test/comments.test.js
 
@@ -102,6 +119,20 @@ Ngày chạy: 2026-11-04T03:46:21.412Z
 - ✅ Chống chu trình nhóm › thêm nhóm vào chính nó → 409
 - ✅ Chống chu trình nhóm › thêm nhóm không tạo chu trình thì được
 - ✅ Tạo nhóm › người tạo là manager, nhóm thuộc org của người tạo
+
+## test/ops.test.js
+
+- ✅ Vận hành › [P1] /health không cần token, báo engine đang dùng
+- ✅ Vận hành › [P2] không lộ framework qua X-Powered-By
+- ✅ Vận hành › [P3] JSON lỗi → 400 invalid_json; body quá 20 KB → 413
+- ✅ Vận hành › [P4] route không tồn tại → 404 JSON
+- ✅ Vận hành › [P5] NODE_ENV=production mà thiếu JWT_SECRET thì app từ chối khởi động
+- ✅ Audit log › [L1] AUDIT_LOG=deny: chỉ ghi lần từ chối, dạng JSON Lines; body trả về không có lý do
+- ✅ Audit log › [L2] AUDIT_LOG=all ghi cả lần cho phép; off không ghi gì
+- ✅ Tài liệu API và server demo › [D1] mọi route của API đều có trong docs/openapi.yaml và ngược lại
+- ✅ Tài liệu API và server demo › [D2] mọi operation thao tác trên object đều ghi relation Zanzibar cần có (x-relation)
+- ✅ Tài liệu API và server demo › [S1] app chính không có /dev: cửa cấp token chỉ nằm ở server demo
+- ✅ Tài liệu API và server demo › [S2] server demo đi qua phân quyền thật ở /api và phục vụ Swagger UI
 
 ## test/oracle.test.js
 

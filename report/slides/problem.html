@@ -1,0 +1,26 @@
+<section id="problem" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Vấn đề</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Task API của Block 6 quá nhỏ để thấy giới hạn của <code style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:56px">decide()</code></h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#E4E0D6;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#5B616B">Block 6 · task-api</p>
+<p style="font-size:30px;line-height:1.35">2 project, 4 task, 6 user, 6 route</p>
+<p style="font-size:30px;line-height:1.35">Hàm <b>decide()</b> khoảng 30 dòng: tenant → member → role → assignee</p>
+<p style="font-size:30px;line-height:1.35">Không có kế thừa, không chia sẻ riêng, không nhóm</p>
+<p style="font-size:30px;line-height:1.35">Câu hỏi kết thúc 4: <i>hàng triệu tài liệu chia sẻ qua nhiều nhóm?</i></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">DocShare · kiểu Google Drive</p>
+<p style="font-size:30px;line-height:1.35">Nhóm lồng nhau <b>dba ⊂ backend ⊂ eng</b>, thư mục lồng nhau</p>
+<p style="font-size:30px;line-height:1.35">Chia sẻ cho user, nhóm, <b>public link</b>; chia sẻ <b>có hạn</b></p>
+<p style="font-size:30px;line-height:1.35"><b>Chặn</b> thắng mọi quyền; khách ngoài org sửa được nhưng không chia sẻ tiếp</p>
+<p style="font-size:30px;line-height:1.35">"Shared with me", "ai có quyền", "vì sao", xem trước, nhật ký</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B">2 org · 8 user · 6 nhóm · 8 thư mục · 9 tài liệu · 89 tuple · 40 route</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §2</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">2</p>
+<aside>Vì sao đổi bài toán. Task API có 2 project và 4 task, chính sách là một hàm decide() khoảng 30 dòng. Với quy mô đó viết tay là đủ. Nhưng câu hỏi kết thúc 4 của Block 6 hỏi: hàng triệu tài liệu chia sẻ qua nhiều nhóm thì tổ chức policy thế nào. DocShare là đúng bài toán đó: nhóm lồng nhau ba tầng, thư mục lồng nhau kế thừa quyền, chia sẻ cho user, nhóm, public link, chia sẻ có thời hạn, chặn thắng mọi quyền khác, khách ngoài org được sửa nhưng không được chia sẻ tiếp. Thêm các câu hỏi mà decide() không trả lời được: tôi xem được những gì, ai có quyền, vì sao có quyền. Dữ liệu mẫu có 2 org, 8 user, 6 nhóm, 8 thư mục, 9 tài liệu, 89 tuple.</aside>
+</section>

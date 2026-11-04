@@ -1,0 +1,24 @@
+<section id="c-consistency" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 8/16 · Consistency</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">HIGHER_CONSISTENCY cho mọi lần đọc quyền</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Tránh <b>new enemy problem</b>: gỡ Bob rồi sửa nội dung, Bob không đọc được</p>
+<p style="font-size:30px;line-height:1.35">Thu hồi quyền sau <b>0 giây</b> như cam kết của Block 6</p>
+<p style="font-size:30px;line-height:1.35">JWT chỉ có sub: không có cửa sổ "role trong token 15 phút"</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>MINIMIZE_LATENCY + cache</b>: nhanh hơn nhưng có thể trả quyết định cũ</p>
+<p style="font-size:30px;line-height:1.35"><b>Zookie theo object</b>: đúng paper, nhưng OpenFGA chưa có; tự làm cần bảng phiên bản</p>
+<p style="font-size:30px;line-height:1.35"><b>Cache quyết định trong app</b>: quay lại vấn đề slide 19–20</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> bỏ cache của OpenFGA nên mỗi quyết định chậm hơn; ở quy mô lab không đo được khác biệt đáng kể.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.8</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">18</p>
+<aside>Consistency. Paper Zanzibar nêu new enemy problem: Alice gỡ Bob rồi sửa nội dung nhạy cảm, nếu lần Check của Bob đọc snapshot cũ thì Bob đọc được nội dung mới. Zanzibar giải bằng zookie. OpenFGA cung cấp tùy chọn HIGHER_CONSISTENCY, bỏ cache và đọc thẳng datastore; nhóm dùng nó cho mọi lần đọc quyền. Có test gỡ khỏi nhóm và gỡ chia sẻ, request kế tiếp đã 404. Đánh đổi là không hưởng cache của OpenFGA.</aside>
+</section>

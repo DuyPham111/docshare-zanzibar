@@ -1,0 +1,25 @@
+<section id="c-data" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 7/16 · Dữ liệu và dual write</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Chia sẻ chỉ trong Zanzibar; cấu trúc ghi tuple trước</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Một nguồn sự thật cho quan hệ quyền: UI đọc qua Read API</p>
+<p style="font-size:30px;line-height:1.35">Tạo: tuple trước, db sau. Xóa: tuple trước để quyền mất ngay</p>
+<p style="font-size:30px;line-height:1.35">Chuyển thư mục: xóa parent cũ + ghi parent mới trong <b>một write nguyên tử</b></p>
+<p style="font-size:30px;line-height:1.35">Tuple cấu trúc lúc khởi động sinh từ chính bản ghi db</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>Lưu chia sẻ ở db rồi đồng bộ</b>: hai nguồn sự thật, job đồng bộ, dễ lệch</p>
+<p style="font-size:30px;line-height:1.35"><b>Mọi thứ trong Zanzibar</b>: không phải database nghiệp vụ</p>
+<p style="font-size:30px;line-height:1.35"><b>2PC db ↔ OpenFGA</b>: OpenFGA không tham gia 2PC</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> process chết giữa hai bước để lại tuple mồ côi (không cấp quyền); production cần outbox.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.7</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">17</p>
+<aside>Dữ liệu nằm ở đâu. Chia sẻ, chặn, thành viên nhóm chỉ nằm trong Zanzibar, giao diện đọc qua Read API, nên không bao giờ có chuyện db nói có còn Zanzibar nói không. Cây thư mục nằm ở cả hai nơi, nên phải dual write. Thứ tự: tạo thì ghi tuple trước, xóa thì xóa tuple trước để quyền mất ngay. Chuyển thư mục là xóa tuple parent cũ và ghi parent mới trong một write nguyên tử của OpenFGA, cả cây con đổi quyền theo. Rủi ro còn lại là tuple mồ côi khi process chết giữa chừng; production nên dùng transactional outbox.</aside>
+</section>

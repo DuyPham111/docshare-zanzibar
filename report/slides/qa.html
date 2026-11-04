@@ -1,0 +1,31 @@
+<section id="qa" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Hỏi đáp</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Câu hỏi nhóm đã chuẩn bị</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:22px">
+<div style="background:#FFFFFF;border-radius:16px;padding:22px 32px">
+<p style="font-size:30px;font-weight:700;line-height:1.3">Gỡ Bob khỏi nhóm thì bao lâu Bob mất quyền?</p>
+<p style="font-size:28px;line-height:1.35;color:#5B616B">0 giây: xóa 1 tuple, HIGHER_CONSISTENCY, không có quyền trong JWT.</p>
+</div>
+<div style="background:#FFFFFF;border-radius:16px;padding:22px 32px">
+<p style="font-size:30px;font-weight:700;line-height:1.3">Chặn và public link cái nào thắng?</p>
+<p style="font-size:28px;line-height:1.35;color:#5B616B">Chặn: can_view = viewer but not blocked. Frank không đọc được handbook.</p>
+</div>
+<div style="background:#FFFFFF;border-radius:16px;padding:22px 32px">
+<p style="font-size:30px;font-weight:700;line-height:1.3">Hết hạn chia sẻ thì ai xóa tuple?</p>
+<p style="font-size:28px;line-height:1.35;color:#5B616B">Không ai cần xóa: condition được đánh giá ở mỗi lần Check với current_time của server.</p>
+</div>
+<div style="background:#FFFFFF;border-radius:16px;padding:22px 32px">
+<p style="font-size:30px;font-weight:700;line-height:1.3">Vì sao vừa OpenFGA vừa tự viết?</p>
+<p style="font-size:28px;line-height:1.35;color:#5B616B">OpenFGA chạy thật; engine tự viết để test không cần Docker và làm oracle thứ hai.</p>
+</div>
+<div style="background:#FFFFFF;border-radius:16px;padding:22px 32px">
+<p style="font-size:30px;font-weight:700;line-height:1.3">Hàng triệu tài liệu qua nhiều nhóm?</p>
+<p style="font-size:28px;line-height:1.35;color:#5B616B">Thêm người vào nhóm = 1 tuple; một model, một PDP; ListObjects; zookie.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §11</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">30</p>
+<aside>Một số câu hỏi nhóm đã chuẩn bị. Gỡ khỏi nhóm thì mất quyền sau 0 giây. Chặn thắng public link vì can_view là viewer trừ blocked. Hết hạn chia sẻ không cần ai xóa tuple, condition được đánh giá ở mỗi lần Check. Vì sao vừa OpenFGA vừa tự viết: OpenFGA là engine chạy thật, engine tự viết để test không cần Docker và làm oracle thứ hai. Và câu hỏi kết thúc 4 của Block 6: thêm một người vào nhóm chỉ là ghi một tuple, mọi API dùng chung một model và một PDP.</aside>
+</section>

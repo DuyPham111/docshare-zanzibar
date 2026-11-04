@@ -1,0 +1,43 @@
+<section id="evidence" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Evidence</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Ba lớp bảo đảm: oracle, parity, mutation</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">222/222</p>
+<p style="font-size:30px;font-weight:600;line-height:1.3">test, engine tự viết</p>
+<p style="font-size:24px;line-height:1.35;color:#5B616B"><code>npm test</code>, không cần Docker</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">243/243</p>
+<p style="font-size:30px;font-weight:600;line-height:1.3">test, OpenFGA v1.22.1</p>
+<p style="font-size:24px;line-height:1.35;color:#5B616B">test HTTP + engine test + parity</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#1F5FA8">96,5%</p>
+<p style="font-size:30px;font-weight:600;line-height:1.3">coverage dòng src/</p>
+<p style="font-size:24px;line-height:1.35;color:#5B616B">access.js, cel.js 100%</p>
+</div>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#2F7A3E">1.920</p>
+<p style="font-size:30px;font-weight:600;line-height:1.3">câu Check, 0 khác biệt</p>
+<p style="font-size:24px;line-height:1.35;color:#5B616B">960 × 2 thời điểm, cùng ListObjects, ListUsers, Expand</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#2F7A3E">6/6</p>
+<p style="font-size:30px;font-weight:600;line-height:1.3">lỗi cố ý trong model bị bắt</p>
+<p style="font-size:24px;line-height:1.35;color:#5B616B">mỗi lỗi làm 1 đến 77 test đỏ</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border-radius:16px;padding:32px">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#2F7A3E">0 giây</p>
+<p style="font-size:30px;font-weight:600;line-height:1.3">thu hồi quyền</p>
+<p style="font-size:24px;line-height:1.35;color:#5B616B">gỡ khỏi nhóm, gỡ chia sẻ, hết hạn: request kế tiếp đã 404</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/evidence/ · test/parity.test.js</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">9</p>
+<aside>Tổng hợp evidence. 222 test chạy trên engine tự viết, không cần Docker. 243 test chạy trên OpenFGA thật, gồm toàn bộ test HTTP chạy lại, test mức engine và parity. Coverage 96,5 phần trăm dòng. Parity: cùng dữ liệu, hai engine trả lời 1920 câu Check ở hai thời điểm, trước và sau hạn chia sẻ của gina, cùng ListObjects, ListUsers, Expand, không khác một câu nào. Mutation test: nhóm cố ý làm sai 6 luật trong model, cả 6 đều bị test bắt. Và thu hồi quyền có hiệu lực sau 0 giây.</aside>
+</section>

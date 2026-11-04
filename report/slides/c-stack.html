@@ -1,0 +1,25 @@
+<section id="c-stack" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 11/16 · Ngôn ngữ và framework</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Node.js 22 + Express 5, JavaScript CommonJS</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">SDK <b>@openfga/sdk</b> và parser <b>syntax-transformer</b> chính thức cho JS</p>
+<p style="font-size:30px;line-height:1.35">Express 5 tự bắt lỗi của handler async: mọi lần gọi Zanzibar đều async</p>
+<p style="font-size:30px;line-height:1.35">Cùng hệ sinh thái Block 6: so sánh trực tiếp hai cách phân quyền</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>Go</b>: OpenFGA viết bằng Go, nhưng nhóm chưa dùng Go ở các block trước</p>
+<p style="font-size:30px;line-height:1.35"><b>Spring Boot</b>: nặng so với khoảng 1.000 dòng logic, annotation che cơ chế</p>
+<p style="font-size:30px;line-height:1.35"><b>NestJS Guard</b>: chạy trước khi nạp object</p>
+<p style="font-size:30px;line-height:1.35"><b>TypeScript / checkJs</b>: ưu tiên thời gian cho parity và oracle</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> không có kiểm kiểu tĩnh; lỗi giữa hai engine được bắt bằng parity test.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.13</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">21</p>
+<aside>Stack giữ Node.js 22 và Express 5 như Block 6. Lý do mạnh nhất lần này là OpenFGA có SDK và parser DSL chính thức cho JavaScript, nên engine tự viết dùng chung bộ parse với OpenFGA. Express 5 tự bắt lỗi của handler async, rất hợp vì mọi lần hỏi OpenFGA đều qua HTTP. Lần này nhóm không bật kiểm kiểu checkJs như Block 6 để dành thời gian cho parity và oracle; đây là điểm nhóm ghi vào hướng phát triển.</aside>
+</section>

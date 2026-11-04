@@ -1,0 +1,75 @@
+{
+  "v": 4,
+  "lists": "css",
+  "title": "DocShare – phân quyền kiểu Zanzibar",
+  "cover": "cover",
+  "order": [
+    "cover",
+    "problem",
+    "zanzibar",
+    "arch",
+    "model",
+    "check",
+    "apis",
+    "matrix",
+    "evidence",
+    "mutations",
+    "c-domain",
+    "c-rebac",
+    "c-engine",
+    "c-local",
+    "c-model",
+    "c-condition",
+    "c-data",
+    "c-consistency",
+    "c-list",
+    "c-pep",
+    "c-stack",
+    "c-test",
+    "c-docs",
+    "c-log",
+    "c-demo",
+    "c-deploy",
+    "tradeoffs",
+    "limits",
+    "compare",
+    "qa",
+    "thanks"
+  ],
+  "sections": {
+    "van-de": {
+      "description": "Vấn đề: bài toán chia sẻ tài liệu cần nhiều hơn một hàm decide()",
+      "start": "cover"
+    },
+    "giai-phap": {
+      "description": "Giải pháp: Zanzibar, kiến trúc, model và thuật toán Check",
+      "start": "zanzibar"
+    },
+    "evidence": {
+      "description": "Evidence: oracle viết tay, parity hai engine, mutation test",
+      "start": "matrix"
+    },
+    "lua-chon": {
+      "description": "Các lựa chọn của nhóm: chọn gì, không chọn gì, vì sao, đánh đổi chấp nhận",
+      "start": "c-domain"
+    },
+    "tradeoff": {
+      "description": "Tóm tắt lựa chọn, giới hạn và so sánh với Block 6",
+      "start": "tradeoffs"
+    },
+    "ket": {
+      "description": "Hỏi đáp và kết thúc",
+      "start": "qa"
+    }
+  },
+  "faces": {
+    "be-vietnam-pro": {
+      "family": "Be Vietnam Pro",
+      "href": "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap"
+    },
+    "jetbrains-mono": {
+      "family": "JetBrains Mono",
+      "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap"
+    }
+  }
+}

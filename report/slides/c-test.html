@@ -1,0 +1,25 @@
+<section id="c-test" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 12/16 · Kiểm thử</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Jest + Supertest: oracle viết tay, parity, mutation</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Kỳ vọng viết tay có lý do, <b>không</b> sinh từ engine</p>
+<p style="font-size:30px;line-height:1.35">Toàn bộ test HTTP chạy lại trên <b>cả hai</b> engine</p>
+<p style="font-size:30px;line-height:1.35">Test cả trường hợp được phép: bản "từ chối hết" trượt mọi ô có quyền</p>
+<p style="font-size:30px;line-height:1.35">Đồng hồ giả để test thời hạn</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>fga model test</b> (YAML của OpenFGA CLI): không đi qua API và quy ước 404/403</p>
+<p style="font-size:30px;line-height:1.35"><b>Snapshot kết quả engine</b>: engine sai thì snapshot sai theo</p>
+<p style="font-size:30px;line-height:1.35"><b>Postman/Newman</b>: khó chạy trên hai engine, khó điều khiển đồng hồ</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> oracle viết tay tốn công, phải cập nhật khi đổi seed.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.15</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">22</p>
+<aside>Kiểm thử dùng Jest và Supertest gọi HTTP thật, như Block 6. Ba lớp bảo đảm: oracle viết tay, parity hai engine, và mutation test. OpenFGA có công cụ fga model test bằng YAML, nhưng nó chỉ kiểm model trên OpenFGA, không đi qua API, service và quy ước 404, 403 của nhóm. Snapshot kết quả của engine làm kỳ vọng thì vòng lặp: engine sai, snapshot sai theo.</aside>
+</section>

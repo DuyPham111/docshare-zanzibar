@@ -1,0 +1,25 @@
+<section id="c-condition" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 6/16 · Thời hạn chia sẻ</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Condition not_expired gắn trên tuple</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Hết hạn là <b>mất quyền ngay</b>, không phụ thuộc lịch chạy job</p>
+<p style="font-size:30px;line-height:1.35"><b>current_time</b> do server đặt; giá trị trong tuple thắng request</p>
+<p style="font-size:30px;line-height:1.35">ListObjects, ListUsers cũng biết thời hạn</p>
+<p style="font-size:30px;line-height:1.35">Test dùng đồng hồ giả: 1 giây trước và 1 giây sau hạn</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>Cron xóa tuple hết hạn</b>: quyền còn giữa hai lần chạy; job hỏng là quyền tồn tại mãi</p>
+<p style="font-size:30px;line-height:1.35"><b>Kiểm ở service</b>: List trả sai vì không biết thời hạn</p>
+<p style="font-size:30px;line-height:1.35"><b>Contextual tuple</b>: không lưu được thời hạn bền</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> tuple hết hạn vẫn trong store; engine phụ cần bộ CEL riêng (100% coverage).</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.6</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">16</p>
+<aside>Chia sẻ có thời hạn dùng condition not_expired của OpenFGA: tuple lưu expires_at, còn current_time do server tự đặt ở cổng PDP, không bao giờ lấy từ client. Theo ngữ nghĩa OpenFGA, giá trị trong tuple thắng giá trị trong request, nên client không kéo dài được hạn; có test cho việc này. Nhóm không dùng cron xóa tuple vì giữa hai lần chạy quyền vẫn còn. Cũng không kiểm ở service vì khi đó ListObjects sẽ trả cả tài liệu đã hết hạn.</aside>
+</section>

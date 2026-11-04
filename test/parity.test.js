@@ -35,7 +35,7 @@ run('Parity: LocalEngine và OpenFGA cho cùng kết quả', () => {
     const [a, b] = await Promise.all([local.batchCheck(checks), openfga.batchCheck(checks)])
     const diff = checks.filter((_, i) => a[i] !== b[i]).map(c => `${c.object}#${c.relation}@${c.user}`)
     expect(diff).toEqual([])
-    expect(checks.length).toBeGreaterThan(500)
+    expect(checks.length).toBe(960)
   })
 
   test.each(['document', 'folder', 'group'])('ListObjects can_view %s cho từng user', async type => {

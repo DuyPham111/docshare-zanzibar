@@ -1,0 +1,20 @@
+<section id="apis" data-transition="fade" style="background:#ECE7DC;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Giải pháp</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Mỗi câu hỏi của sản phẩm dùng đúng một API Zanzibar</h2>
+</div>
+<table style="font-size:28px">
+<tr><th style="width:36%">Câu hỏi</th><th style="width:26%">API Zanzibar</th><th>Endpoint</th></tr>
+<tr><td>User được làm X trên object?</td><td><b>Check</b></td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">enforce() ở mọi service</td></tr>
+<tr><td>Bật nút nào trên UI?</td><td><b>BatchCheck</b></td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">capabilities, mức truy cập</td></tr>
+<tr><td>Tôi xem được gì? Tìm kiếm?</td><td><b>ListObjects</b></td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">GET /documents?q=&filter=shared</td></tr>
+<tr><td>Ai có quyền?</td><td><b>ListUsers</b></td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">GET …/access</td></tr>
+<tr><td>Vì sao có quyền?</td><td><b>Expand</b></td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">GET …/access/expand</td></tr>
+<tr><td>Nếu chia sẻ thì sao?</td><td><b>Contextual tuple</b></td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">POST …/shares/preview</td></tr>
+<tr><td>Quyền đã đổi thế nào?</td><td><b>ReadChanges</b></td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">GET /orgs/:id/changes</td></tr>
+<tr><td>Chia sẻ, chặn, đổi nhóm</td><td><b>Read / Write</b></td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px">…/shares, …/blocks, /groups/:id/members</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · docs/openapi.yaml · x-zanzibar</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">7</p>
+<aside>Bảng này cho thấy mỗi câu hỏi của sản phẩm dùng đúng một API của Zanzibar. Check cho mọi thao tác. BatchCheck để bật tắt nút trên giao diện trong một round trip. ListObjects cho danh sách, tìm kiếm và shared with me: Zanzibar trả đúng tập id rồi mới lấy dữ liệu, không tải hết rồi lọc. ListUsers cho màn ai có quyền, kể cả qua nhóm lồng nhau. Expand giải thích quyền đến từ đâu. Contextual tuple cho tính năng xem trước khi chia sẻ: hỏi nếu có tuple này thì sao mà không ghi gì. ReadChanges là Watch API, làm nhật ký thay đổi quyền cho admin. Trong OpenAPI, mỗi operation ghi rõ API Zanzibar nó dùng.</aside>
+</section>

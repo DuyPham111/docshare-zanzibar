@@ -1,0 +1,25 @@
+<section id="c-engine" data-transition="fade" style="background:#F6F4EF;color:#1B2430;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FA8">Lựa chọn 3/16 · Engine Zanzibar</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">OpenFGA v1.22.1 (open-source, CNCF)</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#DCE6F2;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1F5FA8">Nhóm chọn vì</p>
+<p style="font-size:30px;line-height:1.35">Đủ API: Check, BatchCheck, ListObjects, <b>ListUsers</b>, Expand, ReadChanges</p>
+<p style="font-size:30px;line-height:1.35"><b>Condition (CEL)</b>, contextual tuple, consistency preference</p>
+<p style="font-size:30px;line-height:1.35">DSL ngắn; có parser JS chính thức để engine tự viết dùng chung model</p>
+<p style="font-size:30px;line-height:1.35">Một lệnh Docker; memory cho lab, PostgreSQL cho production</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#F6E0C8;border-radius:16px;padding:36px">
+<p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A3F07">Không chọn</p>
+<p style="font-size:30px;line-height:1.35"><b>SpiceDB</b>: sát paper, nhưng schema Zed không có parser JS cho engine phụ</p>
+<p style="font-size:30px;line-height:1.35"><b>Permify, Ory Keto</b>: cộng đồng và tập API hẹp hơn, Keto không có condition</p>
+<p style="font-size:30px;line-height:1.35"><b>OPA, Casbin, Cerbos</b>: engine luật, không phải đồ thị tuple</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#5B616B"><b>Đánh đổi chấp nhận:</b> thêm một service hạ tầng và một hop mạng mỗi quyết định.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B616B">DocShare · Zanzibar · REPORT.md §4.3</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;font-size:24px;color:#5B616B;text-align:right">13</p>
+<aside>Engine chính là OpenFGA phiên bản 1.22.1, mã nguồn mở, dự án của CNCF, Okta FGA được xây trên nó. OpenFGA có đủ API bài cần, đặc biệt ListUsers và condition viết bằng CEL. DSL ngắn, và có thư viện JavaScript chính thức để parse DSL, nhờ vậy engine tự viết dùng chung file model. SpiceDB bám paper rất sát nhưng schema language khác, không có parser JavaScript. Permify và Ory Keto có tập API hẹp hơn. OPA, Casbin, Cerbos là engine luật chứ không phải đồ thị quan hệ: kế thừa qua thư mục vẫn phải tự nạp dữ liệu.</aside>
+</section>
